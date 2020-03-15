@@ -184,11 +184,9 @@ void HID_Task(void) {
 	// We'll start with the OUT endpoint.
 	Endpoint_SelectEndpoint(JOYSTICK_OUT_EPADDR);
 	// We'll check to see if we received something on the OUT endpoint.
-	if (Endpoint_IsOUTReceived())
-	{
+	if (Endpoint_IsOUTReceived()) {
 		// If we did, and the packet has data, we'll react to it.
-		if (Endpoint_IsReadWriteAllowed())
-		{
+		if (Endpoint_IsReadWriteAllowed()) {
 			// We'll create a place to store our data received from the host.
 			USB_JoystickReport_Output_t JoystickOutputData;
 			// We'll then take in that data, setting it up in our storage.
@@ -205,7 +203,7 @@ void HID_Task(void) {
 	Endpoint_SelectEndpoint(JOYSTICK_IN_EPADDR);
 	// We first check to see if the host is ready to accept data.
 	if (Endpoint_IsINReady())
-	{
+	 {
 		// We'll create an empty report.
 		USB_JoystickReport_Input_t JoystickInputData;
 		// We'll then populate this report with what we want to send to the host.
@@ -254,48 +252,36 @@ void GetNextReport(USB_JoystickReport_Input_t* const ReportData) {
 	ReportData->HAT = HAT_CENTER;
 
 	// Repeat ECHOES times the last report
-	if (echoes > 0)
-	{
+	if (echoes > 0) {
 		memcpy(ReportData, &last_report, sizeof(USB_JoystickReport_Input_t));
 		echoes--;
 		return;
 	}
 
 	// States and moves management
-	switch (state)
-	{
+	switch (state) {
 		case PROCESS:
 			// Get the next command sequence (new start and end)
-			if (commandIndex == -1)
-			{
-				if (m_endIndex == 6)
-				{
+			if (commandIndex == -1) {
+				if (m_endIndex == 6) {
 					// Complete
 					state = DONE;
 					break;
-				}
-				else if (m_column > 6)
-				{
-					if (m_row == 5)
-					{
+				} else if (m_column > 6) {
+					if (m_row == 5) {
 						m_box++;
-						if (m_box > m_boxCount)
-						{
+						if (m_box > m_boxCount) {
 							// Press B to leave
 							commandIndex = 5;
 							m_endIndex = 6;
-						}
-						else
-						{
+						} else {
 							// Next box
 							commandIndex = 23;
 							m_endIndex = 42;
 							
 							m_row = 1;
 						}
-					}
-					else
-					{
+					} else {
 						// Next row
 						commandIndex = 45;
 						m_endIndex = 56;
@@ -305,20 +291,15 @@ void GetNextReport(USB_JoystickReport_Input_t* const ReportData) {
 					
 					m_column = 1;
 					m_released = false;
-				}
-				else
-				{
-					if (!m_released)
-					{
+				} else {
+					if (!m_released) {
 						// Release pokemon
 						commandIndex = 9;
 						m_endIndex = 22;
 						
 						m_column++;
 						m_released = true;
-					}
-					else
-					{
+					} else {
 						// Next pokemon
 						commandIndex = 43;
 						m_endIndex = 44;
@@ -328,8 +309,7 @@ void GetNextReport(USB_JoystickReport_Input_t* const ReportData) {
 				}
 			}
 		
-			switch (boxRelease[commandIndex].button)
-			{
+			switch (boxRelease[commandIndex].button) {
 				case UP:
 					ReportData->LY = STICK_MIN;				
 					break;
@@ -413,8 +393,7 @@ void GetNextReport(USB_JoystickReport_Input_t* const ReportData) {
 
 			durationCount++;
 
-			if (durationCount > boxRelease[commandIndex].duration)
-			{
+			if (durationCount > boxRelease[commandIndex].duration) {
 				commandIndex++;
 				durationCount = 0;		
 

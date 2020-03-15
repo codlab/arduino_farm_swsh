@@ -212,11 +212,9 @@ void HID_Task(void) {
 	// We'll start with the OUT endpoint.
 	Endpoint_SelectEndpoint(JOYSTICK_OUT_EPADDR);
 	// We'll check to see if we received something on the OUT endpoint.
-	if (Endpoint_IsOUTReceived())
-	{
+	if (Endpoint_IsOUTReceived()) {
 		// If we did, and the packet has data, we'll react to it.
-		if (Endpoint_IsReadWriteAllowed())
-		{
+		if (Endpoint_IsReadWriteAllowed()) {
 			// We'll create a place to store our data received from the host.
 			USB_JoystickReport_Output_t JoystickOutputData;
 			// We'll then take in that data, setting it up in our storage.
@@ -232,8 +230,7 @@ void HID_Task(void) {
 	// We'll then move on to the IN endpoint.
 	Endpoint_SelectEndpoint(JOYSTICK_IN_EPADDR);
 	// We first check to see if the host is ready to accept data.
-	if (Endpoint_IsINReady())
-	{
+	if (Endpoint_IsINReady()) {
 		// We'll create an empty report.
 		USB_JoystickReport_Input_t JoystickInputData;
 		// We'll then populate this report with what we want to send to the host.
@@ -268,58 +265,44 @@ void GetNextReport(USB_JoystickReport_Input_t* const ReportData) {
 	ReportData->HAT = HAT_CENTER;
 
 	// Repeat ECHOES times the last report
-	if (echoes > 0)
-	{
+	if (echoes > 0) {
 		memcpy(ReportData, &last_report, sizeof(USB_JoystickReport_Input_t));
 		echoes--;
 		return;
 	}
 	
 	// Get the next command sequence (new start and end)
-	if (commandIndex == -1)
-	{
+	if (commandIndex == -1) {
 		m_sequence++;
 		
-		if (m_sequence == 1)
-		{
+		if (m_sequence == 1) {
 			// Connect internet and enter raid
 			commandIndex = 6;	// 6 = go online, 11 = local only
 			m_endIndex = 12;
-		}
-		else if (m_sequence == 2)
-		{					
-			if (!m_useLinkCode)
-			{
+		} else if (m_sequence == 2) {					
+			if (!m_useLinkCode) {
 				// Skip to start raid, invite, SR
 				commandIndex = 16;
 				m_endIndex = 34;
 				
 				m_sequence = 0;
-			}
-			else
-			{
+			} else {
 				// Prepare link code, goto 0
 				commandIndex = 35;
 				m_endIndex = 41;
 			}
-		}
-		else if (m_sequence == 14)
-		{
+		} else if (m_sequence == 14) {
 			// Finish setting link code, invite others, SR
 			commandIndex = 13;
 			m_endIndex = 34;
 			
 			m_sequence = 0;
-		}
-		else //if (m_sequence <= 13)
-		{
+		} else { // if (m_sequence <= 13)
 			// Entering link code
-			if (m_sequence % 3 == 0) // 3,6,9,12
-			{
+			if (m_sequence % 3 == 0) { // 3,6,9,12
 				uint8_t number = m_useRandomCode ? (rand() % 10) : m_linkCode[m_sequence / 3 - 1];
 				
-				if (number == 0)
-				{
+				if (number == 0) {
 					return;
 					
 					// Just press A for 0
@@ -328,26 +311,18 @@ void GetNextReport(USB_JoystickReport_Input_t* const ReportData) {
 					
 					// Skip going down
 					m_sequence += 2;
-				}
-				else if (number % 3 == 0) // 3,6,9
-				{
+				} else if (number % 3 == 0) { // 3,6,9
 					commandIndex = 52 + (number / 3 - 1) * 2;
 					m_endIndex = 59;
-				}
-				else // 1,4,7,2,5,8
-				{
+				} else { // 1,4,7,2,5,8
 					commandIndex = 44 + (number / 3) * 2;
 					m_endIndex = (number % 3 == 1) ? 51 : 49;
 				}
-			}
-			else if (m_sequence % 3 == 1) // 4,7,10,13
-			{
+			} else if (m_sequence % 3 == 1) { // 4,7,10,13
 				// Press A
 				commandIndex = 42;
 				m_endIndex = 43;
-			}
-			else // 5,8,11
-			{
+			} else { // 5,8,11
 				// Reset to 0
 				commandIndex = 36;
 				m_endIndex = 41;
@@ -356,61 +331,38 @@ void GetNextReport(USB_JoystickReport_Input_t* const ReportData) {
 	}
 
 	Buttons_t button = autoHost[commandIndex].button;
-	if (button == UP)
-	{
+	if (button == UP) {
 		ReportData->LY = STICK_MIN;
-	}
-	else if (button == LEFT)
-	{
+	} else if (button == LEFT) {
 		ReportData->LX = STICK_MIN;
-	}
-	else if (button == DOWN)
-	{
+	} else if (button == DOWN) {
 		ReportData->LY = STICK_MAX;
-	}
-	else if (button == RIGHT)
-	{
+	} else if (button == RIGHT) {
 		ReportData->LX = STICK_MAX;
-	}
-	else if (button == X)
-	{
+	} else if (button == X) {
 		ReportData->Button |= SWITCH_X;
-	}
-	else if (button == Y)
-	{
+	} else if (button == Y) {
 		ReportData->Button |= SWITCH_Y;
-	}
-	else if (button == A)
-	{
+	} else if (button == A) {
 		ReportData->Button |= SWITCH_A;
-	}
-	else if (button == B)
-	{
+	} else if (button == B) {
 		ReportData->Button |= SWITCH_B;
-	}
-	else if (button == PLUS)
-	{
+	} else if (button == PLUS) {
 		ReportData->Button |= SWITCH_PLUS;
-	}
-	else if (button == TRIGGERS)
-	{
+	} else if (button == TRIGGERS) {
 		ReportData->Button |= SWITCH_L | SWITCH_R;
-	}
-	else if (button == HOME)
-	{
+	} else if (button == HOME) {
 		ReportData->Button |= SWITCH_HOME;
 	}
 
 	durationCount++;
 
-	if (durationCount > autoHost[commandIndex].duration)
-	{
+	if (durationCount > autoHost[commandIndex].duration) {
 		commandIndex++;
 		durationCount = 0;		
 
 		// We reached the end of a command sequence
-		if (commandIndex > m_endIndex)
-		{
+		if (commandIndex > m_endIndex) {
 			commandIndex = -1;
 		}		
 	}

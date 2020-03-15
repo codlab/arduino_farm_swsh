@@ -232,11 +232,9 @@ void HID_Task(void) {
 	// We'll start with the OUT endpoint.
 	Endpoint_SelectEndpoint(JOYSTICK_OUT_EPADDR);
 	// We'll check to see if we received something on the OUT endpoint.
-	if (Endpoint_IsOUTReceived())
-	{
+	if (Endpoint_IsOUTReceived()) {
 		// If we did, and the packet has data, we'll react to it.
-		if (Endpoint_IsReadWriteAllowed())
-		{
+		if (Endpoint_IsReadWriteAllowed()) {
 			// We'll create a place to store our data received from the host.
 			USB_JoystickReport_Output_t JoystickOutputData;
 			// We'll then take in that data, setting it up in our storage.
@@ -252,8 +250,7 @@ void HID_Task(void) {
 	// We'll then move on to the IN endpoint.
 	Endpoint_SelectEndpoint(JOYSTICK_IN_EPADDR);
 	// We first check to see if the host is ready to accept data.
-	if (Endpoint_IsINReady())
-	{
+	if (Endpoint_IsINReady()) {
 		// We'll create an empty report.
 		USB_JoystickReport_Input_t JoystickInputData;
 		// We'll then populate this report with what we want to send to the host.
@@ -300,37 +297,28 @@ void GetNextReport(USB_JoystickReport_Input_t* const ReportData) {
 	ReportData->HAT = HAT_CENTER;
 
 	// Repeat ECHOES times the last report
-	if (echoes > 0)
-	{
+	if (echoes > 0) {
 		memcpy(ReportData, &last_report, sizeof(USB_JoystickReport_Input_t));
 		echoes--;
 		return;
 	}
 
 	// States and moves management
-	switch (state)
-	{
+	switch (state) {
 		case PROCESS:
 			// Get the next command sequence (new start and end)
-			if (commandIndex == -1)
-			{
-				if (m_dayToSkip > 0 && m_skip == m_dayToSkip)
-				{
-					if (m_endIndex == 62)
-					{
+			if (commandIndex == -1) {
+				if (m_dayToSkip > 0 && m_skip == m_dayToSkip) {
+					if (m_endIndex == 62) {
 						// Stop the program
 						state = DONE;
 						break;
-					}
-					else
-					{
+					} else {
 						// Go to home, reached day to skip
 						commandIndex = 61;
 						m_endIndex = 62;
 					}
-				}
-				else
-				{
+				} else {
 					commandIndex = 9;
 					m_endIndex = 102;
 					
@@ -338,8 +326,7 @@ void GetNextReport(USB_JoystickReport_Input_t* const ReportData) {
 				}
 			}
 		
-			switch (autoLoto[commandIndex].button)
-			{
+			switch (autoLoto[commandIndex].button) {
 				case UP:
 					ReportData->LY = STICK_MIN;				
 					break;
@@ -423,14 +410,12 @@ void GetNextReport(USB_JoystickReport_Input_t* const ReportData) {
 
 			durationCount++;
 
-			if (durationCount > autoLoto[commandIndex].duration)
-			{
+			if (durationCount > autoLoto[commandIndex].duration) {
 				commandIndex++;
 				durationCount = 0;		
 
 				// We reached the end of a command sequence
-				if (commandIndex > m_endIndex)
-				{
+				if (commandIndex > m_endIndex) {
 					commandIndex = -1;
 				}		
 			}

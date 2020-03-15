@@ -164,11 +164,9 @@ void HID_Task(void) {
 	// We'll start with the OUT endpoint.
 	Endpoint_SelectEndpoint(JOYSTICK_OUT_EPADDR);
 	// We'll check to see if we received something on the OUT endpoint.
-	if (Endpoint_IsOUTReceived())
-	{
+	if (Endpoint_IsOUTReceived()) {
 		// If we did, and the packet has data, we'll react to it.
-		if (Endpoint_IsReadWriteAllowed())
-		{
+		if (Endpoint_IsReadWriteAllowed()) {
 			// We'll create a place to store our data received from the host.
 			USB_JoystickReport_Output_t JoystickOutputData;
 			// We'll then take in that data, setting it up in our storage.
@@ -184,8 +182,7 @@ void HID_Task(void) {
 	// We'll then move on to the IN endpoint.
 	Endpoint_SelectEndpoint(JOYSTICK_IN_EPADDR);
 	// We first check to see if the host is ready to accept data.
-	if (Endpoint_IsINReady())
-	{
+	if (Endpoint_IsINReady()) {
 		// We'll create an empty report.
 		USB_JoystickReport_Input_t JoystickInputData;
 		// We'll then populate this report with what we want to send to the host.
@@ -231,28 +228,22 @@ void GetNextReport(USB_JoystickReport_Input_t* const ReportData) {
 	ReportData->HAT = HAT_CENTER;
 
 	// Repeat ECHOES times the last report
-	if (echoes > 0)
-	{
+	if (echoes > 0) {
 		memcpy(ReportData, &last_report, sizeof(USB_JoystickReport_Input_t));
 		echoes--;
 		return;
 	}
 
 	// States and moves management
-	switch (state)
-	{
+	switch (state) {
 		case PROCESS:
 			// Get the next command sequence (new start and end)
-			if (commandIndex == -1)
-			{
-				if (m_endIndex == 30)
-				{
+			if (commandIndex == -1) {
+				if (m_endIndex == 30) {
 					// Finish
 					state = DONE;
 					break;
-				}
-				else if (m_dayToSkip[i] > 0)
-				{
+				} else if (m_dayToSkip[i] > 0) {
 					// Pass day
 					commandIndex = 9;
 					m_endIndex = 26;
@@ -268,11 +259,8 @@ void GetNextReport(USB_JoystickReport_Input_t* const ReportData) {
 						m_day++;
 						m_dayToSkip[i]--;
 					}
-				}
-				else //if (m_dayToSkip[i] == 0)
-				{
-					if (i < sizeof(m_dayToSkip)/sizeof(unsigned int) - 1)
-					{
+				} else { // if (m_dayToSkip[i] == 0)
+					if (i < sizeof(m_dayToSkip)/sizeof(unsigned int) - 1) {
 						// More days in the array, move to the next
 						i++;
 						break;

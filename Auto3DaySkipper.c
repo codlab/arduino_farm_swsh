@@ -256,11 +256,9 @@ void HID_Task(void) {
 	// We'll start with the OUT endpoint.
 	Endpoint_SelectEndpoint(JOYSTICK_OUT_EPADDR);
 	// We'll check to see if we received something on the OUT endpoint.
-	if (Endpoint_IsOUTReceived())
-	{
+	if (Endpoint_IsOUTReceived()) {
 		// If we did, and the packet has data, we'll react to it.
-		if (Endpoint_IsReadWriteAllowed())
-		{
+		if (Endpoint_IsReadWriteAllowed()) {
 			// We'll create a place to store our data received from the host.
 			USB_JoystickReport_Output_t JoystickOutputData;
 			// We'll then take in that data, setting it up in our storage.
@@ -276,8 +274,7 @@ void HID_Task(void) {
 	// We'll then move on to the IN endpoint.
 	Endpoint_SelectEndpoint(JOYSTICK_IN_EPADDR);
 	// We first check to see if the host is ready to accept data.
-	if (Endpoint_IsINReady())
-	{
+	if (Endpoint_IsINReady()) {
 		// We'll create an empty report.
 		USB_JoystickReport_Input_t JoystickInputData;
 		// We'll then populate this report with what we want to send to the host.
@@ -322,61 +319,45 @@ void GetNextReport(USB_JoystickReport_Input_t* const ReportData) {
 	ReportData->HAT = HAT_CENTER;
 
 	// Repeat ECHOES times the last report
-	if (echoes > 0)
-	{
+	if (echoes > 0) {
 		memcpy(ReportData, &last_report, sizeof(USB_JoystickReport_Input_t));
 		echoes--;
 		return;
 	}
 
 	// States and moves management
-	switch (state)
-	{
+	switch (state) {
 		case PROCESS:
 			// Get the next command sequence (new start and end)
-			if (commandIndex == -1)
-			{
+			if (commandIndex == -1) {
 				m_sequence++;
-				if (m_sequence == 13)
-				{
+				if (m_sequence == 13) {
 					// Done skipping 3 days, user should check the pokemon
 					commandIndex = 77;
 					m_endIndex = 102;
-				}
-				else if (m_sequence == 15)
-				{
+				} else if (m_sequence == 15) {
 					// Roll 3 days backward
 					commandIndex = 49;
 					m_endIndex = 60;
-				}
-				else if (m_sequence == 16)
-				{
+				} else if (m_sequence == 16) {
 					// SR
 					commandIndex = 103;
 					m_endIndex = 114;
 					
 					m_sequence = 0;
-				}
-				else if (m_sequence % 4 == 1)	// 1,5,9
-				{
+				} else if (m_sequence % 4 == 1)	{ // 1,5,9
 					// Collect watts and invite others
 					commandIndex = 9;
 					m_endIndex = 16;
-				}
-				else if (m_sequence % 4 == 2)	// 2,6,10,14
-				{
+				} else if (m_sequence % 4 == 2) { // 2,6,10,14
 					// Goto date and time
 					commandIndex = 17;
 					m_endIndex = 48;
-				}
-				else if (m_sequence % 4 == 3)	// 3,7,11
-				{
+				} else if (m_sequence % 4 == 3)	{ // 3,7,11
 					// Roll one day forward
 					commandIndex = 61;
 					m_endIndex = 68;
-				}
-				else if (m_sequence % 4 == 0)	// 4,8,12
-				{
+				} else if (m_sequence % 4 == 0)	{ // 4,8,12
 					// Back to game
 					commandIndex = 69;
 					m_endIndex = 76;
@@ -468,16 +449,14 @@ void GetNextReport(USB_JoystickReport_Input_t* const ReportData) {
 
 			durationCount++;
 
-			if (durationCount > auto3DaySkipper[commandIndex].duration)
-			{
+			if (durationCount > auto3DaySkipper[commandIndex].duration) {
 				commandIndex++;
 				durationCount = 0;		
 
 				// We reached the end of a command sequence
-				if (commandIndex > m_endIndex)
-				{
+				if (commandIndex > m_endIndex) {
 					commandIndex = -1;
-				}		
+				}
 			}
 
 			break;

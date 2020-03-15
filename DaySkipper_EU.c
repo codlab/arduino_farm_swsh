@@ -266,11 +266,9 @@ void HID_Task(void) {
 	// We'll start with the OUT endpoint.
 	Endpoint_SelectEndpoint(JOYSTICK_OUT_EPADDR);
 	// We'll check to see if we received something on the OUT endpoint.
-	if (Endpoint_IsOUTReceived())
-	{
+	if (Endpoint_IsOUTReceived()) {
 		// If we did, and the packet has data, we'll react to it.
-		if (Endpoint_IsReadWriteAllowed())
-		{
+		if (Endpoint_IsReadWriteAllowed()) {
 			// We'll create a place to store our data received from the host.
 			USB_JoystickReport_Output_t JoystickOutputData;
 			// We'll then take in that data, setting it up in our storage.
@@ -286,8 +284,7 @@ void HID_Task(void) {
 	// We'll then move on to the IN endpoint.
 	Endpoint_SelectEndpoint(JOYSTICK_IN_EPADDR);
 	// We first check to see if the host is ready to accept data.
-	if (Endpoint_IsINReady())
-	{
+	if (Endpoint_IsINReady()) {
 		// We'll create an empty report.
 		USB_JoystickReport_Input_t JoystickInputData;
 		// We'll then populate this report with what we want to send to the host.
@@ -331,27 +328,22 @@ void GetNextReport(USB_JoystickReport_Input_t* const ReportData) {
 	ReportData->HAT = HAT_CENTER;
 
 	// Repeat ECHOES times the last report
-	if (echoes > 0)
-	{
+	if (echoes > 0) {
 		memcpy(ReportData, &last_report, sizeof(USB_JoystickReport_Input_t));
 		echoes--;
 		return;
 	}
 
 	// States and moves management
-	switch (state)
-	{
+	switch (state) {
 		case PROCESS:
 			// Get the next command sequence (new start and end)
-			if (commandIndex == -1)
-			{
-				if (m_dayToSkip > 0)
-				{
+			if (commandIndex == -1) {
+				if (m_dayToSkip > 0) {
 					// Day = 0, Month = 1, Year = 2
 					int passDayMonthYear = 0;
 					
-					if (m_month == 2)
-					{
+					if (m_month == 2) {
 						bool isLeapYear = (m_year % 4 == 0);
 						if (isLeapYear && m_day == 29)
 						{
@@ -361,43 +353,30 @@ void GetNextReport(USB_JoystickReport_Input_t* const ReportData) {
 						{
 							passDayMonthYear = 1;
 						}
-					}
-					else if (m_month == 12 && m_day == 31)
-					{
+					} else if (m_month == 12 && m_day == 31) {
 						passDayMonthYear = 2;
-					}
-					else if (m_month == 4 || m_month == 6 || m_month == 9 || m_month == 11)
-					{
-						if (m_day == 30)
-						{
+					} else if (m_month == 4 || m_month == 6 || m_month == 9 || m_month == 11) {
+						if (m_day == 30) {
 							passDayMonthYear = 1;
 						}
-					}
-					else //if (m_month == 1 || m_month == 3 || m_month == 5 || m_month == 7 || m_month == 8 || m_month == 10)
-					{
-						if (m_day == 31)
-						{
+					} else { //if (m_month == 1 || m_month == 3 || m_month == 5 || m_month == 7 || m_month == 8 || m_month == 10)
+						if (m_day == 31) {
 							passDayMonthYear = 1;
 						}
 					}
 					
-					if (passDayMonthYear == 0)
-					{
+					if (passDayMonthYear == 0) {
 						// Pass day
 						m_day++;
 						commandIndex = 9;
 						m_endIndex = 34;
-					}
-					else if (passDayMonthYear == 1)
-					{
+					} else if (passDayMonthYear == 1) {
 						// Pass month
 						m_day = 1;
 						m_month++;
 						commandIndex = 35;
 						m_endIndex = 62;
-					}
-					else
-					{
+					} else {
 						// Pass year
 						m_day = 1;
 						m_month = 1;
@@ -405,15 +384,11 @@ void GetNextReport(USB_JoystickReport_Input_t* const ReportData) {
 						commandIndex = 63;
 						m_endIndex = 92;
 					}
-				}
-				else if (m_dayToSkip == 0)
-				{
+				} else if (m_dayToSkip == 0) {
 					// Go back to game
 					commandIndex = 93;
 					m_endIndex = 96;
-				}
-				else
-				{
+				} else {
 					// Finish
 					state = DONE;
 					break;
@@ -422,8 +397,7 @@ void GetNextReport(USB_JoystickReport_Input_t* const ReportData) {
 				m_dayToSkip--;
 			}
 		
-			switch (daySkipper[commandIndex].button)
-			{
+			switch (daySkipper[commandIndex].button) {
 				case UP:
 					ReportData->LY = STICK_MIN;				
 					break;
@@ -507,14 +481,12 @@ void GetNextReport(USB_JoystickReport_Input_t* const ReportData) {
 
 			durationCount++;
 
-			if (durationCount > daySkipper[commandIndex].duration)
-			{
+			if (durationCount > daySkipper[commandIndex].duration) {
 				commandIndex++;
 				durationCount = 0;		
 
 				// We reached the end of a command sequence
-				if (commandIndex > m_endIndex)
-				{
+				if (commandIndex > m_endIndex) {
 					commandIndex = -1;
 				}		
 			}

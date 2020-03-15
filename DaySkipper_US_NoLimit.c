@@ -247,20 +247,15 @@ void GetNextReport(USB_JoystickReport_Input_t* const ReportData) {
 	}
 
 	// States and moves management
-	switch (state)
-	{
+	switch (state) {
 		case PROCESS:
 			// Get the next command sequence (new start and end)
-			if (commandIndex == -1)
-			{
-				if (m_endIndex == 30)
-				{
+			if (commandIndex == -1) {
+				if (m_endIndex == 30) {
 					// Finish
 					state = DONE;
 					break;
-				}
-				else if (m_dayToSkip[i] > 0)
-				{
+				} else if (m_dayToSkip[i] > 0) {
 					// Pass day
 					commandIndex = 9;
 					m_endIndex = 34;
@@ -269,24 +264,17 @@ void GetNextReport(USB_JoystickReport_Input_t* const ReportData) {
 					{
 						// Rolling back, no day skipped
 						m_day = 1;
-					}
-					else
-					{
+					} else {
 						// Roll foward by a day
 						m_day++;
 						m_dayToSkip[i]--;
 					}
-				}
-				else //if (m_dayToSkip[i] == 0)
-				{
-					if (i < sizeof(m_dayToSkip)/sizeof(unsigned int) - 1)
-					{
+				}else { // if (m_dayToSkip[i] == 0)
+					if (i < sizeof(m_dayToSkip)/sizeof(unsigned int) - 1) {
 						// More days in the array, move to the next
 						i++;
 						break;
-					}
-					else
-					{
+					} else {
 						// Go back to game
 						commandIndex = 35;
 						m_endIndex = 38;
@@ -294,8 +282,7 @@ void GetNextReport(USB_JoystickReport_Input_t* const ReportData) {
 				}
 			}
 		
-			switch (daySkipper[commandIndex].button)
-			{
+			switch (daySkipper[commandIndex].button) {
 				case UP:
 					ReportData->LY = STICK_MIN;				
 					break;
@@ -379,14 +366,12 @@ void GetNextReport(USB_JoystickReport_Input_t* const ReportData) {
 
 			durationCount++;
 
-			if (durationCount > daySkipper[commandIndex].duration)
-			{
+			if (durationCount > daySkipper[commandIndex].duration) {
 				commandIndex++;
 				durationCount = 0;		
 
 				// We reached the end of a command sequence
-				if (commandIndex > m_endIndex)
-				{
+				if (commandIndex > m_endIndex) {
 					commandIndex = -1;
 				}		
 			}
