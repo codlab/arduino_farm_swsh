@@ -20,6 +20,7 @@ these buttons for our use.
 
 #include <stdlib.h>
 #include "Joystick.h"
+#include "action.h"
 
 /*------------------------------------------*/
 // INSTRUCTION
@@ -330,31 +331,7 @@ void GetNextReport(USB_JoystickReport_Input_t* const ReportData) {
 		}
 	}
 
-	Buttons_t button = autoHost[commandIndex].button;
-	if (button == UP) {
-		ReportData->LY = STICK_MIN;
-	} else if (button == LEFT) {
-		ReportData->LX = STICK_MIN;
-	} else if (button == DOWN) {
-		ReportData->LY = STICK_MAX;
-	} else if (button == RIGHT) {
-		ReportData->LX = STICK_MAX;
-	} else if (button == X) {
-		ReportData->Button |= SWITCH_X;
-	} else if (button == Y) {
-		ReportData->Button |= SWITCH_Y;
-	} else if (button == A) {
-		ReportData->Button |= SWITCH_A;
-	} else if (button == B) {
-		ReportData->Button |= SWITCH_B;
-	} else if (button == PLUS) {
-		ReportData->Button |= SWITCH_PLUS;
-	} else if (button == TRIGGERS) {
-		ReportData->Button |= SWITCH_L | SWITCH_R;
-	} else if (button == HOME) {
-		ReportData->Button |= SWITCH_HOME;
-	}
-
+	report_action(ReportData, &(autoHost[commandIndex]));
 	durationCount++;
 
 	if (durationCount > autoHost[commandIndex].duration) {
