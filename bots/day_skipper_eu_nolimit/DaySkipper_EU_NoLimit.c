@@ -103,7 +103,7 @@ void daySkipperEUNoLimit(USB_JoystickReport_Input_t* const ReportData) {
 		case PROCESS:
 			// Get the next command sequence (new start and end)
 			if (commandIndex == -1) {
-				if (m_endIndex == 30) {
+				if (m_endIndex == 38) {
 					// Finish
 					state = DONE;
 					break;
