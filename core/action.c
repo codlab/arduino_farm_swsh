@@ -86,3 +86,16 @@ void report_action(USB_JoystickReport_Input_t* const ReportData, Command* comman
 
     }
 }
+
+void goto_next(int* durationCount, int* commandIndex, int endIndex, Command* const command) {
+    (*durationCount)++;
+    if (*durationCount > command->duration) {
+        (*commandIndex)++;
+        *durationCount = 0;
+
+        // We reached the end of a command sequence
+        if (*commandIndex > endIndex) {
+            *commandIndex = -1;
+        }
+    }
+}

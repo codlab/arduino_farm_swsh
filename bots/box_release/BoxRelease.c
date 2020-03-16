@@ -169,18 +169,8 @@ void boxRelease(USB_JoystickReport_Input_t* const ReportData) {
 			}
 		
 			report_action(ReportData, &(sequences[commandIndex]));
-			durationCount++;
 
-			if (durationCount > sequences[commandIndex].duration) {
-				commandIndex++;
-				durationCount = 0;		
-
-				// We reached the end of a command sequence
-				if (commandIndex > m_endIndex)
-				{
-					commandIndex = -1;
-				}		
-			}
+			goto_next(&durationCount, &commandIndex, m_endIndex, &(sequences[commandIndex]));
 
 			break;
 

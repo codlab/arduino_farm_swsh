@@ -9,4 +9,6 @@
 
 void report_action(USB_JoystickReport_Input_t* const ReportData, Command* command);
 
+void goto_next(int* durationCount, int* commandIndex, int endIndex, Command* const command);
+
 #endif
