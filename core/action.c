@@ -1,4 +1,4 @@
-#include "./core/action.h"
+#include "action.h"
 
 void report_action(USB_JoystickReport_Input_t* const ReportData, Command* command) {
     if(nullptr != command && nullptr != ReportData) {

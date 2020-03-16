@@ -21,8 +21,8 @@ these buttons for our use.
 #define USE_SRAND 1
 #include <stdlib.h>
 #include "Joystick.h"
-#include "action.h"
-#include "usb_device.h"
+#include "./core/action.h"
+#include "./core/usb_device.h"
 
 /*------------------------------------------*/
 // INSTRUCTION

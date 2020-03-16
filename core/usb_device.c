@@ -1,4 +1,4 @@
-#include "Joystick.h"
+#include "../Joystick.h"
 #include "action.h"
 #include "usb_device.h"
 

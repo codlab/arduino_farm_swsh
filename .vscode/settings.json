@@ -1,5 +1,6 @@
 {
     "files.associations": {
-        "action.h": "c"
+        "action.h": "c",
+        "usb_device.h": "c"
     }
 }
