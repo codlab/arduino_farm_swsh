@@ -96,15 +96,6 @@ int i = 0;
 
 // Prepare the next report for the host.
 void GetNextReport(USB_JoystickReport_Input_t* const ReportData) {
-
-	// Prepare an empty report
-	memset(ReportData, 0, sizeof(USB_JoystickReport_Input_t));
-	ReportData->LX = STICK_CENTER;
-	ReportData->LY = STICK_CENTER;
-	ReportData->RX = STICK_CENTER;
-	ReportData->RY = STICK_CENTER;
-	ReportData->HAT = HAT_CENTER;
-
 	// Repeat ECHOES times the last report
 	if (echoes > 0) {
 		memcpy(ReportData, &last_report, sizeof(USB_JoystickReport_Input_t));

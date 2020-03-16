@@ -87,6 +87,17 @@ void EVENT_USB_Device_ControlRequest(void) {
 	// Not used here, it looks like we don't receive control request from the Switch.
 }
 
+// Prepare the next report for the host.
+void PrepareReport(USB_JoystickReport_Input_t* const ReportData) {
+	// Prepare an empty report
+	Preparereport(ReportData);
+	memset(ReportData, 0, sizeof(USB_JoystickReport_Input_t));
+	ReportData->LX = STICK_CENTER;
+	ReportData->LY = STICK_CENTER;
+	ReportData->RX = STICK_CENTER;
+	ReportData->RY = STICK_CENTER;
+	ReportData->HAT = HAT_CENTER;
+}
 
 // Process and deliver data from IN and OUT endpoints.
 void HID_Task(void) {
@@ -118,6 +129,7 @@ void HID_Task(void) {
 	if (Endpoint_IsINReady()) {
 		// We'll create an empty report.
 		USB_JoystickReport_Input_t JoystickInputData;
+		PrepareReport(&JoystickInputData);
 		// We'll then populate this report with what we want to send to the host.
 		GetNextReport(&JoystickInputData);
 		// Once populated, we can output this data to the host. We do this by first writing the data to the control stream.
