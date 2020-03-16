@@ -18,7 +18,9 @@ int durationCount = 0;
 
 
 int main(void) {
+#ifdef USE_SRAND
 	srand(m_seed);
+#endif
 	// We'll start by performing hardware and peripheral setup.
 	SetupHardware();
 	// We'll then enable global interrupts for our use.

@@ -18,6 +18,7 @@ exception of Home and Capture. Descriptor modification allows us to unlock
 these buttons for our use.
 */
 
+#define USE_SRAND 1
 #include <stdlib.h>
 #include "Joystick.h"
 #include "action.h"
