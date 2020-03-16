@@ -39,7 +39,7 @@ DIRECTORIES = $(wildcard ./bots/*/)
 all:
 	@for dir in $(DIRECTORIES); do \
             echo "processing folder $(DIRECTORIES)"; \
-			$(MAKE) -C $$dir ; \
+			$(MAKE) -C $$dir MCU=$(MCU) ARCH=$(ARCH) F_CPU=$(F_CPU); \
 	done;
 
 clean:

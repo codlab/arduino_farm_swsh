@@ -28,22 +28,21 @@ This project implements a modified version of HORI's Pokken Tournament Pro Pad U
 # Instructions
 
 ## Configuration
-Please refer to the .c file itself for instructions.
+Please refer to the TARGET.c file itself for instructions.
 
 ## Compiling
 
 - compile every bots
-```make release```
+```make```
 
 - cleaning
-```make free```
+```make clean```
 
 ## Incoming
 
-New features to come soon :
+New features coming soon :
 
-- cleaned architecture
-- GNU Make's options
+- reading serial command
 
 # Prerequisites
 
