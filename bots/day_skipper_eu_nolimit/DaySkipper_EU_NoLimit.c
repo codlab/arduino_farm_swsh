@@ -26,11 +26,8 @@ these buttons for our use.
 // -> You MUST set your current date to Janurary 1st or any month with 31 days, year doesn't matter
 // -> It takes ~43 seconds per 30 days
 
-// -> Set number of days you want to skip, each one CANNOT be over 65535
-// -> The sum of all is the total day skip, you MUST follow the format {x,x,x,x,...};
-// ->e.g.: 100000 days, {50000,50000}; or {65535,34465};
-// ->e.g.: 100 days, {10,10,10,10,10,10,10,10,10,10}; or {100};
-unsigned int m_dayToSkip[] = {172,0,0,0,0};
+// -> Set number of days you want to skip,can't be greater than 4294967295
+unsigned long m_dayToSkip = 172;
 /*------------------------------------------*/
 
 static const Command sequences[] = {
@@ -98,7 +95,6 @@ static const Command sequences[] = {
 int commandIndex = 0;
 int m_endIndex = 8;
 int m_day = 1; // [1,31]
-int i = 0;
 
 // Prepare the next report for the host.
 void daySkipperEUNoLimit(USB_JoystickReport_Input_t* const ReportData) {
@@ -111,32 +107,23 @@ void daySkipperEUNoLimit(USB_JoystickReport_Input_t* const ReportData) {
 					// Finish
 					state = DONE;
 					break;
-				} else if (m_dayToSkip[i] > 0) {
+				} else if (m_dayToSkip > 0) {
 					// Pass day
 					commandIndex = 9;
 					m_endIndex = 34;
 					
-					if (m_day == 31)
-					{
+					if (m_day == 31) {
 						// Rolling back, no day skipped
 						m_day = 1;
-					}
-					else
-					{
+					} else {
 						// Roll foward by a day
 						m_day++;
-						m_dayToSkip[i]--;
+						m_dayToSkip--;
 					}
-				} else { //if (m_dayToSkip[i] == 0)
-					if (i < sizeof(m_dayToSkip)/sizeof(unsigned int) - 1) {
-						// More days in the array, move to the next
-						i++;
-						break;
-					} else {
-						// Go back to game
-						commandIndex = 35;
-						m_endIndex = 38;
-					}
+				} else {
+					// Go back to game
+					commandIndex = 35;
+					m_endIndex = 38;
 				}
 			}
 		
