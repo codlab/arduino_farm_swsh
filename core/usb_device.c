@@ -128,8 +128,21 @@ void HID_Task(void) {
 		// We'll create an empty report.
 		USB_JoystickReport_Input_t JoystickInputData;
 		PrepareReport(&JoystickInputData);
-		// We'll then populate this report with what we want to send to the host.
-		GetNextReport(&JoystickInputData);
+
+		// Repeat ECHOES times the last report
+		if (echoes > 0) {
+			memcpy(&JoystickInputData, &last_report, sizeof(USB_JoystickReport_Input_t));
+			echoes--;
+		} else {
+			// or get the new report
+			// We'll then populate this report with what we want to send to the host.
+			GetNextReport(&JoystickInputData);
+
+			// Prepare to echo this report
+			memcpy(&last_report, &JoystickInputData, sizeof(USB_JoystickReport_Input_t));
+			echoes = ECHOES;
+		}
+
 		// Once populated, we can output this data to the host. We do this by first writing the data to the control stream.
 		while(Endpoint_Write_Stream_LE(&JoystickInputData, sizeof(JoystickInputData), NULL) != ENDPOINT_RWSTREAM_NoError);
 		// We then send an IN packet on this endpoint.

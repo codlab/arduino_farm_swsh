@@ -1,6 +1,7 @@
 {
     "files.associations": {
         "action.h": "c",
-        "usb_device.h": "c"
+        "usb_device.h": "c",
+        "joystick.h": "c"
     }
 }
