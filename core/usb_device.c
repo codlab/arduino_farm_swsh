@@ -89,8 +89,6 @@ void EVENT_USB_Device_ControlRequest(void) {
 
 // Prepare the next report for the host.
 void PrepareReport(USB_JoystickReport_Input_t* const ReportData) {
-	// Prepare an empty report
-	Preparereport(ReportData);
 	memset(ReportData, 0, sizeof(USB_JoystickReport_Input_t));
 	ReportData->LX = STICK_CENTER;
 	ReportData->LY = STICK_CENTER;
