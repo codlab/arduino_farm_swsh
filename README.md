@@ -27,7 +27,16 @@ This project implements a modified version of HORI's Pokken Tournament Pro Pad U
 
 # Instructions
 
+## Configuration
 Please refer to the .c file itself for instructions.
+
+## Compiling
+
+- compile every bots
+```make release```
+
+- cleaning
+```make clean```
 
 # Videos
 
