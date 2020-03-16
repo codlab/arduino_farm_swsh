@@ -71,17 +71,18 @@ Video Instruction: https://youtu.be/OZ0yrr061-E?t=80
 
 # Change Log:
 
-v1.0.0: US and EU Day Skipper initial release
-v1.1.0: Day Skipper optimization, added Day Skipper for Japanese region, Auto Loto initial release
-v2.0.0: No Limit Day Skipper, Auto Fossil, Auto 3 Day Skipper, Turbo A, Watt Farmer initial release
-v2.0.1: Use array in No Limit Day Skipper, now can actually go infinite
-v2.0.2: Changed HOME button press before SR in Auto Fossil and Auto 3 Day Skipper to 40
-v2.0.3: Watt Farmer saves every 100,000W (50 skips)
-v2.0.4: Added 10 to Auto 3 Day Skipper, Auto Loto, Watt Farmer when going HOME screen or back to game
-v2.1.0: Berry Farmer initial release, added optional day to skip in Auto Loto
-v2.2.0: Watt Farmer, Berry farmer now speeds up with syncing time
-v3.0.0: Auto Host, Box Release initial release, increase HOME button after first time connect board from 50 to 60
-v3.1.0: Added random link code for Auto Host
+- `v3.1.0` Added random link code for Auto Host
+- `v3.0.0` Auto Host, Box Release initial release, increase HOME button after first time connect board from 50 to 60
+- `v2.2.0` Watt Farmer, Berry farmer now speeds up with syncing time
+- `v2.1.0` Berry Farmer initial release, added optional day to skip in Auto Loto
+- `v2.0.4` Added 10 to Auto 3 Day Skipper, Auto Loto, Watt Farmer when going HOME screen or back to game
+- `v2.0.3` Watt Farmer saves every 100,000W (50 skips)
+- `v2.0.2` Changed HOME button press before SR in Auto Fossil and Auto 3 Day Skipper to 40
+- `v2.0.1` Use array in No Limit Day Skipper, now can actually go infinite
+- `v2.0.0` No Limit Day Skipper, Auto Fossil, Auto 3 Day Skipper, Turbo A, Watt Farmer initial release
+- `v1.1.0` Day Skipper optimization, added Day Skipper for Japanese region, Auto Loto initial release
+- `v1.0.0` US and EU Day Skipper initial release
+
 
 # Credits
 
