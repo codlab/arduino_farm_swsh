@@ -264,15 +264,16 @@ clean: mostlyclean
 	rm -f $(TARGET).elf $(TARGET).hex $(TARGET).bin $(TARGET).eep $(TARGET).map $(TARGET).lss $(TARGET).sym lib$(TARGET).a
 
 # Performs a complete build of the user application and prints size information afterwards
-all: build_begin elf hex bin lss sym size build_end
+#all: build_begin elf hex bin lss sym size build_end
+all: build_begin elf hex size build_end
 
 # Helper targets, to build a specific type of output file without having to know the project target name
 lib: lib$(TARGET).a
 elf: $(TARGET).elf
-hex: $(TARGET).hex $(TARGET).eep
-bin: $(TARGET).bin
-lss: $(TARGET).lss
-sym: $(TARGET).sym
+hex: $(TARGET).hex #$(TARGET).eep
+#bin: $(TARGET).bin
+#lss: $(TARGET).lss
+#sym: $(TARGET).sym
 
 # Default target to *create* the user application's specified source files; if this rule is executed by
 # make, the input source file doesn't exist and an error needs to be presented to the user
@@ -325,19 +326,19 @@ $(OBJDIR)/%.o: %.S $(MAKEFILE_LIST)
 	$(CROSS)-objcopy -O ihex -R .eeprom -R .fuse -R .lock -R .signature $< $@
 
 # Extracts out the loadable FLASH memory data from the project ELF file, and creates an Binary format file of it
-%.bin: %.elf
-	@echo $(MSG_OBJCPY_CMD) Extracting BIN file data from \"$<\"
-	$(CROSS)-objcopy -O binary -R .eeprom -R .fuse -R .lock -R .signature $< $@
+#%.bin: %.elf
+#	@echo $(MSG_OBJCPY_CMD) Extracting BIN file data from \"$<\"
+#	$(CROSS)-objcopy -O binary -R .eeprom -R .fuse -R .lock -R .signature $< $@
 
 # Extracts out the loadable EEPROM memory data from the project ELF file, and creates an Intel HEX format file of it
-%.eep: %.elf
-	@echo $(MSG_OBJCPY_CMD) Extracting EEP file data from \"$<\"
-	$(CROSS)-objcopy -O ihex -j .eeprom --set-section-flags=.eeprom="alloc,load" --change-section-lma .eeprom=0 --no-change-warnings $< $@ || exit 0
+#%.eep: %.elf
+#	@echo $(MSG_OBJCPY_CMD) Extracting EEP file data from \"$<\"
+#	$(CROSS)-objcopy -O ihex -j .eeprom --set-section-flags=.eeprom="alloc,load" --change-section-lma .eeprom=0 --no-change-warnings $< $@ || exit 0
 
 # Creates an assembly listing file from an input project ELF file, containing interleaved assembly and source data
-%.lss: %.elf
-	@echo $(MSG_OBJDMP_CMD) Extracting LSS file data from \"$<\"
-	$(CROSS)-objdump -h -d -S -z $< > $@
+#%.lss: %.elf
+#	@echo $(MSG_OBJDMP_CMD) Extracting LSS file data from \"$<\"
+#	$(CROSS)-objdump -h -d -S -z $< > $@
 
 # Creates a symbol file listing the loadable and discarded symbols from an input project ELF file
 %.sym: %.elf

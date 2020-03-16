@@ -54,3 +54,38 @@ include $(LUFA_PATH)/Build/lufa_dfu.mk
 include $(LUFA_PATH)/Build/lufa_hid.mk
 include $(LUFA_PATH)/Build/lufa_avrdude.mk
 include $(LUFA_PATH)/Build/lufa_atprogram.mk
+
+
+DaySkipper_US:
+	$(MAKE) TARGET=DaySkipper_US all
+DaySkipper_EU:
+	$(MAKE) TARGET=DaySkipper_EU all
+DaySkipper_JP:
+	$(MAKE) TARGET=DaySkipper_JP all
+DaySkipper_US_NoLimit:
+	$(MAKE) TARGET=DaySkipper_US_NoLimit all
+DaySkipper_EU_NoLimit:
+	$(MAKE) TARGET=DaySkipper_EU_NoLimit all
+DaySkipper_JP_NoLimit:
+	$(MAKE) TARGET=DaySkipper_JP_NoLimit all
+Auto3DaySkipper:
+	$(MAKE) TARGET=Auto3DaySkipper all
+AutoLoto:
+	$(MAKE) TARGET=AutoLoto all
+AutoFossil:
+	$(MAKE) TARGET=AutoFossil all
+AutoHost:
+	$(MAKE) TARGET=AutoHost all
+TurboA:
+	$(MAKE) TARGET=TurboA all
+WattFarmer:
+	$(MAKE) TARGET=WattFarmer all
+BerryFarmer:
+	$(MAKE) TARGET=BerryFarmer all
+BoxRelease:
+	$(MAKE) TARGET=BoxRelease all
+
+release: DaySkipper_US DaySkipper_EU DaySkipper_JP DaySkipper_US_NoLimit DaySkipper_EU_NoLimit DaySkipper_JP_NoLimit Auto3DaySkipper AutoLoto AutoFossil AutoHost TurboA WattFarmer BerryFarmer BoxRelease
+
+free: clean
+	rm -f \*.elf \*.hex \*.bin \*.eep \*.map \*.lss \*.sym lib\*.a \*.d \*.o
