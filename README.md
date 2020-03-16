@@ -36,7 +36,22 @@ Please refer to the .c file itself for instructions.
 ```make release```
 
 - cleaning
-```make clean```
+```make free```
+
+## Incoming
+
+New features to come soon :
+
+- cleaned architecture
+- GNU Make's options
+
+# Prerequisites
+
+## Software
+
+- [WinAVR](https://sourceforge.net/projects/winavr/files/)
+- [Flip](https://www.microchip.com/developmenttools/ProductDetails/flip)
+- [Teensy loader (optional)](https://www.pjrc.com/teensy/loader_win10.html)
 
 # Videos
 
