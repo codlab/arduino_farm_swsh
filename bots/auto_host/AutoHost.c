@@ -35,6 +35,7 @@ these buttons for our use.
 
 // -> Use optional link code or not? (true/false)
 bool m_useLinkCode = true;
+bool m_useRandomCode = true;
 
 // -> Set optional link code here (if m_useLinkCode = true, m_useRandomCode = false)
 // -> e.g 4501: m_linkCode[] = {4,5,0,1};

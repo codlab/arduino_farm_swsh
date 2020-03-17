@@ -20,7 +20,6 @@ typedef struct Context {
 } Context;
 
 
-extern bool m_useRandomCode;
 extern uint8_t m_seed;
 extern State_t state;
 
