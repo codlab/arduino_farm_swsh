@@ -9,11 +9,14 @@
 // -> MAKE SURE the end date is within range, if your seed is over 22280 skips, enter the game
 // to register the time skip, set a new start date, update this program and start again!
 // -> It takes ~43 seconds per 30 days
+#include "../../core/calendar_skip.h"
 
-int m_day = 28;
-int m_month = 11;
-int m_year = 2020;
-int m_dayToSkip = 50;
+CalendarSkip calendarUS = {
+    .day = 28,
+    .month = 11,
+    .year = 2020,
+    .dayToSkip = 50
+};
 /*------------------------------------------*/
 
 #endif

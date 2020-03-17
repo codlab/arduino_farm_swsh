@@ -82,7 +82,7 @@ static const Command sequences[] = {
 	{NOTHING, 20}
 };
 
-int m_day = 1; // [1,31]
+int us_day = 1; // [1,31]
 
 void daySkipperUSNoLimitInit(Context* context) {
 	context->commandIndex = 0;
@@ -101,18 +101,18 @@ Command* daySkipperUSNoLimit(Context* context, USB_JoystickReport_Input_t* const
 					// Finish
 					context->state = DONE;
 					break;
-				} else if (m_dayToSkip > 0) {
+				} else if (us_dayToSkip > 0) {
 					// Pass day
 					context->commandIndex = 9;
 					context->endIndex = 34;
 					
-					if (m_day == 31) {
+					if (us_day == 31) {
 						// Rolling back, no day skipped
-						m_day = 1;
+						us_day = 1;
 					} else {
 						// Roll foward by a day
-						m_day++;
-						m_dayToSkip--;
+						us_day++;
+						us_dayToSkip--;
 					}
 				} else {
 					// Go back to game

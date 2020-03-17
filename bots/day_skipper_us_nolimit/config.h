@@ -8,7 +8,7 @@
 // -> It takes ~43 seconds per 30 days
 
 // -> Set number of days you want to skip,can't be greater than 4294967295
-unsigned long m_dayToSkip = 172;
+unsigned long us_dayToSkip = 172;
 /*------------------------------------------*/
 
 #endif

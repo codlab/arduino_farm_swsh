@@ -34,7 +34,7 @@ MCU          = atmega16u2
 ARCH         = AVR8
 F_CPU        = 16000000
 
-DIRECTORIES := $(wildcard ./bots/*/.)
+ALL_DIRS := $(wildcard ./bots/*/.)
 
 all: CALL=all
 
@@ -44,6 +44,6 @@ $(ALL_DIRS):
 	@echo $@
 	$(MAKE) -C $@ $(CALL)
 
-all clean: $(DIRECTORIES)
+all clean: $(ALL_DIRS)
 
-.PHONY: all $(DIRECTORIES) clean
+.PHONY: all $(ALL_DIRS) clean

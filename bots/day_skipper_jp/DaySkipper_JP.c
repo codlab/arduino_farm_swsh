@@ -175,49 +175,49 @@ Command* daySkipperJP(Context* context, USB_JoystickReport_Input_t* const Report
 		case PROCESS:
 			// Get the next command sequence (new start and end)
 			if (context->commandIndex == -1) {
-				if (m_dayToSkip > 0) {
+				if (calendarJP.dayToSkip > 0) {
 					// Day = 0, Month = 1, Year = 2
 					int passDayMonthYear = 0;
 					
-					if (m_month == 2) {
-						bool isLeapYear = (m_year % 4 == 0);
-						if (isLeapYear && m_day == 29) {
+					if (calendarJP.month == 2) {
+						bool isLeapYear = (calendarJP.year % 4 == 0);
+						if (isLeapYear && calendarJP.day == 29) {
 							passDayMonthYear = 1;
-						} else if (!isLeapYear && m_day == 28) {
+						} else if (!isLeapYear && calendarJP.day == 28) {
 							passDayMonthYear = 1;
 						}
-					} else if (m_month == 12 && m_day == 31) {
+					} else if (calendarJP.month == 12 && calendarJP.day == 31) {
 						passDayMonthYear = 2;
-					} else if (m_month == 4 || m_month == 6 || m_month == 9 || m_month == 11) {
-						if (m_day == 30) {
+					} else if (calendarJP.month == 4 || calendarJP.month == 6 || calendarJP.month == 9 || calendarJP.month == 11) {
+						if (calendarJP.day == 30) {
 							passDayMonthYear = 1;
 						}
 					} else { // if (m_month == 1 || m_month == 3 || m_month == 5 || m_month == 7 || m_month == 8 || m_month == 10)
-						if (m_day == 31) {
+						if (calendarJP.day == 31) {
 							passDayMonthYear = 1;
 						}
 					}
 					
 					if (passDayMonthYear == 0) {
 						// Pass day
-						m_day++;
+						calendarJP.day++;
 						context->commandIndex = 9;
 						context->endIndex = 26;
 					} else if (passDayMonthYear == 1) {
 						// Pass month
-						m_day = 1;
-						m_month++;
+						calendarJP.day = 1;
+						calendarJP.month++;
 						context->commandIndex = 27;
 						context->endIndex = 50;
 					} else {
 						// Pass year
-						m_day = 1;
-						m_month = 1;
-						m_year++;
+						calendarJP.day = 1;
+						calendarJP.month = 1;
+						calendarJP.year++;
 						context->commandIndex = 51;
 						context->endIndex = 80;
 					}
-				} else if (m_dayToSkip == 0) {
+				} else if (calendarJP.dayToSkip == 0) {
 					// Go back to game
 					context->commandIndex = 81;
 					context->endIndex = 84;
@@ -227,7 +227,7 @@ Command* daySkipperJP(Context* context, USB_JoystickReport_Input_t* const Report
 					break;
 				}
 				
-				m_dayToSkip--;
+				calendarJP.dayToSkip--;
 			}
 
 			return &(sequences[context->commandIndex]);

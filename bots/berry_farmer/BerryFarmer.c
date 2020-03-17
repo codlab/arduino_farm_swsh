@@ -137,8 +137,8 @@ static const Command sequences[] = {
 };
 
 // Saving
-int m_saveCount = 0;
-int m_saveAt = 50;
+int berry_saveCount = 0;
+int berry_saveAt = 50;
 
 void berryFarmerInit(Context* context) {
 	context->commandIndex = 0;
@@ -153,16 +153,16 @@ Command* berryFarmer(Context* context, USB_JoystickReport_Input_t* const ReportD
 		case PROCESS:
 			// Get the next command sequence (new start and end)
 			if (context->commandIndex == -1) {
-				if (m_saveCount == m_saveAt) {
+				if (berry_saveCount == berry_saveAt) {
 					context->commandIndex = 75;
 					context->endIndex = 80;
 					
-					m_saveCount = 0;
+					berry_saveCount = 0;
 				} else {
 					context->commandIndex = 9;
 					context->endIndex = 74;
 					
-					m_saveCount++;
+					berry_saveCount++;
 				}
 			}
 

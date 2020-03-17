@@ -106,7 +106,7 @@ static const Command sequences[] = {
 	{NOTHING, 1},
 };
 
-uint8_t m_sequence = 0;
+uint8_t host_sequence = 0;
 
 void autoHostInit(Context* context) {
 	context->commandIndex = 0;
@@ -118,34 +118,34 @@ void autoHostInit(Context* context) {
 Command* autoHost(Context* context, USB_JoystickReport_Input_t* const ReportData) {
 	// Get the next command sequence (new start and end)
 	if (context->commandIndex == -1) {
-		m_sequence++;
+		host_sequence++;
 		
-		if (m_sequence == 1) {
+		if (host_sequence == 1) {
 			// Connect internet and enter raid
 			context->commandIndex = 6;	// 6 = go online, 11 = local only
 			context->endIndex = 12;
-		} else if (m_sequence == 2) {					
+		} else if (host_sequence == 2) {					
 			if (!m_useLinkCode) {
 				// Skip to start raid, invite, SR
 				context->commandIndex = 16;
 				context->endIndex = 34;
 				
-				m_sequence = 0;
+				host_sequence = 0;
 			} else {
 				// Prepare link code, goto 0
 				context->commandIndex = 35;
 				context->endIndex = 41;
 			}
-		} else if (m_sequence == 14) {
+		} else if (host_sequence == 14) {
 			// Finish setting link code, invite others, SR
 			context->commandIndex = 13;
 			context->endIndex = 34;
 			
-			m_sequence = 0;
-		} else { // if (m_sequence <= 13)
+			host_sequence = 0;
+		} else { // if (host_sequence <= 13)
 			// Entering link code
-			if (m_sequence % 3 == 0) { // 3,6,9,12
-				uint8_t number = m_useRandomCode ? (rand() % 10) : m_linkCode[m_sequence / 3 - 1];
+			if (host_sequence % 3 == 0) { // 3,6,9,12
+				uint8_t number = m_useRandomCode ? (rand() % 10) : m_linkCode[host_sequence / 3 - 1];
 				
 				if (number == 0) {					
 					// Just press A for 0
@@ -153,7 +153,7 @@ Command* autoHost(Context* context, USB_JoystickReport_Input_t* const ReportData
 					context->endIndex = 43;
 					
 					// Skip going down
-					m_sequence += 2;
+					host_sequence += 2;
 				} else if (number % 3 == 0) { // 3,6,9
 					context->commandIndex = 52 + (number / 3 - 1) * 2;
 					context->endIndex = 59;
@@ -161,7 +161,7 @@ Command* autoHost(Context* context, USB_JoystickReport_Input_t* const ReportData
 					context->commandIndex = 44 + (number / 3) * 2;
 					context->endIndex = (number % 3 == 1) ? 51 : 49;
 				}
-			} else if (m_sequence % 3 == 1) { // 4,7,10,13
+			} else if (host_sequence % 3 == 1) { // 4,7,10,13
 				// Press A
 				context->commandIndex = 42;
 				context->endIndex = 43;
