@@ -35,6 +35,11 @@ these buttons for our use.
 
 // -> Use optional link code or not? (true/false)
 bool m_useLinkCode = true;
+
+// -> Use random code (if m_useLinkCode = true)
+// -> m_seed range is 0 to 255, same seed will always generate the same link code sequence
+// -> As long as the board is not unplugged, the sequence will go random forever
+// -> If the board is unplugged, the squence will start at the beginning again
 bool m_useRandomCode = true;
 
 // -> Set optional link code here (if m_useLinkCode = true, m_useRandomCode = false)

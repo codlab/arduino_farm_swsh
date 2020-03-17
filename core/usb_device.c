@@ -2,11 +2,7 @@
 #include "action.h"
 #include "usb_device.h"
 
-// -> Use random code (if m_useLinkCode = true)
-// -> m_seed range is 0 to 255, same seed will always generate the same link code sequence
-// -> As long as the board is not unplugged, the sequence will go random forever
-// -> If the board is unplugged, the squence will start at the beginning again
-bool m_useRandomCode = false;
+
 uint8_t m_seed = 169;
 
 Context context = {
