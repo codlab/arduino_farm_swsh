@@ -34,16 +34,16 @@ MCU          = atmega16u2
 ARCH         = AVR8
 F_CPU        = 16000000
 
-DIRECTORIES = $(wildcard ./bots/*/)
+DIRECTORIES := $(wildcard ./bots/*/.)
 
-all:
-	@for dir in $(DIRECTORIES); do \
-            echo "processing folder $(DIRECTORIES)"; \
-			$(MAKE) -C $$dir MCU=$(MCU) ARCH=$(ARCH) F_CPU=$(F_CPU); \
-	done;
+all: CALL=all
 
-clean:
-	@for dir in $(DIRECTORIES); do \
-            echo "processing folder $(DIRECTORIES)"; \
-			$(MAKE) -C $$dir clean ; \
-	done;
+clean: CALL=clean
+
+$(ALL_DIRS):
+	@echo $@
+	$(MAKE) -C $@ $(CALL)
+
+all clean: $(DIRECTORIES)
+
+.PHONY: all $(DIRECTORIES) clean
