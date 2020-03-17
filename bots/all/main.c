@@ -18,6 +18,17 @@ exception of Home and Capture. Descriptor modification allows us to unlock
 these buttons for our use.
 */
 
+/**
+ * NOTE : THIS IS A WIP TO SHOW HOW AND IN WHICH CONDITION IT CAN BE POSSIBLE
+ * 
+ * - it's validated that the memory can hold the program
+ * 
+ * Future steps :
+ * 
+ * - add a switch method which will check for the Serial information about the configuration to load if any
+ * - in such case, reset data
+ */
+
 #include "../auto_3day_skipper/Auto3DaySkipper.h"
 #include "../auto_fossil/AutoFossil.h"
 #include "../auto_host/AutoHost.h"
