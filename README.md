@@ -28,6 +28,7 @@ This project implements a modified version of HORI's Pokken Tournament Pro Pad U
 # Instructions
 
 ## Configuration
+
 Please refer to the TARGET.c file itself for instructions.
 
 ## Compiling
@@ -49,8 +50,10 @@ New features coming soon :
 ## Software
 
 - [WinAVR](https://sourceforge.net/projects/winavr/files/)
-- [Flip](https://www.microchip.com/developmenttools/ProductDetails/flip)
+- [Flip (optional)](https://www.microchip.com/developmenttools/ProductDetails/flip)
 - [Teensy loader (optional)](https://www.pjrc.com/teensy/loader_win10.html)
+
+WinAVR is mandatory to manage the compilation and hex creation. The loaders depends on the board used to inject the USB's spoofer.
 
 # Videos
 
