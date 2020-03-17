@@ -18,7 +18,7 @@ exception of Home and Capture. Descriptor modification allows us to unlock
 these buttons for our use.
 */
 
-#define USE_SRAND 1
+#include <stdlib.h>
 #include "AutoHost.h"
 #include "config.h"
 
@@ -107,8 +107,14 @@ static const Command sequences[] = {
 };
 
 uint8_t host_sequence = 0;
+bool _autohost_init_done = false;
 
 void autoHostInit(Context* context) {
+	if(!_autohost_init_done) {
+		srand(autohost_initial_rand_seed);
+		_autohost_init_done = true;
+	}
+
 	context->commandIndex = 0;
 	context->endIndex = 5;
 	context->state = PROCESS;

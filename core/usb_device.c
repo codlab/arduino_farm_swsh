@@ -2,9 +2,6 @@
 #include "action.h"
 #include "usb_device.h"
 
-
-uint8_t m_seed = 169;
-
 Context context = {
 	.state = PROCESS,
 	.commandIndex = 0,
@@ -16,9 +13,6 @@ int echoes = 0;
 USB_JoystickReport_Input_t last_report;
 
 int main(void) {
-#ifdef USE_SRAND
-	srand(m_seed);
-#endif
 	// We'll start by performing hardware and peripheral setup.
 	SetupHardware();
 	// We'll then enable global interrupts for our use.

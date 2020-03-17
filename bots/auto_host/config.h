@@ -1,6 +1,8 @@
 #ifndef AUTO_HOST_INCLUDED
 #define AUTO_HOST_INCLUDED
 
+#include "../../core/usb_device.h"
+
 /*------------------------------------------*/
 // INSTRUCTION
 // -> You MUST stand in front of an active den (with watts already collected)
@@ -21,6 +23,7 @@ bool m_useLinkCode = true;
 // -> As long as the board is not unplugged, the sequence will go random forever
 // -> If the board is unplugged, the squence will start at the beginning again
 bool m_useRandomCode = true;
+uint8_t autohost_initial_rand_seed = 169;
 
 // -> Set optional link code here (if m_useLinkCode = true, m_useRandomCode = false)
 // -> e.g 4501: m_linkCode[] = {4,5,0,1};
