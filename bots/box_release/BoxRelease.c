@@ -106,44 +106,46 @@ static const Command sequences[] = {
 	{NOTHING, 1},
 };
 
-// start and end index of "Setup"
-int commandIndex = 0;
-int m_endIndex = 8;
-
 int m_column = 1;
 int m_row = 1;
 int m_box = 1;
 bool m_released = false;
 
+void boxReleaseInit(Context* context) {
+	context->commandIndex = 0;
+	context->endIndex = 8;
+	context->state = PROCESS;
+}
+
 // Prepare the next report for the host.
-void boxRelease(USB_JoystickReport_Input_t* const ReportData) {
+Command* boxRelease(Context* context, USB_JoystickReport_Input_t* const ReportData) {
 	// States and moves management
-	switch (state) {
+	switch (context->state) {
 		case PROCESS:
 			// Get the next command sequence (new start and end)
-			if (commandIndex == -1) {
-				if (m_endIndex == 6) {
+			if (context->commandIndex == -1) {
+				if (context->endIndex == 6) {
 					// Complete
-					state = DONE;
+					context->state = DONE;
 					break;
 				} else if (m_column > 6) {
 					if (m_row == 5) {
 						m_box++;
 						if (m_box > m_boxCount) {
 							// Press B to leave
-							commandIndex = 5;
-							m_endIndex = 6;
+							context->commandIndex = 5;
+							context->endIndex = 6;
 						} else {
 							// Next box
-							commandIndex = 23;
-							m_endIndex = 42;
+							context->commandIndex = 23;
+							context->endIndex = 42;
 							
 							m_row = 1;
 						}
 					} else {
 						// Next row
-						commandIndex = 45;
-						m_endIndex = 56;
+						context->commandIndex = 45;
+						context->endIndex = 56;
 						
 						m_row++;
 					}
@@ -153,27 +155,24 @@ void boxRelease(USB_JoystickReport_Input_t* const ReportData) {
 				} else {
 					if (!m_released) {
 						// Release pokemon
-						commandIndex = 9;
-						m_endIndex = 22;
+						context->commandIndex = 9;
+						context->endIndex = 22;
 						
 						m_column++;
 						m_released = true;
 					} else {
 						// Next pokemon
-						commandIndex = 43;
-						m_endIndex = 44;
+						context->commandIndex = 43;
+						context->endIndex = 44;
 						
 						m_released = false;
 					}
 				}
 			}
-		
-			report_action(ReportData, &(sequences[commandIndex]));
 
-			goto_next(&durationCount, &commandIndex, m_endIndex, &(sequences[commandIndex]));
-
-			break;
-
-		case DONE: return;
+			return &(sequences[context->commandIndex]);
+		case DONE:
+		default:
 	}
+	return nullptr;
 }

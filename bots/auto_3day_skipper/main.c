@@ -21,6 +21,10 @@ these buttons for our use.
 #include "Auto3DaySkipper.h"
 
 // Prepare the next report for the host.
-void GetNextReport(USB_JoystickReport_Input_t* const ReportData) {
-	auto3DaySkipper(ReportData);
+Command* GetNextReport(Context* context, USB_JoystickReport_Input_t* const ReportData) {
+	return auto3DaySkipper(context, ReportData);
+}
+
+void InitReport(Context* context) {
+	auto3DaySkipperInit(context);
 }

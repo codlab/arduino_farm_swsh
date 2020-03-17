@@ -196,103 +196,77 @@ static const Command sequences[] = {
 	{NOTHING, 20}
 };
 
-// start and end index of "Setup"
-int commandIndex = 0;
-int m_endIndex = 8;
+void daySkipperUSInit(Context* context) {
+	context->commandIndex = 0;
+	context->endIndex = 8;
+	context->state = PROCESS;
+}
 
 // Prepare the next report for the host.
-void daySkipperUS(USB_JoystickReport_Input_t* const ReportData) {
+Command* daySkipperUS(Context* context, USB_JoystickReport_Input_t* const ReportData) {
 	// States and moves management
-	switch (state)
-	{
+	switch (context->state) {
 		case PROCESS:
 			// Get the next command sequence (new start and end)
-			if (commandIndex == -1)
-			{
-				if (m_dayToSkip > 0)
-				{
+			if (context->commandIndex == -1) {
+				if (m_dayToSkip > 0) {
 					// Day = 0, Month = 1, Year = 2
 					int passDayMonthYear = 0;
 					
-					if (m_month == 2)
-					{
+					if (m_month == 2) {
 						bool isLeapYear = (m_year % 4 == 0);
-						if (isLeapYear && m_day == 29)
-						{
+						if (isLeapYear && m_day == 29) {
+							passDayMonthYear = 1;
+						} else if (!isLeapYear && m_day == 28) {
 							passDayMonthYear = 1;
 						}
-						else if (!isLeapYear && m_day == 28)
-						{
-							passDayMonthYear = 1;
-						}
-					}
-					else if (m_month == 12 && m_day == 31)
-					{
+					} else if (m_month == 12 && m_day == 31) {
 						passDayMonthYear = 2;
-					}
-					else if (m_month == 4 || m_month == 6 || m_month == 9 || m_month == 11)
-					{
-						if (m_day == 30)
-						{
+					} else if (m_month == 4 || m_month == 6 || m_month == 9 || m_month == 11) {
+						if (m_day == 30) {
 							passDayMonthYear = 1;
 						}
-					}
-					else //if (m_month == 1 || m_month == 3 || m_month == 5 || m_month == 7 || m_month == 8 || m_month == 10)
-					{
-						if (m_day == 31)
-						{
+					} else { //if (m_month == 1 || m_month == 3 || m_month == 5 || m_month == 7 || m_month == 8 || m_month == 10)
+						if (m_day == 31) {
 							passDayMonthYear = 1;
 						}
 					}
 					
-					if (passDayMonthYear == 0)
-					{
+					if (passDayMonthYear == 0) {
 						// Pass day
 						m_day++;
-						commandIndex = 9;
-						m_endIndex = 34;
-					}
-					else if (passDayMonthYear == 1)
-					{
+						context->commandIndex = 9;
+						context->endIndex = 34;
+					} else if (passDayMonthYear == 1) {
 						// Pass month
 						m_day = 1;
 						m_month++;
-						commandIndex = 35;
-						m_endIndex = 66;
-					}
-					else
-					{
+						context->commandIndex = 35;
+						context->endIndex = 66;
+					} else {
 						// Pass year
 						m_day = 1;
 						m_month = 1;
 						m_year++;
-						commandIndex = 67;
-						m_endIndex = 100;
+						context->commandIndex = 67;
+						context->endIndex = 100;
 					}
-				}
-				else if (m_dayToSkip == 0)
-				{
+				} else if (m_dayToSkip == 0) {
 					// Go back to game
-					commandIndex = 101;
-					m_endIndex = 104;
-				}
-				else
-				{
+					context->commandIndex = 101;
+					context->endIndex = 104;
+				} else {
 					// Finish
-					state = DONE;
+					context->state = DONE;
 					break;
 				}
 				
 				m_dayToSkip--;
 			}
-		
-			report_action(ReportData, &(sequences[commandIndex]));
-			durationCount++;
 
-			goto_next(&durationCount, &commandIndex, m_endIndex, &(sequences[commandIndex]));
-
-			break;
-
-		case DONE: return;
+			return &(sequences[context->commandIndex]);
+		case DONE:
+		default:
 	}
+	return nullptr;
 }

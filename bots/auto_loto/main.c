@@ -21,6 +21,10 @@ these buttons for our use.
 #include "AutoLoto.h"
 
 // Prepare the next report for the host.
-void GetNextReport(USB_JoystickReport_Input_t* const ReportData) {
-	autoLoto(ReportData);
+Command* GetNextReport(Context* context, USB_JoystickReport_Input_t* const ReportData) {
+	return autoLoto(context, ReportData);
+}
+
+void InitReport(Context* context) {
+	autoLotoInit(context);
 }

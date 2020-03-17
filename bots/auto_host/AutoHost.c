@@ -126,37 +126,40 @@ static const Command sequences[] = {
 	{NOTHING, 1},
 };
 
-// start and end index of "Setup"
-int8_t commandIndex = 0;
-int8_t m_endIndex = 5;
 uint8_t m_sequence = 0;
 
+void autoHostInit(Context* context) {
+	context->commandIndex = 0;
+	context->endIndex = 5;
+	context->state = PROCESS;
+}
+
 // Prepare the next report for the host.
-void autoHost(USB_JoystickReport_Input_t* const ReportData) {
+Command* autoHost(Context* context, USB_JoystickReport_Input_t* const ReportData) {
 	// Get the next command sequence (new start and end)
-	if (commandIndex == -1) {
+	if (context->commandIndex == -1) {
 		m_sequence++;
 		
 		if (m_sequence == 1) {
 			// Connect internet and enter raid
-			commandIndex = 6;	// 6 = go online, 11 = local only
-			m_endIndex = 12;
+			context->commandIndex = 6;	// 6 = go online, 11 = local only
+			context->endIndex = 12;
 		} else if (m_sequence == 2) {					
 			if (!m_useLinkCode) {
 				// Skip to start raid, invite, SR
-				commandIndex = 16;
-				m_endIndex = 34;
+				context->commandIndex = 16;
+				context->endIndex = 34;
 				
 				m_sequence = 0;
 			} else {
 				// Prepare link code, goto 0
-				commandIndex = 35;
-				m_endIndex = 41;
+				context->commandIndex = 35;
+				context->endIndex = 41;
 			}
 		} else if (m_sequence == 14) {
 			// Finish setting link code, invite others, SR
-			commandIndex = 13;
-			m_endIndex = 34;
+			context->commandIndex = 13;
+			context->endIndex = 34;
 			
 			m_sequence = 0;
 		} else { // if (m_sequence <= 13)
@@ -168,31 +171,29 @@ void autoHost(USB_JoystickReport_Input_t* const ReportData) {
 					return;
 					
 					// Just press A for 0
-					commandIndex = 42;
-					m_endIndex = 43;
+					context->commandIndex = 42;
+					context->endIndex = 43;
 					
 					// Skip going down
 					m_sequence += 2;
 				} else if (number % 3 == 0) { // 3,6,9
-					commandIndex = 52 + (number / 3 - 1) * 2;
-					m_endIndex = 59;
+					context->commandIndex = 52 + (number / 3 - 1) * 2;
+					context->endIndex = 59;
 				} else { // 1,4,7,2,5,8
-					commandIndex = 44 + (number / 3) * 2;
-					m_endIndex = (number % 3 == 1) ? 51 : 49;
+					context->commandIndex = 44 + (number / 3) * 2;
+					context->endIndex = (number % 3 == 1) ? 51 : 49;
 				}
 			} else if (m_sequence % 3 == 1) { // 4,7,10,13
 				// Press A
-				commandIndex = 42;
-				m_endIndex = 43;
+				context->commandIndex = 42;
+				context->endIndex = 43;
 			} else { // 5,8,11
 				// Reset to 0
-				commandIndex = 36;
-				m_endIndex = 41;
+				context->commandIndex = 36;
+				context->endIndex = 41;
 			}
 		}
 	}
 
-	report_action(ReportData, &(sequences[commandIndex]));
-
-	goto_next(&durationCount, &commandIndex, m_endIndex, &(sequences[commandIndex]));
+	return &(sequences[context->commandIndex]);
 }

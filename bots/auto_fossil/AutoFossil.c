@@ -99,72 +99,68 @@ static const Command sequences[] = {
 	{NOTHING, 460}
 };
 
-// start and end index of "Setup"
-int commandIndex = 0;
-int m_endIndex = 8;
-
 // Cara Liss talk
 int m_talkSequence = 0;
 int m_fossilCount = 0;
 
+void autoFossilInit(Context* context) {
+	context->commandIndex = 0;
+	context->endIndex = 8;
+	context->state = PROCESS;
+}
+
 // Prepare the next report for the host.
-void autoFossil(USB_JoystickReport_Input_t* const ReportData) {
+Command* autoFossil(Context* context, USB_JoystickReport_Input_t* const ReportData) {
 	// States and moves management
-	switch (state)
-	{
+	switch (context->state) {
 		case PROCESS:
 			// Get the next command sequence (new start and end)
-			if (commandIndex == -1) {
+			if (context->commandIndex == -1) {
 				if (m_fossilCount == m_timesBeforeSR) {
 					if (m_autoSoftReset) {
 						// Soft reset
-						commandIndex = 35;
-						m_endIndex = 46;
+						context->commandIndex = 35;
+						context->endIndex = 46;
 						
 						m_fossilCount = 0;
 					} else {
 						if (m_talkSequence == 0) {
 							// Goto HOME and tell player it's finished
-							commandIndex = 35;
-							m_endIndex = 36;
+							context->commandIndex = 35;
+							context->endIndex = 36;
 							
 							m_talkSequence++;
 						} else {
 							// Finish
-							state = DONE;
+							context->state = DONE;
 							break;
 						}
 					}
-				}
-				else
-				{
+				} else {
 					m_talkSequence++;
 					
 					if (m_talkSequence == 1) {
 						// Start talking
-						commandIndex = 9;
-						m_endIndex = 12;
+						context->commandIndex = 9;
+						context->endIndex = 12;
 					} else if (m_talkSequence >= 4) {
 						// Getting fossil
-						commandIndex = 17;
-						m_endIndex = 34;
+						context->commandIndex = 17;
+						context->endIndex = 34;
 						
 						m_talkSequence = 0;
 						m_fossilCount++;
 					} else {
 						bool topSlot = (m_talkSequence == 2) ? m_firstFossilTopSlot : m_secondFossilTopSlot;
-						commandIndex = topSlot ? 15 : 13;
-						m_endIndex = 16;
+						context->commandIndex = topSlot ? 15 : 13;
+						context->endIndex = 16;
 					}
 				}
 			}
-		
-			report_action(ReportData, &(sequences[commandIndex]));
 
-			goto_next(&durationCount, &commandIndex, m_endIndex, &(sequences[commandIndex]));
-
-			break;
-
-		case DONE: return;
+			return &(sequences[context->commandIndex]);
+		case DONE:
+		default:
 	}
+	return nullptr;
 }

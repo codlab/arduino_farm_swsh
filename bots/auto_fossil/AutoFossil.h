@@ -25,6 +25,8 @@ these buttons for our use.
 #include "../../core/usb_device.h"
 
 // Prepare the next report for the host.
-void autoFossil(USB_JoystickReport_Input_t* const ReportData);
+Command* autoFossil(Context* context, USB_JoystickReport_Input_t* const ReportData);
+
+void autoFossilInit(Context* context);
 
 #endif

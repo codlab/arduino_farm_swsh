@@ -124,45 +124,39 @@ static const Command sequences[] = {
 	{NOTHING, 140}
 };
 
-// start and end index of "Setup"
-int commandIndex = 0;
-int m_endIndex = 8;
-
 // Saving
 int m_saveCount = 0;
 int m_saveAt = 50;
 
+void wattFarmerInit(Context* context) {
+	context->commandIndex = 0;
+	context->endIndex = 8;
+	context->state = PROCESS;
+}
+
 // Prepare the next report for the host.
-void wattFarmer(USB_JoystickReport_Input_t* const ReportData) {
+Command* wattFarmer(Context* context, USB_JoystickReport_Input_t* const ReportData) {
 	// States and moves management
-	switch (state)
-	{
+	switch (context->state) {
 		case PROCESS:
 			// Get the next command sequence (new start and end)
-			if (commandIndex == -1)
-			{
-				if (m_saveCount == m_saveAt)
-				{
-					commandIndex = 65;
-					m_endIndex = 70;
+			if (context->commandIndex == -1) {
+				if (m_saveCount == m_saveAt) {
+					context->commandIndex = 65;
+					context->endIndex = 70;
 					
 					m_saveCount = 0;
-				}
-				else
-				{
-					commandIndex = 9;
-					m_endIndex = 64;
+				} else {
+					context->commandIndex = 9;
+					context->endIndex = 64;
 					
 					m_saveCount++;
 				}
 			}
-		
-			report_action(ReportData, &(sequences[commandIndex]));
 
-			goto_next(&durationCount, &commandIndex, m_endIndex, &(sequences[commandIndex]));
-
-			break;
-
-		case DONE: return;
+			return &(sequences[context->commandIndex]);
+		case DONE:
+		default:
 	}
+	return nullptr;
 }

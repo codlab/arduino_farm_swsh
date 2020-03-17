@@ -21,6 +21,10 @@ these buttons for our use.
 #include "WattFarmer.h"
 
 // Prepare the next report for the host.
-void GetNextReport(USB_JoystickReport_Input_t* const ReportData) {
-	wattFarmer(ReportData);
+Command* GetNextReport(Context* context, USB_JoystickReport_Input_t* const ReportData) {
+	return wattFarmer(context, ReportData);
+}
+
+void InitReport(Context* context) {
+	wattFarmerInit(context);
 }

@@ -21,6 +21,10 @@ these buttons for our use.
 #include "DaySkipper_US_NoLimit.h"
 
 // Prepare the next report for the host.
-void GetNextReport(USB_JoystickReport_Input_t* const ReportData) {
-	daySkipperUSNoLimit(ReportData);
+Command* GetNextReport(Context* context, USB_JoystickReport_Input_t* const ReportData) {
+	return daySkipperUSNoLimit(context, ReportData);
+}
+
+void InitReport(Context* context) {
+	daySkipperUSNoLimitInit(context);
 }

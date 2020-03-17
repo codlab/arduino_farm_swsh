@@ -24,6 +24,8 @@ these buttons for our use.
 #include "../../core/action.h"
 #include "../../core/usb_device.h"
 
-void autoHost(USB_JoystickReport_Input_t* const ReportData);
+Command* autoHost(Context* context, USB_JoystickReport_Input_t* const ReportData);
+
+void autoHostInit(Context* context);
 
 #endif

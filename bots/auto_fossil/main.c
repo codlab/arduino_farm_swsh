@@ -21,6 +21,10 @@ these buttons for our use.
 #include "AutoFossil.h"
 
 // Prepare the next report for the host.
-void GetNextReport(USB_JoystickReport_Input_t* const ReportData) {
-	autoFossil(ReportData);
+Command* GetNextReport(Context* context, USB_JoystickReport_Input_t* const ReportData) {
+	return autoFossil(context, ReportData);
+}
+
+void InitReport(Context* context) {
+	autoFossilInit(context);
 }

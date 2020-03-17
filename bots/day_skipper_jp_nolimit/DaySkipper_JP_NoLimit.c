@@ -83,26 +83,29 @@ static const Command sequences[] = {
 	{NOTHING, 20}
 };
 
-// start and end index of "Setup"
-int commandIndex = 0;
-int m_endIndex = 8;
 int m_day = 1; // [1,31]
 
+void daySkipperJPNoLimitInit(Context* context) {
+	context->commandIndex = 0;
+	context->endIndex = 8;
+	context->state = PROCESS;
+}
+
 // Prepare the next report for the host.
-void daySkipperJPNoLimit(USB_JoystickReport_Input_t* const ReportData) {
+Command* daySkipperJPNoLimit(Context* context, USB_JoystickReport_Input_t* const ReportData) {
 	// States and moves management
-	switch (state) {
+	switch (context->state) {
 		case PROCESS:
 			// Get the next command sequence (new start and end)
-			if (commandIndex == -1) {
-				if (m_endIndex == 30) {
+			if (context->commandIndex == -1) {
+				if (context->endIndex == 30) {
 					// Finish
-					state = DONE;
+					context->state = DONE;
 					break;
 				} else if (m_dayToSkip > 0) {
 					// Pass day
-					commandIndex = 9;
-					m_endIndex = 26;
+					context->commandIndex = 9;
+					context->endIndex = 26;
 					
 					if (m_day == 31) {
 						// Rolling back, no day skipped
@@ -114,17 +117,14 @@ void daySkipperJPNoLimit(USB_JoystickReport_Input_t* const ReportData) {
 					}
 				} else {
 					// Go back to game
-					commandIndex = 27;
-					m_endIndex = 30;
+					context->commandIndex = 27;
+					context->endIndex = 30;
 				}
 			}
-		
-			report_action(ReportData, &(sequences[commandIndex]));
 
-			goto_next(&durationCount, &commandIndex, m_endIndex, &(sequences[commandIndex]));
-
-			break;
-
-		case DONE: return;
+			return &(sequences[context->commandIndex]);
+		case DONE:
+		default:
 	}
+	return nullptr;
 }

@@ -21,6 +21,10 @@ these buttons for our use.
 #include "BoxRelease.h"
 
 // Prepare the next report for the host.
-void GetNextReport(USB_JoystickReport_Input_t* const ReportData) {
-	boxRelease(ReportData);
+Command* GetNextReport(Context* context, USB_JoystickReport_Input_t* const ReportData) {
+	return boxRelease(context, ReportData);
+}
+
+void InitReport(Context* context) {
+	boxReleaseInit(context);
 }

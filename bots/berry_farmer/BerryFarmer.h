@@ -24,6 +24,8 @@ these buttons for our use.
 #include "../../core/action.h"
 #include "../../core/usb_device.h"
 
-void berryFarmer(USB_JoystickReport_Input_t* const ReportData);
+Command* berryFarmer(Context* context, USB_JoystickReport_Input_t* const ReportData);
+
+void berryFarmerInit(Context* context);
 
 #endif

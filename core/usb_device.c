@@ -9,13 +9,15 @@
 bool m_useRandomCode = false;
 uint8_t m_seed = 169;
 
-State_t state = PROCESS;
+Context context = {
+	.state = PROCESS,
+	.commandIndex = 0,
+	.endIndex = 0,
+	.durationCount = 0
+};
 
 int echoes = 0;
 USB_JoystickReport_Input_t last_report;
-
-int durationCount = 0;
-
 
 int main(void) {
 #ifdef USE_SRAND
@@ -26,6 +28,7 @@ int main(void) {
 	// We'll then enable global interrupts for our use.
 	GlobalInterruptEnable();
 	// Once that's done, we'll enter an infinite loop.
+	InitReport(&context);
 	for (;;)
 	{
 		// We need to run our task to process and deliver data for our IN and OUT endpoints.
@@ -136,7 +139,12 @@ void HID_Task(void) {
 		} else {
 			// or get the new report
 			// We'll then populate this report with what we want to send to the host.
-			GetNextReport(&JoystickInputData);
+			Command* command = GetNextReport(&context, &JoystickInputData);
+
+			if (nullptr != command) {
+				report_action(&JoystickInputData, command);
+				goto_next(&context, command);
+			}
 
 			// Prepare to echo this report
 			memcpy(&last_report, &JoystickInputData, sizeof(USB_JoystickReport_Input_t));

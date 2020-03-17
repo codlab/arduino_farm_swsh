@@ -154,44 +154,43 @@ static const Command sequences[] = {
 	{NOTHING, 8}
 };
 
-// start and end index of "Setup"
-int commandIndex = 0;
-int m_endIndex = 8;
-
 // optional day skip limit
 unsigned int m_skip = 0;
 
+void autoLotoInit(Context* context) {
+	context->commandIndex = 0;
+	context->endIndex = 8;
+	context->state = PROCESS;
+}
+
 // Prepare the next report for the host.
-void autoLoto(USB_JoystickReport_Input_t* const ReportData) {
+Command* autoLoto(Context* context, USB_JoystickReport_Input_t* const ReportData) {
 	// States and moves management
-	switch (state) {
+	switch (context->state) {
 		case PROCESS:
 			// Get the next command sequence (new start and end)
-			if (commandIndex == -1) {
+			if (context->commandIndex == -1) {
 				if (m_dayToSkip > 0 && m_skip == m_dayToSkip) {
-					if (m_endIndex == 62) {
+					if (context->endIndex == 62) {
 						// Stop the program
-						state = DONE;
+						context->state = DONE;
 						break;
 					} else {
 						// Go to home, reached day to skip
-						commandIndex = 61;
-						m_endIndex = 62;
+						context->commandIndex = 61;
+						context->endIndex = 62;
 					}
 				} else {
-					commandIndex = 9;
-					m_endIndex = 102;
+					context->commandIndex = 9;
+					context->endIndex = 102;
 					
 					m_skip++;
 				}
 			}
-		
-			report_action(ReportData, &(sequences[commandIndex]));
 
-			goto_next(&durationCount, &commandIndex, m_endIndex, &(sequences[commandIndex]));
-
-			break;
-
-		case DONE: return;
+			return &(sequences[context->commandIndex]);
+		case DONE:
+		default:
 	}
+	return nullptr;
 }

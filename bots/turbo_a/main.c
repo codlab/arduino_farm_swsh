@@ -21,6 +21,10 @@ these buttons for our use.
 #include "TurboA.h"
 
 // Prepare the next report for the host.
-void GetNextReport(USB_JoystickReport_Input_t* const ReportData) {
-	turboA(ReportData);
+Command* GetNextReport(Context* context, USB_JoystickReport_Input_t* const ReportData) {
+	return turboA(context, ReportData);
+}
+
+void InitReport(Context* context) {
+	turboAInit(context);
 }

@@ -178,58 +178,58 @@ static const Command sequences[] = {
 	{NOTHING, 460}
 };
 
-// start and end index of "Setup"
-int commandIndex = 0;
-int m_endIndex = 8;
 int m_sequence = 0;
 
+void auto3DaySkipperInit(Context* context) {
+	context->commandIndex = 0;
+	context->endIndex = 8;
+	context->state = PROCESS;
+}
+
 // Prepare the next report for the host.
-void auto3DaySkipper(USB_JoystickReport_Input_t* const ReportData) {
+Command* auto3DaySkipper(Context* context, USB_JoystickReport_Input_t* const ReportData) {
 	// States and moves management
-	switch (state) {
+	switch (context->state) {
 		case PROCESS:
 			// Get the next command sequence (new start and end)
-			if (commandIndex == -1) {
+			if (context->commandIndex == -1) {
 				m_sequence++;
 				if (m_sequence == 13) {
 					// Done skipping 3 days, user should check the pokemon
-					commandIndex = 77;
-					m_endIndex = 102;
+					context->commandIndex = 77;
+					context->endIndex = 102;
 				} else if (m_sequence == 15) {
 					// Roll 3 days backward
-					commandIndex = 49;
-					m_endIndex = 60;
+					context->commandIndex = 49;
+					context->endIndex = 60;
 				} else if (m_sequence == 16) {
 					// SR
-					commandIndex = 103;
-					m_endIndex = 114;
+					context->commandIndex = 103;
+					context->endIndex = 114;
 					
 					m_sequence = 0;
 				} else if (m_sequence % 4 == 1)	{ // 1,5,9
 					// Collect watts and invite others
-					commandIndex = 9;
-					m_endIndex = 16;
+					context->commandIndex = 9;
+					context->endIndex = 16;
 				} else if (m_sequence % 4 == 2) { // 2,6,10,14
 					// Goto date and time
-					commandIndex = 17;
-					m_endIndex = 48;
+					context->commandIndex = 17;
+					context->endIndex = 48;
 				} else if (m_sequence % 4 == 3)	{ // 3,7,11
 					// Roll one day forward
-					commandIndex = 61;
-					m_endIndex = 68;
+					context->commandIndex = 61;
+					context->endIndex = 68;
 				} else if (m_sequence % 4 == 0)	{ // 4,8,12
 					// Back to game
-					commandIndex = 69;
-					m_endIndex = 76;
+					context->commandIndex = 69;
+					context->endIndex = 76;
 				}
 			}
 
-			report_action(ReportData, &(sequences[commandIndex]));
-
-			goto_next(&durationCount, &commandIndex, m_endIndex, &(sequences[commandIndex]));
-
-			break;
-
-		case DONE: return;
+			return &(sequences[context->commandIndex]);
+		case DONE:
+		default:
 	}
+	return nullptr;
 }

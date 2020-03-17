@@ -21,6 +21,10 @@ these buttons for our use.
 #include "DaySkipper_JP.h"
 
 // Prepare the next report for the host.
-void GetNextReport(USB_JoystickReport_Input_t* const ReportData) {
-	daySkipperJP(ReportData);
+Command* GetNextReport(Context* context, USB_JoystickReport_Input_t* const ReportData) {
+	return daySkipperJP(context, ReportData);
+}
+
+void InitReport(Context* context) {
+	daySkipperJPInit(context);
 }

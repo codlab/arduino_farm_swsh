@@ -25,6 +25,8 @@ these buttons for our use.
 #include "../../core/action.h"
 #include "../../core/usb_device.h"
 
-void auto3DaySkipper(USB_JoystickReport_Input_t* const ReportData);
+Command* auto3DaySkipper(Context* context, USB_JoystickReport_Input_t* const ReportData);
+
+void auto3DaySkipperInit(Context* context);
 
 #endif

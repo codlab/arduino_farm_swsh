@@ -24,6 +24,8 @@ these buttons for our use.
 #include "../../core/action.h"
 #include "../../core/usb_device.h"
 
-void autoLoto(USB_JoystickReport_Input_t* const ReportData);
+Command* autoLoto(Context* context, USB_JoystickReport_Input_t* const ReportData);
+
+void autoLotoInit(Context* context);
 
 #endif

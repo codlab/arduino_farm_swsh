@@ -24,6 +24,8 @@ these buttons for our use.
 #include "../../core/action.h"
 #include "../../core/usb_device.h"
 
-void daySkipperUS(USB_JoystickReport_Input_t* const ReportData);
+Command* daySkipperUS(Context* context, USB_JoystickReport_Input_t* const ReportData);
+
+void daySkipperUSInit(Context* context);
 
 #endif
