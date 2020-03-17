@@ -159,8 +159,7 @@ Command* autoFossil(Context* context, USB_JoystickReport_Input_t* const ReportDa
 			}
 
 			return &(sequences[context->commandIndex]);
-		case DONE:
-		default:
+		case DONE: return nullptr;
 	}
 	return nullptr;
 }

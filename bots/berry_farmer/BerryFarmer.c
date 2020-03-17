@@ -167,8 +167,7 @@ Command* berryFarmer(Context* context, USB_JoystickReport_Input_t* const ReportD
 			}
 
 			return &(sequences[context->commandIndex]);
-		case DONE:
-		default:
+		case DONE: return nullptr;
 	}
 	return nullptr;
 }

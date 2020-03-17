@@ -41,5 +41,5 @@ void InitReport(Context* context);
  * \param ReportData the joystick report data holder
  * \return           a pointer to the current command sent or nullptr if none
  */
-void GetNextReport(Context* context, USB_JoystickReport_Input_t* const ReportData);
+Command* GetNextReport(Context* context, USB_JoystickReport_Input_t* const ReportData);
 #endif
