@@ -1,6 +1,7 @@
 #include "../Joystick.h"
 #include "action.h"
 #include "usb_device.h"
+#include <avr/pgmspace.h>
 
 Context context = {
 	.state = PROCESS,
@@ -132,8 +133,11 @@ void HID_Task(void) {
 			Command* command = GetNextReport(&context, &JoystickInputData);
 
 			if (nullptr != command) {
-				report_action(&JoystickInputData, command);
-				goto_next(&context, command);
+				Command temp;
+				memcpy_P(&temp, command, sizeof(Command));
+
+				report_action(&JoystickInputData, &temp);
+				goto_next(&context, &temp);
 			}
 
 			// Prepare to echo this report

@@ -34,8 +34,6 @@ void daySkippersInit(Context* context) {
 	context->state = PROCESS;
 }
 
-Command temp_command_dayskippers;
-
 // Prepare the next report for the host.
 Command* daySkippers(Context* context, USB_JoystickReport_Input_t* const ReportData) {
 	// States and moves management
@@ -126,8 +124,7 @@ Command* daySkippers(Context* context, USB_JoystickReport_Input_t* const ReportD
 				(_skip.dayToSkip)--;
 			}
 
-			readCommand(&(sequences[context->commandIndex]), &temp_command_dayskippers);
-			return &temp_command_dayskippers;
+			return &(sequences[context->commandIndex]);
 		case DONE: return nullptr;
 	}
 	return nullptr;

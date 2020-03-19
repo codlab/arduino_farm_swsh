@@ -22,7 +22,7 @@ these buttons for our use.
 #include "AutoHost.h"
 #include "config.h"
 
-static const Command sequences[] = {
+static const Command PROGMEM sequences[] = {
 	//----------Setup [0,5]----------
 	// Connect controller in Change Grip/Order
 	{NOTHING, 30},

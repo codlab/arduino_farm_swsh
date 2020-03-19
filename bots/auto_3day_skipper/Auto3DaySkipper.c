@@ -34,7 +34,7 @@ these buttons for our use.
 // -> It takes ~54 seconds to reach the 4th day and ~40 seconds to soft reset
 /*------------------------------------------*/
 
-static const Command sequences[] = {
+static const Command PROGMEM sequences[] = {
 	//----------Setup [0,8]----------
 	// Connect controller in Change Grip/Order
 	{NOTHING, 30},

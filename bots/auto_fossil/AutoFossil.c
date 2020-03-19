@@ -21,7 +21,7 @@ these buttons for our use.
 #include "AutoFossil.h"
 #include "config.h"
 
-static const Command sequences[] = {
+static const Command PROGMEM sequences[] = {
 	//----------Setup [0,8]----------
 	// Connect controller in Change Grip/Order
 	{NOTHING, 30},

@@ -31,7 +31,7 @@ these buttons for our use.
 // -> It takes ~10 seconds per watt collection
 /*------------------------------------------*/
 
-static const Command sequences[] = {
+static const Command PROGMEM sequences[] = {
 	//----------Setup [0,8]----------
 	// Connect controller in Change Grip/Order
 	{NOTHING, 30},

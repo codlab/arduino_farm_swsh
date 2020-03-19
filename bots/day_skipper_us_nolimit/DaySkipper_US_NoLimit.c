@@ -21,7 +21,7 @@ these buttons for our use.
 #include "DaySkipper_US_NoLimit.h"
 #include "config.h"
 
-static const Command sequences[] = {
+static const Command PROGMEM sequences[] = {
 	//----------Setup [0,8]----------
 	// Press A once to connect
 	{NOTHING, 30},
