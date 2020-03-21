@@ -2,6 +2,8 @@
 #ifndef BOX_RELEASE_INCLUDED
 #define BOX_RELEASE_INCLUDED
 
+#warning "OVERRIDE BOX RELEASE"
+
 /*------------------------------------------*/
 // INSTRUCTION
 // -> You MUST not have any egges in the boxes

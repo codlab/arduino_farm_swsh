@@ -2,6 +2,8 @@
 #ifndef DAY_SKIPPER_EU_NOLIMIT_INCLUDED
 #define DAY_SKIPPER_EU_NOLIMIT_INCLUDED
 
+#warning "OVERRIDE DAY SKIP EU CONFIG"
+
 /*------------------------------------------*/
 // INSTRUCTION
 // -> You MUST have y-comm glitch active and system time unsynced
