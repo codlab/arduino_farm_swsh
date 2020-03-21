@@ -39,6 +39,9 @@ Please refer to the TARGET.c file itself for instructions.
 - cleaning
 ```make clean```
 
+## Flashing
+
+Depending on your OS, [MacOS](https://github.com/codlab/arduino_farm_swsh#flash-1) or [Windows](https://github.com/codlab/arduino_farm_swsh#flash) or Linux
 ## Incoming
 
 New features coming soon :
