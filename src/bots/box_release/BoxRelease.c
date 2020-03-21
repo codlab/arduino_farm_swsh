@@ -19,6 +19,7 @@ these buttons for our use.
 */
 
 #include "BoxRelease.h"
+#include "config_preprocess.h" //if box count set
 #include "config.h"
 
 static const Command PROGMEM sequences[] = {

@@ -24,7 +24,7 @@ OPTIMIZATION = s
 TARGET       = BoxRelease
 SRC          = $(TARGET).c main.c $(ROOT_FOLDER)/Config/Descriptors.c $(LUFA_SRC_USB) $(ROOT_FOLDER)/core/action.c $(ROOT_FOLDER)/core/usb_device.c
 LUFA_PATH    = $(ROOT_FOLDER)/LUFA
-CC_FLAGS     = -DUSE_LUFA_CONFIG_HEADER -I$(ROOT_FOLDER)/Config/
+CC_FLAGS     = -DUSE_LUFA_CONFIG_HEADER -I$(ROOT_FOLDER)/Config/ $(OPTIONALS)
 LD_FLAGS     =
 
 # Default target

@@ -19,6 +19,7 @@ these buttons for our use.
 */
 
 #include "AutoLoto.h"
+#include "config_preprocess.h" //if have the preprocess
 #include "config.h"
 
 static const Command PROGMEM sequences[] = {

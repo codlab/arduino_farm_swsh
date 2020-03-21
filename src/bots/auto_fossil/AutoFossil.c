@@ -19,6 +19,7 @@ these buttons for our use.
 */
 
 #include "AutoFossil.h"
+#include "config_preprocess.h" //in case proper variables set, override
 #include "config.h"
 
 static const Command PROGMEM sequences[] = {
