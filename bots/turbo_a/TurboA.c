@@ -25,7 +25,7 @@ these buttons for our use.
 // -> You have to start this program at the Change Grip/Order menu
 /*------------------------------------------*/
 
-static const Command sequences[] = {
+static const Command PROGMEM sequences[] = {
 	//----------Setup [0,8]----------
 	// Connect controller in Change Grip/Order
 	{NOTHING, 30},

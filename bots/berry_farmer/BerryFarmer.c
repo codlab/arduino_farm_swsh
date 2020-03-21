@@ -33,7 +33,7 @@ these buttons for our use.
 // -> It takes ~17 seconds per berry collection
 /*------------------------------------------*/
 
-static const Command sequences[] = {
+static const Command PROGMEM sequences[] = {
 	//----------Setup [0,8]----------
 	// Connect controller in Change Grip/Order
 	{NOTHING, 30},
