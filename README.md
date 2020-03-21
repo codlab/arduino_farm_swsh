@@ -47,13 +47,51 @@ New features coming soon :
 
 # Prerequisites
 
-## Software
+## Windows
+
+### Software
 
 - [WinAVR](https://sourceforge.net/projects/winavr/files/)
 - [Flip (optional)](https://www.microchip.com/developmenttools/ProductDetails/flip)
 - [Teensy loader (optional)](https://www.pjrc.com/teensy/loader_win10.html)
 
 WinAVR is mandatory to manage the compilation and hex creation. The loaders depends on the board used to inject the USB's spoofer.
+
+Install the proper software to have the compilation and flashing tools
+
+### Flash
+
+Start flip or teensy loader, select the hex file you want to flash, load the USB device and flash.
+
+
+## MacOS
+
+### Install
+
+Id you don't have HomeBrew already installed
+
+```
+xcode-select --install
+bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
+```
+
+AVR for MacOS and DFU Programmer
+
+```
+brew tap osx-cross/avr
+brew install avr-gcc dfu-programmer
+```
+
+### Flash
+
+```
+sudo dfu-programmer atmega16u2 erase
+sudo dfu-programmer atmega16u2 flash path/to/the/file.hex
+sudo dfu-programmer atmega16u2 reset
+```
+
+Replace atmega16u2 with the proper Atmel type you have. Arduino UNO is for instance atmega16u2
+
 
 # Videos
 
