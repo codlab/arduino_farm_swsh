@@ -19,6 +19,7 @@ these buttons for our use.
 */
 
 #include "DaySkippers.h"
+#include "config_preprocess.h"
 #include "config.h"
 #include "DaySkippersSegment.h"
 

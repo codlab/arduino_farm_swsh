@@ -3,6 +3,7 @@
         "action.h": "c",
         "usb_device.h": "c",
         "joystick.h": "c",
-        "config.h": "c"
+        "config.h": "c",
+        "config_preprocess.h": "c"
     }
 }

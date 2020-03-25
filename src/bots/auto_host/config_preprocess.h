@@ -1,3 +1,4 @@
+#if defined USE_LINK_CODE && defined USE_RANDOM_CODE && defined INITIAL_RAND_SEED && defined LINK_CODE
 #ifndef AUTO_HOST_INCLUDED
 #define AUTO_HOST_INCLUDED
 
@@ -16,19 +17,20 @@
 // -> It takes ~3 minutes 25 seconds to host a raid
 
 // -> Use optional link code or not? (true/false)
-bool autohost_useLinkCode = true;
+bool autohost_useLinkCode = USE_LINK_CODE >= 1;
 
-// -> Use random code (if autohost_useLinkCode = true)
-// -> autohost_seed range is 0 to 255, same seed will always generate the same link code sequence
+// -> Use random code (if m_useLinkCode = true)
+// -> m_seed range is 0 to 255, same seed will always generate the same link code sequence
 // -> As long as the board is not unplugged, the sequence will go random forever
 // -> If the board is unplugged, the squence will start at the beginning again
-bool autohost_useRandomCode = true;
-uint8_t autohost_initial_rand_seed = 169;
+bool autohost_useRandomCode = USE_RANDOM_CODE >= 1;
+uint8_t autohost_initial_rand_seed = INITIAL_RAND_SEED;
 
-// -> Set optional link code here (if autohost_useLinkCode = true, autohost_useRandomCode = false)
-// -> e.g 4501: autohost = 4501;
-// -> e.g 0389: autohost = 389;
-int autohost_linkCode = 1649;
+// -> Set optional link code here (if m_useLinkCode = true, m_useRandomCode = false)
+// -> e.g 4501: autohost_linkCode = 4501;
+// -> e.g 0389: autohost_linkCode = 389;
+int autohost_linkCode = LINK_CODE;
 /*------------------------------------------*/
 
+#endif
 #endif
