@@ -19,6 +19,7 @@ these buttons for our use.
 */
 
 #include "DaySkipper_EU.h"
+#include "config_preprocess.h"
 #include "config.h"
 
 static const Command PROGMEM sequences[] = {

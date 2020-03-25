@@ -20,6 +20,7 @@ these buttons for our use.
 
 #include <stdlib.h>
 #include "AutoHost.h"
+#include "config_preprocess.h"
 #include "config.h"
 
 static const Command PROGMEM sequences[] = {
@@ -108,6 +109,7 @@ static const Command PROGMEM sequences[] = {
 
 uint8_t host_sequence = 0;
 bool _autohost_init_done = false;
+uint8_t _auto_set_linkCode[] = {1,6,4,9};
 
 void autoHostInit(Context* context) {
 	if(!_autohost_init_done) {
@@ -118,6 +120,11 @@ void autoHostInit(Context* context) {
 	context->commandIndex = 0;
 	context->endIndex = 5;
 	context->state = PROCESS;
+
+	_auto_set_linkCode[0] = autohost_linkCode % 10;
+	_auto_set_linkCode[1] = (autohost_linkCode / 10) % 10;
+	_auto_set_linkCode[2] = (autohost_linkCode / 100) % 10;
+	_auto_set_linkCode[3] = (autohost_linkCode / 1000) % 10;
 }
 
 // Prepare the next report for the host.
@@ -131,7 +138,7 @@ Command* autoHost(Context* context, USB_JoystickReport_Input_t* const ReportData
 			context->commandIndex = 6;	// 6 = go online, 11 = local only
 			context->endIndex = 12;
 		} else if (host_sequence == 2) {					
-			if (!m_useLinkCode) {
+			if (!autohost_useLinkCode) {
 				// Skip to start raid, invite, SR
 				context->commandIndex = 16;
 				context->endIndex = 34;
@@ -151,7 +158,7 @@ Command* autoHost(Context* context, USB_JoystickReport_Input_t* const ReportData
 		} else { // if (host_sequence <= 13)
 			// Entering link code
 			if (host_sequence % 3 == 0) { // 3,6,9,12
-				uint8_t number = m_useRandomCode ? (rand() % 10) : m_linkCode[host_sequence / 3 - 1];
+				uint8_t number = autohost_useRandomCode ? (rand() % 10) : _auto_set_linkCode[host_sequence / 3 - 1];
 				
 				if (number == 0) {					
 					// Just press A for 0

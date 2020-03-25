@@ -15,10 +15,10 @@
 // -> When music plays, keep an eye on the game to see if you got a shiny
 // -> It takes ~18 seconds per fossil and ~34 seconds to soft reset
 
-bool m_firstFossilTopSlot = FIRST_FOSSIL_TOP_SLOT == 1 : true : false; 	// true (top), false (bottom)
-bool m_secondFossilTopSlot = SECOND_FOSSIL_TOP_SLOT == 1 : true : false; 	// true (top), false (bottom)
+bool m_firstFossilTopSlot = FIRST_FOSSIL_TOP_SLOT >= 1; 	// true (top), false (bottom)
+bool m_secondFossilTopSlot = SECOND_FOSSIL_TOP_SLOT >= 1; 	// true (top), false (bottom)
 int m_timesBeforeSR = TIME_BEFORE_SR; 			// Number of fossil to get before restarting/stopping
-bool m_autoSoftReset = AUTO_SOFT_RESET;		// true: Auto soft reset after complete, false: stop when done
+bool m_autoSoftReset = AUTO_SOFT_RESET >= 1;		// true: Auto soft reset after complete, false: stop when done
 /*------------------------------------------*/
 
 #endif
