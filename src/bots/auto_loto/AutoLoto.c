@@ -82,6 +82,8 @@ static const Command PROGMEM sequences_in_game[] = {
 	STEP_B(30, 8),
 	STEP_B(30, 8),
 	STEP_B(30, 8),
+	STEP_B(30, 8),
+	STEP_B(30, 8),
 	STEP_B(30, 8)
 };
 
