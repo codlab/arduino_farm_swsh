@@ -119,7 +119,6 @@ void autoHostInit(Context* context) {
 
 	context->commandIndex = 0;
 	context->endIndex = 5;
-	context->state = PROCESS;
 
 	_auto_set_linkCode[0] = autohost_linkCode % 10;
 	_auto_set_linkCode[1] = (autohost_linkCode / 10) % 10;
