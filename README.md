@@ -1,7 +1,7 @@
 # Pokemon Shield & Sword Bots through Arduino
 
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 [![Build Status](https://travis-ci.org/codlab/arduino_farm_swsh.png?branch=master)](https://travis-ci.org/codlab/arduino_farm_swsh)
-
 
 This repository is an evolution of the Auto Controller by brianuuuSonic original work. The intent is to provide a modularity and clean environment for users to :
 
