@@ -38,7 +38,7 @@ static const Command PROGMEM setup[] = {
 	STEP_A(1, 40),
 	STEP_B(1, 40),
 	STEP_HOME(1, 60)
-}
+};
 	
 static const Command PROGMEM gggoooooo[] = {
 	STEP_A(1, 1)
