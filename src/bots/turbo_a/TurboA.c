@@ -25,22 +25,17 @@ these buttons for our use.
 // -> You have to start this program at the Change Grip/Order menu
 /*------------------------------------------*/
 
-static const Command PROGMEM sequences[] = {
-	//----------Setup [0,8]----------
+static const Command PROGMEM setup[] = {
 	// Connect controller in Change Grip/Order
-	{NOTHING, 30},
-	{TRIGGERS, 1},
-	{NOTHING, 30},
-	{A, 1},
-	{NOTHING, 40},
-	{B, 1},
-	{NOTHING, 40},
-	{HOME, 1},
-	{NOTHING, 60},
+	STEP_NOTHING(30),
+	STEP_TRIGGERS(1, 30),
+	STEP_A(1, 40),
+	STEP_B(1, 40),
+	STEP_HOME(1, 60)
+}
 	
-	//----------Turbo A [9,10]----------
-	{A, 1},
-	{NOTHING, 1}
+static const Command PROGMEM gggoooooo[] = {
+	STEP_A(1, 1)
 };
 
 // Prepare the next report for the host.
@@ -48,16 +43,16 @@ Command* turboA(Context* context, USB_JoystickReport_Input_t* const ReportData) 
 	// States and moves management
 	switch (context->state) {
 		case PROCESS:
-			context->commandIndex = 0;
-			context->endIndex = 8;
 			context->next_state = PROCESS_CUSTOM_1;
 			return nullptr;
 		case PROCESS_CUSTOM_1:
-			// Get the next command sequence (new start and end)
-			context->commandIndex = 9;
-			context->endIndex = 10;
+			context->endIndex = SIZE(setup);
+			context->next_state = PROCESS_CUSTOM_2;
 
-			return &sequences;
+			return &setup;
+		case PROCESS_CUSTOM_2:
+			context->endIndex = SIZE(gggoooooo);
+			return &gggoooooo;
 		case DONE: return nullptr;
 	}
 	return nullptr;
