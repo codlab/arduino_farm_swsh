@@ -4,6 +4,8 @@
         "usb_device.h": "c",
         "joystick.h": "c",
         "config.h": "c",
-        "config_preprocess.h": "c"
+        "config_preprocess.h": "c",
+        "autoloto.h": "c",
+        "dayskipper_eu_nolimit.h": "c"
     }
 }

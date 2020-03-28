@@ -22,135 +22,94 @@ these buttons for our use.
 #include "config_preprocess.h" //if have the preprocess
 #include "config.h"
 
-static const Command PROGMEM sequences[] = {
-	//----------Setup [0,8]----------
-	// Connect controller in Change Grip/Order
-	{NOTHING, 30},
-	{TRIGGERS, 1},
-	{NOTHING, 30},
-	{A, 1},
-	{NOTHING, 40},
-	{B, 1},
-	{NOTHING, 40},
-	{HOME, 1},
-	{NOTHING, 60},
-	
-	//----------Roll day(EU)/month(US)/year(JP) back and forward [9,62]----------
-	// To System Settings
-	{HOME, 1},
-	{NOTHING, 30},
-	{DOWN, 1},
-	{NOTHING, 1},
-	{RIGHT, 1},
-	{NOTHING, 1},
-	{RIGHT, 1},
-	{NOTHING, 1},
-	{RIGHT, 1},
-	{NOTHING, 1},
-	{RIGHT, 1},
-	{NOTHING, 1},
-	{A, 1},
-	{NOTHING, 1},
-	
-	// To Date and Time
-	{DOWN, 80},
-	{NOTHING, 1},
-	{A, 1},
-	{NOTHING, 1},
-	{DOWN, 1},
-	{NOTHING, 1},
-	{DOWN, 1},
-	{NOTHING, 1},
-	{DOWN, 1},
-	{NOTHING, 1},
-	{DOWN, 1},
-	{NOTHING, 1},
-	{A, 1},
-	{NOTHING, 8},
-	
-	// To actually Date and Time
-	{DOWN, 1},
-	{NOTHING, 1},
-	{DOWN, 1},
-	{NOTHING, 1},
-	{A, 1},
-	{NOTHING, 7},
-	
-	// Minus one
-	{DOWN, 1},
-	{NOTHING, 1},
-	{RIGHT, 28},
-	{NOTHING, 1},
-	{A, 1},
-	{NOTHING, 4},
-	
-	// Plus one
-	{A, 1},
-	{NOTHING, 5},
-	{LEFT, 28},
-	{NOTHING, 1},
-	{UP, 1},
-	{NOTHING, 1},
-	{RIGHT, 28},
-	{NOTHING, 1},
-	{A, 1},
-	{NOTHING, 4},
-	
-	// Back to game
-	{HOME, 1},
-	{NOTHING, 30},
-	{HOME, 1},			// Use this to stop the program if limited days
-	{NOTHING, 30},
-	
-	//----------Loto [63,102]----------
-	{A, 12},			// Greetingzzz Trainer! What can I help you with? Zzzrt?
-	{NOTHING, 1},
-	{B, 12},
-	{NOTHING, 1},
-	{DOWN, 1},
-	{NOTHING, 1},
-	{A, 31},		// I've now connected to the serverzzz at the Loto-ID Center!
-	{NOTHING, 1},
-	{B, 22},		// We'll draw a number, and if it'zzz a match for the ID No. of any of your Pokemon, you could
-	{NOTHING, 1},
-	{B, 10},		// win fabulous prizzzes!
-	{NOTHING, 1},
-	{B, 24},		// Ready to save your progress and try your luck?
-	{NOTHING, 1},
-	{A, 45},		// Yes
-	{NOTHING, 1},
-	{B, 19},		// Then here we go... Bezzzt of luck to you!
-	{NOTHING, 1},
-	{B, 24},		// ... ... ...
-	{NOTHING, 1},
-	{B, 7},			// Here'zzz your number: xxxxx!
-	{NOTHING, 1},
-	{B, 10},		// Let's see if it matches any Pokemon's ID number!
-	{NOTHING, 1},
-	{B, 96},		// Oh! Congratulationszzz!
-	{NOTHING, 1},
-	{B, 22},		// That'zzz amazing! The number matches up with the ID No. of ??? in your Boxes!
-	{NOTHING, 1},
-	{B, 22},		// Oh! The last xxx digitzzz matched! (Longest: Moomoo Milk <- fuck you)
-	{NOTHING, 1},
-	{B, 26},		// (Award dialog)
-	{NOTHING, 1},
-	{B, 95},		// You obtained a xxx!
-	{NOTHING, 1},
-	{B, 20},		// You put the xxx in your Bag's xxx pocket.
-	{NOTHING, 1},
-	{B, 16},		// Looking forward to your nexzzzt attempt!
-	{NOTHING, 1},
-	{B, 1},
-	{NOTHING, 8}
+static const Command PROGMEM sequences_in_settings[] = {
+	STEP_B(1, 1),
+	STEP_B(1, 1),
+	STEP_HOME(1, 30),
+	STEP_DOWN(1, 1),
+	STEP_DOWN(1, 1),
+	STEP_RIGHT(1, 1),
+	STEP_RIGHT(1, 1),
+	STEP_RIGHT(1, 1),
+	STEP_RIGHT(1, 1),
+	STEP_A(1, 1),
+	STEP_DOWN(80, 1), //To Console parameters
+	STEP_A(1, 1),
+	STEP_DOWN(1, 1), // To Date and Time
+	STEP_DOWN(1, 1),
+	STEP_DOWN(1, 1),
+	STEP_DOWN(1, 1),
+	STEP_A(1, 8),
+	STEP_DOWN(1, 1), // To actually Date and Time
+	STEP_DOWN(1, 1),
+	STEP_A(1, 7),
+	STEP_DOWN(1, 1), // Minus one
+	STEP_RIGHT(28, 1),
+	STEP_A(1, 4),
+	STEP_A(1, 5), // Plus one
+	STEP_LEFT(28, 1),
+	STEP_UP(1, 1),
+	STEP_RIGHT(28, 1),
+	STEP_A(1, 4),
+	STEP_HOME(1, 30), // Back to game
+	STEP_HOME(1, 30)
+};
+
+static const Command PROGMEM sequences_in_game[] = {
+	//STEP_UP(1, 1),		//make sure face top and then left
+	//STEP_LEFT(1, 1), -> those 2 were because of an issue with A/B after // now A/A
+
+	STEP_A(12, 1),		// Greetingzzz Trainer! What can I help you with? Zzzrt?
+	STEP_A(12, 1),
+	STEP_DOWN(1, 1),
+	STEP_A(31, 1),		// I've now connected to the serverzzz at the Loto-ID Center!
+	STEP_B(22, 1),		// We'll draw a number, and if it'zzz a match for the ID No. of any of your Pokemon, you could
+	STEP_B(10, 1),		// win fabulous prizzzes!
+	STEP_B(24, 1),		// Ready to save your progress and try your luck?
+	STEP_A(45, 1),		// Yes
+	STEP_B(19, 1),		// Then here we go... Bezzzt of luck to you!
+	STEP_B(24, 1),		// ... ... ...
+	STEP_B(7, 1),			// Here'zzz your number: xxxxx!
+	STEP_B(10, 1),		// Let's see if it matches any Pokemon's ID number!
+	STEP_B(96, 1),		// Oh! Congratulationszzz!
+	STEP_B(22, 1),		// That'zzz amazing! The number matches up with the ID No. of ??? in your Boxes!
+	STEP_B(22, 1),		// Oh! The last xxx digitzzz matched! (Longest: Moomoo Milk <- fuck you)
+	STEP_B(26, 1),		// (Award dialog)
+	STEP_B(95, 1),		// You obtained a xxx!
+	STEP_B(20, 1),		// You put the xxx in your Bag's xxx pocket.
+	STEP_B(16, 1),		// Looking forward to your nexzzzt attempt!
+	STEP_B(30, 8),		// spam a lil more to be sure
+	STEP_B(30, 8),
+	STEP_B(30, 8),
+	STEP_B(30, 8),
+	STEP_B(30, 8),
+	STEP_B(30, 8)
 };
 
 // optional day skip limit
 unsigned int m_skip = 0;
 
-void autoLotoInit(Context* context) {
+#define STEP_SETTINGS 0
+#define STEP_GAME 1
+int loto_step = STEP_SETTINGS;
+
+
+//GOTO requires context variable to be defined in the bloc
+void goTo(Context* context, int step) {
+	loto_step = step;
 	context->commandIndex = 0;
-	context->endIndex = 8;
+	context->endIndex = ( step == STEP_SETTINGS ? SIZE(sequences_in_settings) : SIZE(sequences_in_game) ) - 1;
+}
+
+Command* get(Context* context) {
+	if (loto_step == STEP_SETTINGS) return &(sequences_in_settings[context->commandIndex]);
+	return &(sequences_in_game[context->commandIndex]);
+}
+
+void autoLotoInit(Context* context) {
+	loto_step = STEP_SETTINGS;
+	context->commandIndex = 0; 
+	context->endIndex = SIZE(sequences_in_settings) - 1;
 	context->state = PROCESS;
 }
 
@@ -161,25 +120,18 @@ Command* autoLoto(Context* context, USB_JoystickReport_Input_t* const ReportData
 		case PROCESS:
 			// Get the next command sequence (new start and end)
 			if (context->commandIndex == -1) {
-				if (m_dayToSkip > 0 && m_skip == m_dayToSkip) {
-					if (context->endIndex == 62) {
-						// Stop the program
-						context->state = DONE;
-						break;
-					} else {
-						// Go to home, reached day to skip
-						context->commandIndex = 61;
-						context->endIndex = 62;
-					}
+				if(m_dayToSkip > 0 && m_skip == m_dayToSkip) {
+					context->state = DONE;
+				} else if (loto_step == STEP_SETTINGS) {
+					goTo(context, STEP_GAME);
 				} else {
-					context->commandIndex = 9;
-					context->endIndex = 102;
+					goTo(context, STEP_SETTINGS);
 					
 					m_skip++;
 				}
 			}
 
-			return &(sequences[context->commandIndex]);
+			return get(context);
 		case DONE: return nullptr;
 	}
 	return nullptr;
