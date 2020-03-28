@@ -99,3 +99,9 @@ void goto_next(Context* context, Command* const command) {
         }
     }
 }
+
+Command* get_command(Context* context, Command* sequences) {
+    if(context->commandIndex == -1) return nullptr;
+
+    return &(sequences[context->commandIndex]);
+}

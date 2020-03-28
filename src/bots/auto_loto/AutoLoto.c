@@ -90,50 +90,34 @@ static const Command PROGMEM sequences_in_game[] = {
 // optional day skip limit
 unsigned int m_skip = 0;
 
-#define STEP_SETTINGS 0
-#define STEP_GAME 1
-int loto_step = STEP_SETTINGS;
-
-
-//GOTO requires context variable to be defined in the bloc
-void goTo(Context* context, int step) {
-	loto_step = step;
-	context->commandIndex = 0;
-	context->endIndex = ( step == STEP_SETTINGS ? SIZE(sequences_in_settings) : SIZE(sequences_in_game) ) - 1;
-}
-
-Command* get(Context* context) {
-	if (loto_step == STEP_SETTINGS) return &(sequences_in_settings[context->commandIndex]);
-	return &(sequences_in_game[context->commandIndex]);
-}
-
-void autoLotoInit(Context* context) {
-	loto_step = STEP_SETTINGS;
-	context->commandIndex = 0; 
-	context->endIndex = SIZE(sequences_in_settings) - 1;
-	context->state = PROCESS;
-}
+//rewrite state_t
+#define SETTINGS PROCESS_CUSTOM_1
+#define GAME PROCESS_CUSTOM_2
 
 // Prepare the next report for the host.
 Command* autoLoto(Context* context, USB_JoystickReport_Input_t* const ReportData) {
 	// States and moves management
 	switch (context->state) {
 		case PROCESS:
+			context->next_state = SETTINGS;
+			context->endIndex = 0;
+			return nullptr;
+		case SETTINGS:
+			context->next_state = GAME;
+			context->endIndex = SIZE(sequences_in_settings) - 1;
+			return &sequences_in_settings;
+		case GAME:
 			// Get the next command sequence (new start and end)
-			if (context->commandIndex == -1) {
-				if(m_dayToSkip > 0 && m_skip == m_dayToSkip) {
-					context->state = DONE;
-				} else if (loto_step == STEP_SETTINGS) {
-					goTo(context, STEP_GAME);
-				} else {
-					goTo(context, STEP_SETTINGS);
-					
-					m_skip++;
-				}
+			if(m_dayToSkip > 0 && m_skip == m_dayToSkip) {
+				context->next_state = DONE;
+			} else {
+				context->endIndex = SIZE(sequences_in_game) - 1;
+				context->next_state = SETTINGS;
+				
+				m_skip++;
 			}
-
-			return get(context);
-		case DONE: return nullptr;
+			return &sequences_in_game;
+		case DONE: default: return nullptr;
 	}
 	return nullptr;
 }

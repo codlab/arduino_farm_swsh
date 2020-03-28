@@ -5,6 +5,7 @@
 
 Context context = {
 	.state = PROCESS,
+	.next_state = PROCESS,
 	.commandIndex = 0,
 	.endIndex = 0,
 	.durationCount = 0
@@ -19,7 +20,7 @@ int main(void) {
 	// We'll then enable global interrupts for our use.
 	GlobalInterruptEnable();
 	// Once that's done, we'll enter an infinite loop.
-	InitReport(&context);
+
 	for (;;)
 	{
 		// We need to run our task to process and deliver data for our IN and OUT endpoints.
@@ -91,6 +92,8 @@ void PrepareReport(USB_JoystickReport_Input_t* const ReportData) {
 	ReportData->HAT = HAT_CENTER;
 }
 
+Command *sequences = nullptr;
+
 // Process and deliver data from IN and OUT endpoints.
 void HID_Task(void) {
 	// If the device isn't connected and properly configured, we can't do anything here.
@@ -130,19 +133,39 @@ void HID_Task(void) {
 		} else {
 			// or get the new report
 			// We'll then populate this report with what we want to send to the host.
-			Command* command = GetNextReport(&context, &JoystickInputData);
 
-			if (nullptr != command) {
-				Command temp;
-				memcpy_P(&temp, command, sizeof(Command));
+			Command* command = nullptr;
 
-				report_action(&JoystickInputData, &temp);
-				goto_next(&context, &temp);
+			//if begin of a session
+			if(nullptr == sequences) {
+				context.commandIndex = 0;
+				context.state = context.next_state;
+				sequences = GetNextReport(&context, &JoystickInputData);
 			}
 
-			// Prepare to echo this report
-			memcpy(&last_report, &JoystickInputData, sizeof(USB_JoystickReport_Input_t));
-			echoes = ECHOES;
+			//if the session gave a pointer to sequences
+			//the sequences is a variables which is retained, loop after loop it will be valid until "finished"
+			if(nullptr != sequences) {
+				command = get_command(&context, sequences);
+
+				//if we have a command to do (the sequences is not finished)
+				if (nullptr != command) {
+					Command temp;
+					memcpy_P(&temp, command, sizeof(Command));
+
+					report_action(&JoystickInputData, &temp);
+					goto_next(&context, &temp); //after, go to the next command to execute
+
+					//we have a command to execute, we execute it
+					// Prepare to echo this report
+					memcpy(&last_report, &JoystickInputData, sizeof(USB_JoystickReport_Input_t));
+					echoes = ECHOES;
+				}
+			}
+
+			if(nullptr == command || context.commandIndex == -1) {
+				sequences = nullptr;
+			}
 		}
 
 		// Once populated, we can output this data to the host. We do this by first writing the data to the control stream.

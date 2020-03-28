@@ -19,4 +19,5 @@ void report_action(USB_JoystickReport_Input_t* const ReportData, Command* comman
 
 void goto_next(Context* context, Command* const command);
 
+Command* get_command(Context* context, Command* sequences);
 #endif

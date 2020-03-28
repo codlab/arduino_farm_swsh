@@ -9,11 +9,21 @@
 
 typedef enum {
 	PROCESS,
+	PROCESS_CUSTOM_1,
+	PROCESS_CUSTOM_2,
+	PROCESS_CUSTOM_3,
+	PROCESS_CUSTOM_4,
+	PROCESS_CUSTOM_5,
+	PROCESS_CUSTOM_6,
+	PROCESS_CUSTOM_7,
+	PROCESS_CUSTOM_8,
+	PROCESS_CUSTOM_9,
 	DONE
 } State_t;
 
 typedef struct Context {
 	State_t state;
+	State_t next_state;
 	int commandIndex;
 	int endIndex;
 	int durationCount;
@@ -24,13 +34,6 @@ extern State_t state;
 
 extern int echoes;
 extern USB_JoystickReport_Input_t last_report;
-
-/**
- * Init the report manager for the given context
- * 
- * \param context the context to initialize for the selected bot instance
- */
-void InitReport(Context* context);
 
 /**
  * Get the next joystick report for the host
