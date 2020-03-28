@@ -56,11 +56,10 @@ static const Command PROGMEM sequences_in_settings[] = {
 };
 
 static const Command PROGMEM sequences_in_game[] = {
-	//STEP_UP(1, 1),		//make sure face top and then left
-	//STEP_LEFT(1, 1), -> those 2 were because of an issue with A/B after // now A/A
-
-	STEP_A(12, 1),		// Greetingzzz Trainer! What can I help you with? Zzzrt?
-	STEP_A(12, 1),
+	STEP_UP(1, 1),		//make sure face top and then left
+	STEP_LEFT(1, 1),
+	STEP_A(12, 8),		// Greetingzzz Trainer! What can I help you with? Zzzrt?
+	STEP_A(12, 8),
 	STEP_DOWN(1, 1),
 	STEP_A(31, 1),		// I've now connected to the serverzzz at the Loto-ID Center!
 	STEP_B(22, 1),		// We'll draw a number, and if it'zzz a match for the ID No. of any of your Pokemon, you could
