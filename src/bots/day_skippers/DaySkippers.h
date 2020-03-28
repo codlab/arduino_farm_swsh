@@ -26,6 +26,4 @@ these buttons for our use.
 
 Command* daySkippers(Context* context, USB_JoystickReport_Input_t* const ReportData);
 
-void daySkippersInit(Context* context);
-
 #endif

@@ -13,7 +13,7 @@
 
 #include "../../core/calendar_skip.h"
 
-CalendarSkip calendarEU = {
+CalendarSkip calendar = {
     .day = DAY,
     .month = MONTH,
     .year = YEAR,

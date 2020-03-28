@@ -180,54 +180,51 @@ static const Command PROGMEM sequences[] = {
 
 int m_sequence = 0;
 
-void auto3DaySkipperInit(Context* context) {
-	context->commandIndex = 0;
-	context->endIndex = 8;
-	context->state = PROCESS;
-}
-
 // Prepare the next report for the host.
 Command* auto3DaySkipper(Context* context, USB_JoystickReport_Input_t* const ReportData) {
 	// States and moves management
 	switch (context->state) {
 		case PROCESS:
+			context->commandIndex = 0;
+			context->endIndex = 8;
+			context->next_state = PROCESS_CUSTOM_1;
+			return nullptr;
+		case PROCESS_CUSTOM_1:
 			// Get the next command sequence (new start and end)
-			if (context->commandIndex == -1) {
-				m_sequence++;
-				if (m_sequence == 13) {
-					// Done skipping 3 days, user should check the pokemon
-					context->commandIndex = 77;
-					context->endIndex = 102;
-				} else if (m_sequence == 15) {
-					// Roll 3 days backward
-					context->commandIndex = 49;
-					context->endIndex = 60;
-				} else if (m_sequence == 16) {
-					// SR
-					context->commandIndex = 103;
-					context->endIndex = 114;
-					
-					m_sequence = 0;
-				} else if (m_sequence % 4 == 1)	{ // 1,5,9
-					// Collect watts and invite others
-					context->commandIndex = 9;
-					context->endIndex = 16;
-				} else if (m_sequence % 4 == 2) { // 2,6,10,14
-					// Goto date and time
-					context->commandIndex = 17;
-					context->endIndex = 48;
-				} else if (m_sequence % 4 == 3)	{ // 3,7,11
-					// Roll one day forward
-					context->commandIndex = 61;
-					context->endIndex = 68;
-				} else if (m_sequence % 4 == 0)	{ // 4,8,12
-					// Back to game
-					context->commandIndex = 69;
-					context->endIndex = 76;
-				}
+			m_sequence++;
+			if (m_sequence == 13) {
+				// Done skipping 3 days, user should check the pokemon
+				context->commandIndex = 77;
+				context->endIndex = 102;
+			} else if (m_sequence == 15) {
+				// Roll 3 days backward
+				context->commandIndex = 49;
+				context->endIndex = 60;
+			} else if (m_sequence == 16) {
+				// SR
+				context->commandIndex = 103;
+				context->endIndex = 114;
+				
+				m_sequence = 0;
+			} else if (m_sequence % 4 == 1)	{ // 1,5,9
+				// Collect watts and invite others
+				context->commandIndex = 9;
+				context->endIndex = 16;
+			} else if (m_sequence % 4 == 2) { // 2,6,10,14
+				// Goto date and time
+				context->commandIndex = 17;
+				context->endIndex = 48;
+			} else if (m_sequence % 4 == 3)	{ // 3,7,11
+				// Roll one day forward
+				context->commandIndex = 61;
+				context->endIndex = 68;
+			} else if (m_sequence % 4 == 0)	{ // 4,8,12
+				// Back to game
+				context->commandIndex = 69;
+				context->endIndex = 76;
 			}
 
-			return &(sequences[context->commandIndex]);
+			return &sequences;
 		case DONE: return nullptr;
 	}
 	return nullptr;

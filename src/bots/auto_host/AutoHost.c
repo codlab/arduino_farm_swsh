@@ -125,66 +125,73 @@ void autoHostInit(Context* context) {
 	_auto_set_linkCode[1] = (autohost_linkCode / 10) % 10;
 	_auto_set_linkCode[2] = (autohost_linkCode / 100) % 10;
 	_auto_set_linkCode[3] = (autohost_linkCode / 1000) % 10;
+
+	context->next_state = PROCESS_CUSTOM_1;
 }
 
 // Prepare the next report for the host.
 Command* autoHost(Context* context, USB_JoystickReport_Input_t* const ReportData) {
 	// Get the next command sequence (new start and end)
-	if (context->commandIndex == -1) {
-		host_sequence++;
-		
-		if (host_sequence == 1) {
-			// Connect internet and enter raid
-			context->commandIndex = 6;	// 6 = go online, 11 = local only
-			context->endIndex = 12;
-		} else if (host_sequence == 2) {					
-			if (!autohost_useLinkCode) {
-				// Skip to start raid, invite, SR
-				context->commandIndex = 16;
+	switch(context->state) {
+		case PROCESS:
+			autoHostInit(context);
+			return nullptr;
+		case PROCESS_CUSTOM_1:
+			host_sequence++;
+			
+			if (host_sequence == 1) {
+				// Connect internet and enter raid
+				context->commandIndex = 6;	// 6 = go online, 11 = local only
+				context->endIndex = 12;
+			} else if (host_sequence == 2) {					
+				if (!autohost_useLinkCode) {
+					// Skip to start raid, invite, SR
+					context->commandIndex = 16;
+					context->endIndex = 34;
+					
+					host_sequence = 0;
+				} else {
+					// Prepare link code, goto 0
+					context->commandIndex = 35;
+					context->endIndex = 41;
+				}
+			} else if (host_sequence == 14) {
+				// Finish setting link code, invite others, SR
+				context->commandIndex = 13;
 				context->endIndex = 34;
 				
 				host_sequence = 0;
-			} else {
-				// Prepare link code, goto 0
-				context->commandIndex = 35;
-				context->endIndex = 41;
-			}
-		} else if (host_sequence == 14) {
-			// Finish setting link code, invite others, SR
-			context->commandIndex = 13;
-			context->endIndex = 34;
-			
-			host_sequence = 0;
-		} else { // if (host_sequence <= 13)
-			// Entering link code
-			if (host_sequence % 3 == 0) { // 3,6,9,12
-				uint8_t number = autohost_useRandomCode ? (rand() % 10) : _auto_set_linkCode[host_sequence / 3 - 1];
-				
-				if (number == 0) {					
-					// Just press A for 0
+			} else { // if (host_sequence <= 13)
+				// Entering link code
+				if (host_sequence % 3 == 0) { // 3,6,9,12
+					uint8_t number = autohost_useRandomCode ? (rand() % 10) : _auto_set_linkCode[host_sequence / 3 - 1];
+					
+					if (number == 0) {					
+						// Just press A for 0
+						context->commandIndex = 42;
+						context->endIndex = 43;
+						
+						// Skip going down
+						host_sequence += 2;
+					} else if (number % 3 == 0) { // 3,6,9
+						context->commandIndex = 52 + (number / 3 - 1) * 2;
+						context->endIndex = 59;
+					} else { // 1,4,7,2,5,8
+						context->commandIndex = 44 + (number / 3) * 2;
+						context->endIndex = (number % 3 == 1) ? 51 : 49;
+					}
+				} else if (host_sequence % 3 == 1) { // 4,7,10,13
+					// Press A
 					context->commandIndex = 42;
 					context->endIndex = 43;
-					
-					// Skip going down
-					host_sequence += 2;
-				} else if (number % 3 == 0) { // 3,6,9
-					context->commandIndex = 52 + (number / 3 - 1) * 2;
-					context->endIndex = 59;
-				} else { // 1,4,7,2,5,8
-					context->commandIndex = 44 + (number / 3) * 2;
-					context->endIndex = (number % 3 == 1) ? 51 : 49;
+				} else { // 5,8,11
+					// Reset to 0
+					context->commandIndex = 36;
+					context->endIndex = 41;
 				}
-			} else if (host_sequence % 3 == 1) { // 4,7,10,13
-				// Press A
-				context->commandIndex = 42;
-				context->endIndex = 43;
-			} else { // 5,8,11
-				// Reset to 0
-				context->commandIndex = 36;
-				context->endIndex = 41;
 			}
-		}
+			return &sequences;
+		case DONE:
+			return nullptr;
 	}
-
-	return &(sequences[context->commandIndex]);
 }

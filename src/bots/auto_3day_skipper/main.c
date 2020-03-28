@@ -24,7 +24,3 @@ these buttons for our use.
 Command* GetNextReport(Context* context, USB_JoystickReport_Input_t* const ReportData) {
 	return auto3DaySkipper(context, ReportData);
 }
-
-void InitReport(Context* context) {
-	auto3DaySkipperInit(context);
-}

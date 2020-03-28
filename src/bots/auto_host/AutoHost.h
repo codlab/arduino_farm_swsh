@@ -26,6 +26,4 @@ these buttons for our use.
 
 Command* autoHost(Context* context, USB_JoystickReport_Input_t* const ReportData);
 
-void autoHostInit(Context* context);
-
 #endif

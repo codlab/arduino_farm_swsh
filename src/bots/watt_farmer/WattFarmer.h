@@ -26,5 +26,4 @@ these buttons for our use.
 
 Command* wattFarmer(Context* context, USB_JoystickReport_Input_t* const ReportData);
 
-void wattFarmerInit(Context* context);
 #endif

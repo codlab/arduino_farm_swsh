@@ -61,7 +61,3 @@ Command* GetNextReport(Context* context, USB_JoystickReport_Input_t* const Repor
 	daySkipperJPNoLimit(context, ReportData);
 	return auto3DaySkipper(context, ReportData);
 }
-
-void InitReport(Context* context) {
-	auto3DaySkipperInit(context);
-}

@@ -23,6 +23,6 @@ these buttons for our use.
 
 #include "DaySkippers.h"
 
-extern const Command PROGMEM sequences[];
+extern const Command PROGMEM dayskipper_sequences[];
 
 #endif

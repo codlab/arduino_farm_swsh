@@ -175,84 +175,75 @@ static const Command PROGMEM sequences[] = {
 	{NOTHING, 20}
 };
 
-CalendarSkip _skip;
-
-void daySkipperEUInit(Context* context) {
-	_skip.day = calendarEU.day;
-	_skip.dayToSkip = calendarEU.dayToSkip;
-	_skip.month = calendarEU.month;
-	_skip.year = calendarEU.year;
-	context->commandIndex = 0;
-	context->endIndex = 8;
-	context->state = PROCESS;
-}
-
 // Prepare the next report for the host.
 Command* daySkipperEU(Context* context, USB_JoystickReport_Input_t* const ReportData) {
 	// States and moves management
 	switch (context->state) {
 		case PROCESS:
+			context->commandIndex = 0;
+			context->endIndex = 8;
+			context->next_state = PROCESS_CUSTOM_1;
+			return nullptr;
+		case PROCESS_CUSTOM_1:
 			// Get the next command sequence (new start and end)
-			if (context->commandIndex == -1) {
-				if (_skip.dayToSkip > 0) {
-					// Day = 0, Month = 1, Year = 2
-					int passDayMonthYear = 0;
-					
-					if (_skip.month == 2) {
-						bool isLeapYear = ((_skip.year) % 4 == 0);
-						if (isLeapYear && (_skip.day) == 29)
-						{
-							passDayMonthYear = 1;
-						}
-						else if (!isLeapYear && (_skip.day) == 28)
-						{
-							passDayMonthYear = 1;
-						}
-					} else if ((_skip.month) == 12 && (_skip.day) == 31) {
-						passDayMonthYear = 2;
-					} else if ((_skip.month) == 4 || (_skip.month) == 6 || (_skip.month) == 9 || (_skip.month) == 11) {
-						if ((_skip.day) == 30) {
-							passDayMonthYear = 1;
-						}
-					} else { //if (m_month == 1 || m_month == 3 || m_month == 5 || m_month == 7 || m_month == 8 || m_month == 10)
-						if ((_skip.day) == 31) {
-							passDayMonthYear = 1;
-						}
+			if (calendarEU.dayToSkip > 0) {
+				// Day = 0, Month = 1, Year = 2
+				int passDayMonthYear = 0;
+				
+				if (calendarEU.month == 2) {
+					bool isLeapYear = ((calendarEU.year) % 4 == 0);
+					if (isLeapYear && (calendarEU.day) == 29)
+					{
+						passDayMonthYear = 1;
 					}
-					
-					if (passDayMonthYear == 0) {
-						// Pass day
-						(_skip.day)++;
-						context->commandIndex = 9;
-						context->endIndex = 34;
-					} else if (passDayMonthYear == 1) {
-						// Pass month
-						(_skip.day) = 1;
-						(_skip.month)++;
-						context->commandIndex = 35;
-						context->endIndex = 62;
-					} else {
-						// Pass year
-						(_skip.day) = 1;
-						(_skip.month) = 1;
-						(_skip.year)++;
-						context->commandIndex = 63;
-						context->endIndex = 92;
+					else if (!isLeapYear && (calendarEU.day) == 28)
+					{
+						passDayMonthYear = 1;
 					}
-				} else if ((_skip.dayToSkip) == 0) {
-					// Go back to game
-					context->commandIndex = 93;
-					context->endIndex = 96;
-				} else {
-					// Finish
-					context->state = DONE;
-					break;
+				} else if ((calendarEU.month) == 12 && (calendarEU.day) == 31) {
+					passDayMonthYear = 2;
+				} else if ((calendarEU.month) == 4 || (calendarEU.month) == 6 || (calendarEU.month) == 9 || (calendarEU.month) == 11) {
+					if ((calendarEU.day) == 30) {
+						passDayMonthYear = 1;
+					}
+				} else { //if (m_month == 1 || m_month == 3 || m_month == 5 || m_month == 7 || m_month == 8 || m_month == 10)
+					if ((calendarEU.day) == 31) {
+						passDayMonthYear = 1;
+					}
 				}
 				
-				(_skip.dayToSkip)--;
+				if (passDayMonthYear == 0) {
+					// Pass day
+					(calendarEU.day)++;
+					context->commandIndex = 9;
+					context->endIndex = 34;
+				} else if (passDayMonthYear == 1) {
+					// Pass month
+					(calendarEU.day) = 1;
+					(calendarEU.month)++;
+					context->commandIndex = 35;
+					context->endIndex = 62;
+				} else {
+					// Pass year
+					(calendarEU.day) = 1;
+					(calendarEU.month) = 1;
+					(calendarEU.year)++;
+					context->commandIndex = 63;
+					context->endIndex = 92;
+				}
+			} else if ((calendarEU.dayToSkip) == 0) {
+				// Go back to game
+				context->commandIndex = 93;
+				context->endIndex = 96;
+			} else {
+				// Finish
+				context->next_state = DONE;
+				break;
 			}
+			
+			(calendarEU.dayToSkip)--;
 
-			return &(sequences[context->commandIndex]);
+			return &sequences;
 		case DONE: return nullptr;
 	}
 	return nullptr;

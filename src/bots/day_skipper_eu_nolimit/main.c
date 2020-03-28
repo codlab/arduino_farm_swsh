@@ -24,7 +24,3 @@ these buttons for our use.
 Command* GetNextReport(Context* context, USB_JoystickReport_Input_t* const ReportData) {
 	return daySkipperEUNoLimit(context, ReportData);
 }
-
-void InitReport(Context* context) {
-	daySkipperEUNoLimitInit(context);
-}

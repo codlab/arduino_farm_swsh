@@ -12,7 +12,7 @@
 
 #include "../../core/calendar_skip.h"
 
-CalendarSkip calendarEU = {
+CalendarSkip calendar = {
     .day = 18,
     .month = 3,
     .year = 2020,

@@ -1,7 +1,7 @@
 
 #include "DaySkippersSegment.h"
 
-const Command PROGMEM sequences[] = {
+const Command PROGMEM dayskipper_sequences[] = {
 	//----------Setup [0,8]----------
 	// Press A once to connect
 	{NOTHING, 30},

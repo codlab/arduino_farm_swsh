@@ -27,6 +27,4 @@ these buttons for our use.
 // Prepare the next report for the host.
 Command* autoFossil(Context* context, USB_JoystickReport_Input_t* const ReportData);
 
-void autoFossilInit(Context* context);
-
 #endif

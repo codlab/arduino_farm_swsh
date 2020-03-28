@@ -98,66 +98,63 @@ int m_row = 1;
 int m_box = 1;
 bool m_released = false;
 
-void boxReleaseInit(Context* context) {
-	context->commandIndex = 0;
-	context->endIndex = 8;
-	context->state = PROCESS;
-}
-
 // Prepare the next report for the host.
 Command* boxRelease(Context* context, USB_JoystickReport_Input_t* const ReportData) {
 	// States and moves management
 	switch (context->state) {
 		case PROCESS:
+			context->commandIndex = 0;
+			context->endIndex = 8;
+			context->next_state = PROCESS_CUSTOM_1;
+			return nullptr;
+		case PROCESS_CUSTOM_1:
 			// Get the next command sequence (new start and end)
-			if (context->commandIndex == -1) {
-				if (context->endIndex == 6) {
-					// Complete
-					context->state = DONE;
-					break;
-				} else if (m_column > 6) {
-					if (m_row == 5) {
-						m_box++;
-						if (m_box > m_boxCount) {
-							// Press B to leave
-							context->commandIndex = 5;
-							context->endIndex = 6;
-						} else {
-							// Next box
-							context->commandIndex = 23;
-							context->endIndex = 42;
-							
-							m_row = 1;
-						}
+			if (context->endIndex == 6) {
+				// Complete
+				context->next_state = DONE;
+				return nullptr;
+			} else if (m_column > 6) {
+				if (m_row == 5) {
+					m_box++;
+					if (m_box > m_boxCount) {
+						// Press B to leave
+						context->commandIndex = 5;
+						context->endIndex = 6;
 					} else {
-						// Next row
-						context->commandIndex = 45;
-						context->endIndex = 56;
+						// Next box
+						context->commandIndex = 23;
+						context->endIndex = 42;
 						
-						m_row++;
+						m_row = 1;
 					}
-					
-					m_column = 1;
-					m_released = false;
 				} else {
-					if (!m_released) {
-						// Release pokemon
-						context->commandIndex = 9;
-						context->endIndex = 22;
-						
-						m_column++;
-						m_released = true;
-					} else {
-						// Next pokemon
-						context->commandIndex = 43;
-						context->endIndex = 44;
-						
-						m_released = false;
-					}
+					// Next row
+					context->commandIndex = 45;
+					context->endIndex = 56;
+					
+					m_row++;
+				}
+				
+				m_column = 1;
+				m_released = false;
+			} else {
+				if (!m_released) {
+					// Release pokemon
+					context->commandIndex = 9;
+					context->endIndex = 22;
+					
+					m_column++;
+					m_released = true;
+				} else {
+					// Next pokemon
+					context->commandIndex = 43;
+					context->endIndex = 44;
+					
+					m_released = false;
 				}
 			}
 
-			return &(sequences[context->commandIndex]);
+			return &sequences;
 		case DONE: return nullptr;
 	}
 	return nullptr;

@@ -163,75 +163,72 @@ static const Command PROGMEM sequences[] = {
 	{NOTHING, 20}
 };
 
-void daySkipperJPInit(Context* context) {
-	context->commandIndex = 0;
-	context->endIndex = 8;
-	context->state = PROCESS;
-}
-
 // Prepare the next report for the host.
 Command* daySkipperJP(Context* context, USB_JoystickReport_Input_t* const ReportData) {
 	// States and moves management
 	switch (context->state) {
 		case PROCESS:
+			context->commandIndex = 0;
+			context->endIndex = 8;
+			context->next_state = PROCESS_CUSTOM_1;
+			return nullptr;
+		case PROCESS_CUSTOM_1:
 			// Get the next command sequence (new start and end)
-			if (context->commandIndex == -1) {
-				if (calendarJP.dayToSkip > 0) {
-					// Day = 0, Month = 1, Year = 2
-					int passDayMonthYear = 0;
-					
-					if (calendarJP.month == 2) {
-						bool isLeapYear = (calendarJP.year % 4 == 0);
-						if (isLeapYear && calendarJP.day == 29) {
-							passDayMonthYear = 1;
-						} else if (!isLeapYear && calendarJP.day == 28) {
-							passDayMonthYear = 1;
-						}
-					} else if (calendarJP.month == 12 && calendarJP.day == 31) {
-						passDayMonthYear = 2;
-					} else if (calendarJP.month == 4 || calendarJP.month == 6 || calendarJP.month == 9 || calendarJP.month == 11) {
-						if (calendarJP.day == 30) {
-							passDayMonthYear = 1;
-						}
-					} else { // if (m_month == 1 || m_month == 3 || m_month == 5 || m_month == 7 || m_month == 8 || m_month == 10)
-						if (calendarJP.day == 31) {
-							passDayMonthYear = 1;
-						}
+			if (calendarJP.dayToSkip > 0) {
+				// Day = 0, Month = 1, Year = 2
+				int passDayMonthYear = 0;
+				
+				if (calendarJP.month == 2) {
+					bool isLeapYear = (calendarJP.year % 4 == 0);
+					if (isLeapYear && calendarJP.day == 29) {
+						passDayMonthYear = 1;
+					} else if (!isLeapYear && calendarJP.day == 28) {
+						passDayMonthYear = 1;
 					}
-					
-					if (passDayMonthYear == 0) {
-						// Pass day
-						calendarJP.day++;
-						context->commandIndex = 9;
-						context->endIndex = 26;
-					} else if (passDayMonthYear == 1) {
-						// Pass month
-						calendarJP.day = 1;
-						calendarJP.month++;
-						context->commandIndex = 27;
-						context->endIndex = 50;
-					} else {
-						// Pass year
-						calendarJP.day = 1;
-						calendarJP.month = 1;
-						calendarJP.year++;
-						context->commandIndex = 51;
-						context->endIndex = 80;
+				} else if (calendarJP.month == 12 && calendarJP.day == 31) {
+					passDayMonthYear = 2;
+				} else if (calendarJP.month == 4 || calendarJP.month == 6 || calendarJP.month == 9 || calendarJP.month == 11) {
+					if (calendarJP.day == 30) {
+						passDayMonthYear = 1;
 					}
-				} else if (calendarJP.dayToSkip == 0) {
-					// Go back to game
-					context->commandIndex = 81;
-					context->endIndex = 84;
-				} else {
-					// Finish
-					context->state = DONE;
-					break;
+				} else { // if (m_month == 1 || m_month == 3 || m_month == 5 || m_month == 7 || m_month == 8 || m_month == 10)
+					if (calendarJP.day == 31) {
+						passDayMonthYear = 1;
+					}
 				}
 				
-				calendarJP.dayToSkip--;
+				if (passDayMonthYear == 0) {
+					// Pass day
+					calendarJP.day++;
+					context->commandIndex = 9;
+					context->endIndex = 26;
+				} else if (passDayMonthYear == 1) {
+					// Pass month
+					calendarJP.day = 1;
+					calendarJP.month++;
+					context->commandIndex = 27;
+					context->endIndex = 50;
+				} else {
+					// Pass year
+					calendarJP.day = 1;
+					calendarJP.month = 1;
+					calendarJP.year++;
+					context->commandIndex = 51;
+					context->endIndex = 80;
+				}
+			} else if (calendarJP.dayToSkip == 0) {
+				// Go back to game
+				context->commandIndex = 81;
+				context->endIndex = 84;
+			} else {
+				// Finish
+				context->next_state = DONE;
+				return nullptr;
 			}
+			
+			calendarJP.dayToSkip--;
 
-			return &(sequences[context->commandIndex]);
+			return &sequences;
 		case DONE: return nullptr;
 	}
 	return nullptr;

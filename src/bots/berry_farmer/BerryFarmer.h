@@ -26,6 +26,4 @@ these buttons for our use.
 
 Command* berryFarmer(Context* context, USB_JoystickReport_Input_t* const ReportData);
 
-void berryFarmerInit(Context* context);
-
 #endif

@@ -88,62 +88,59 @@ static const Command PROGMEM sequences[] = {
 int m_talkSequence = 0;
 int m_fossilCount = 0;
 
-void autoFossilInit(Context* context) {
-	context->commandIndex = 0;
-	context->endIndex = 8;
-	context->state = PROCESS;
-}
-
 // Prepare the next report for the host.
 Command* autoFossil(Context* context, USB_JoystickReport_Input_t* const ReportData) {
 	// States and moves management
 	switch (context->state) {
 		case PROCESS:
+			context->commandIndex = 0;
+			context->endIndex = 8;
+			context->next_state = PROCESS_CUSTOM_1;
+			return nullptr;
+		case PROCESS_CUSTOM_1:
 			// Get the next command sequence (new start and end)
-			if (context->commandIndex == -1) {
-				if (m_fossilCount == m_timesBeforeSR) {
-					if (m_autoSoftReset) {
-						// Soft reset
-						context->commandIndex = 35;
-						context->endIndex = 46;
-						
-						m_fossilCount = 0;
-					} else {
-						if (m_talkSequence == 0) {
-							// Goto HOME and tell player it's finished
-							context->commandIndex = 35;
-							context->endIndex = 36;
-							
-							m_talkSequence++;
-						} else {
-							// Finish
-							context->state = DONE;
-							break;
-						}
-					}
-				} else {
-					m_talkSequence++;
+			if (m_fossilCount == m_timesBeforeSR) {
+				if (m_autoSoftReset) {
+					// Soft reset
+					context->commandIndex = 35;
+					context->endIndex = 46;
 					
-					if (m_talkSequence == 1) {
-						// Start talking
-						context->commandIndex = 9;
-						context->endIndex = 12;
-					} else if (m_talkSequence >= 4) {
-						// Getting fossil
-						context->commandIndex = 17;
-						context->endIndex = 34;
+					m_fossilCount = 0;
+				} else {
+					if (m_talkSequence == 0) {
+						// Goto HOME and tell player it's finished
+						context->commandIndex = 35;
+						context->endIndex = 36;
 						
-						m_talkSequence = 0;
-						m_fossilCount++;
+						m_talkSequence++;
 					} else {
-						bool topSlot = (m_talkSequence == 2) ? m_firstFossilTopSlot : m_secondFossilTopSlot;
-						context->commandIndex = topSlot ? 15 : 13;
-						context->endIndex = 16;
+						// Finish
+						context->next_state = DONE;
+						return nullptr;
 					}
+				}
+			} else {
+				m_talkSequence++;
+				
+				if (m_talkSequence == 1) {
+					// Start talking
+					context->commandIndex = 9;
+					context->endIndex = 12;
+				} else if (m_talkSequence >= 4) {
+					// Getting fossil
+					context->commandIndex = 17;
+					context->endIndex = 34;
+					
+					m_talkSequence = 0;
+					m_fossilCount++;
+				} else {
+					bool topSlot = (m_talkSequence == 2) ? m_firstFossilTopSlot : m_secondFossilTopSlot;
+					context->commandIndex = topSlot ? 15 : 13;
+					context->endIndex = 16;
 				}
 			}
 
-			return &(sequences[context->commandIndex]);
+			return &sequences;
 		case DONE: return nullptr;
 	}
 	return nullptr;

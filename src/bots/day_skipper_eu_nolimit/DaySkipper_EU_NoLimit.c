@@ -85,44 +85,41 @@ static const Command PROGMEM sequences[] = {
 
 int eu_day = 1; // [1,31]
 
-void daySkipperEUNoLimitInit(Context* context) {
-	context->commandIndex = 0;
-	context->endIndex = 8;
-	context->state = PROCESS;
-}
-
 // Prepare the next report for the host.
 Command* daySkipperEUNoLimit(Context* context, USB_JoystickReport_Input_t* const ReportData) {
 	// States and moves management
 	switch (context->state) {
 		case PROCESS:
+			context->commandIndex = 0;
+			context->endIndex = 8;
+			context->next_state = PROCESS_CUSTOM_1;
+			return nullptr;
+		case PROCESS_CUSTOM_1:
 			// Get the next command sequence (new start and end)
-			if (context->commandIndex == -1) {
-				if (context->endIndex == 38) {
-					// Finish
-					context->state = DONE;
-					break;
-				} else if (eu_dayToSkip > 0) {
-					// Pass day
-					context->commandIndex = 9;
-					context->endIndex = 34;
-					
-					if (eu_day == 31) {
-						// Rolling back, no day skipped
-						eu_day = 1;
-					} else {
-						// Roll foward by a day
-						eu_day++;
-						eu_dayToSkip--;
-					}
+			if (context->endIndex == 38) {
+				// Finish
+				context->next_state = DONE;
+				break;
+			} else if (eu_dayToSkip > 0) {
+				// Pass day
+				context->commandIndex = 9;
+				context->endIndex = 34;
+				
+				if (eu_day == 31) {
+					// Rolling back, no day skipped
+					eu_day = 1;
 				} else {
-					// Go back to game
-					context->commandIndex = 35;
-					context->endIndex = 38;
+					// Roll foward by a day
+					eu_day++;
+					eu_dayToSkip--;
 				}
+			} else {
+				// Go back to game
+				context->commandIndex = 35;
+				context->endIndex = 38;
 			}
 
-			return &(sequences[context->commandIndex]);
+			return &sequences;
 		case DONE: return nullptr;
 	}
 	return nullptr;

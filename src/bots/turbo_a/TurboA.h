@@ -26,6 +26,4 @@ these buttons for our use.
 
 Command* turboA(Context* context, USB_JoystickReport_Input_t* const ReportData);
 
-void turboAInit(Context* context);
-
 #endif

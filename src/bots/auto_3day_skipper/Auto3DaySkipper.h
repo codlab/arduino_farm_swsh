@@ -27,6 +27,4 @@ these buttons for our use.
 
 Command* auto3DaySkipper(Context* context, USB_JoystickReport_Input_t* const ReportData);
 
-void auto3DaySkipperInit(Context* context);
-
 #endif
