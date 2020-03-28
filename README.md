@@ -1,4 +1,12 @@
-# Auto Controller by brianuuuSonic's fork
+# Pokemon Shield & Sword Bots through Arduino
+
+This repository is an evolution of the Auto Controller by brianuuuSonic original work. The intent is to provide a modularity and clean environment for users to :
+
+  - easily fork the project
+  - make modification
+  - add their own bots
+
+# Information
 
 Based on the LUFA library's Low-Level Joystick Demo (C) Dean Camera
 Based on the HORI's Pokken Tournament Pro Pad design (C) HORI
@@ -29,12 +37,12 @@ This project implements a modified version of HORI's Pokken Tournament Pro Pad U
 
 ## Configuration
 
-Please refer to the TARGET.c file itself for instructions.
+Given the chosen bot, notice the `config.h` file, in those files are the specific settings to edit before compilation. Some other information are also stated there.
 
 ## Compiling
 
 - compile every bots
-```make```
+```make all```
 
 - cleaning
 ```make clean```
@@ -42,6 +50,7 @@ Please refer to the TARGET.c file itself for instructions.
 ## Flashing
 
 Depending on your OS, [MacOS](https://github.com/codlab/arduino_farm_swsh#flash-1) or [Windows](https://github.com/codlab/arduino_farm_swsh#flash) or Linux
+
 ## Incoming
 
 New features coming soon :
@@ -115,6 +124,7 @@ Video Instruction: https://youtu.be/OZ0yrr061-E?t=80
 
 # Change Log:
 
+- `v4.0.0` Clean architecture and modular, move bot sequence to flash mem
 - `v3.1.0` Added random link code for Auto Host
 - `v3.0.0` Auto Host, Box Release initial release, increase HOME button after first time connect board from 50 to 60
 - `v2.2.0` Watt Farmer, Berry farmer now speeds up with syncing time
@@ -132,6 +142,7 @@ Video Instruction: https://youtu.be/OZ0yrr061-E?t=80
 
 shinyquagsire23 - Original Switch-Fightstick code
 june - Auto Hosting timing reference
+[brianuuuSonic](https://www.youtube.com/channel/UCHV0EP9TifKSo7RERIbY1QA)
 
 # Special Thanks
 
