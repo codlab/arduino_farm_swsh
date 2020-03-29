@@ -35,6 +35,7 @@
 
 typedef enum {
 	PROCESS,
+	PROCESS_SETTINGS, //name to facilitate tracking specific settings actions
 	PROCESS_CUSTOM_1,
 	PROCESS_CUSTOM_2,
 	PROCESS_CUSTOM_3,

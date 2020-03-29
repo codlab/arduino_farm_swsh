@@ -24,10 +24,12 @@
 	For more information, please see the README.md available at https://github.com/codlab/arduino_farm_swsh
 */
 
-#ifndef DEFAULT_INIT_INCLUDED
-#define DEFAULT_INIT_INCLUDED
+#ifndef DEFAULT_SEQUENCES_INCLUDED
+#define DEFAULT_SEQUENCES_INCLUDED
 
 #include "action.h"
 
 Command* manage_init(Context* context);
+Command* manage_goto_settings(Context* context);
+
 #endif

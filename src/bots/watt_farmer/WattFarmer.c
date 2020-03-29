@@ -37,57 +37,31 @@
 // -> It takes ~10 seconds per watt collection
 /*------------------------------------------*/
 
-static const Command PROGMEM sequences[] = {
-	//----------Setup [0,8]----------
-	// Connect controller in Change Grip/Order
-	{NOTHING, 30},
-	{TRIGGERS, 1},
-	{NOTHING, 30},
-	{A, 1},
-	{NOTHING, 40},
-	{B, 1},
-	{NOTHING, 40},
-	{HOME, 1},
-	{NOTHING, 60},
-	
+static const Command PROGMEM settings_sequence[] = {
 	//----------Sync time and roll day(EU)/month(US)/year(JP) forward [9,56]----------
 	// To System Settings
-	{HOME, 1},
-	{NOTHING, 30},
-	{DOWN, 1},
-	{NOTHING, 1},
-	{RIGHT, 1},
-	{NOTHING, 1},
-	{RIGHT, 1},
-	{NOTHING, 1},
-	{RIGHT, 1},
-	{NOTHING, 1},
-	{RIGHT, 1},
-	{NOTHING, 1},
-	{A, 1},
-	{NOTHING, 1},
+	STEP_B(1, 20),
+	STEP_B(1, 20),
+	STEP_HOME(1, 30),
+	STEP_DOWN(1, 1),
+	STEP_RIGHT(1, 1),
+	STEP_RIGHT(1, 1),
+	STEP_RIGHT(1, 1),
+	STEP_RIGHT(1, 1),
+	STEP_A(1, 10),
 	
 	// To Date and Time
-	{DOWN, 80},
-	{NOTHING, 1},
-	{A, 1},
-	{NOTHING, 1},
-	{DOWN, 1},
-	{NOTHING, 1},
-	{DOWN, 1},
-	{NOTHING, 1},
-	{DOWN, 1},
-	{NOTHING, 1},
-	{DOWN, 1},
-	{NOTHING, 1},
-	{A, 1},
-	{NOTHING, 8},
+	STEP_DOWN(80, 1),
+	STEP_A(1, 1),
+	STEP_DOWN(1, 1),
+	STEP_DOWN(1, 1),
+	STEP_DOWN(1, 1),
+	STEP_DOWN(1, 1),
+	STEP_A(1, 8),
 	
 	// Sync and unsync time
-	{A, 1},
-	{NOTHING, 4},
-	{A, 1},
-	{NOTHING, 8},
+	STEP_A(1, 4),
+	STEP_A(1, 8),
 	
 	// To actually Date and Time
 	STEP_DOWN(1, 1),
@@ -96,64 +70,61 @@ static const Command PROGMEM sequences[] = {
 	
 	// Plus one
 	STEP_UP(1, 1),
-	{RIGHT, 28},
-	{NOTHING, 1},
+	STEP_RIGHT(28, 1),
 	STEP_A(1, 4),
 	
 	// Back to game
 	STEP_HOME(1, 30),
-	STEP_HOME(1, 30),
-	
-	//----------Collect Watts [57,64]----------
-	{A, 12},	
-	{NOTHING, 1},
-	{B, 6},
-	{NOTHING, 1},
-	{B, 30},
-	{NOTHING, 1},
-	{B, 1},	
-	{NOTHING, 50},
-	
-	//----------Save Game [65,70]----------
-	{X, 1},	
-	{NOTHING, 20},
-	{R, 1},
-	{NOTHING, 50},
-	{A, 1},
-	{NOTHING, 140}
+	STEP_HOME(1, 30)
+};
+
+static const Command PROGMEM collect_sequence[] = {
+	STEP_A(12, 1),
+	STEP_B(6, 1),
+	STEP_B(30, 1),
+	STEP_B(1, 50),
+};
+
+static const Command PROGMEM save_sequence[] = {
+	STEP_X(1, 20),
+	STEP_R(1, 50),
+	STEP_A(1, 140)
 };
 
 // Saving
 int m_saveCount = 0;
 int m_saveAt = 50;
 
+#define PROCESS_COLLECT PROCESS_CUSTOM_1
+#define PROCESS_SAVE PROCESS_CUSTOM_2
+#define PROCESS_CHECK_SAVE PROCESS_CUSTOM_3
+
 // Prepare the next report for the host.
 Command* wattFarmer(Context* context, USB_JoystickReport_Input_t* const ReportData) {
 	// States and moves management
 	switch (context->state) {
 		case PROCESS:
-			context->commandIndex = 0;
-			context->endIndex = 8;
-			context->next_state = PROCESS_CUSTOM_1;
-			return nullptr;
-		case PROCESS_CUSTOM_1:
+		case PROCESS_SETTINGS:
+			RETURN_NEW_SEQ(settings_sequence, PROCESS_COLLECT);
+
+		case PROCESS_COLLECT:
+			RETURN_NEW_SEQ(collect_sequence, PROCESS_CHECK_SAVE);
+
+		case PROCESS_SAVE:
+			RETURN_NEW_SEQ(save_sequence, PROCESS_SETTINGS);
+
+		case PROCESS_CHECK_SAVE:
 			// Get the next command sequence (new start and end)
-			if (context->commandIndex == -1) {
-				if (m_saveCount == m_saveAt) {
-					context->commandIndex = 65;
-					context->endIndex = 70;
-					
-					m_saveCount = 0;
-				} else {
-					context->commandIndex = 9;
-					context->endIndex = 64;
-					
-					m_saveCount++;
-				}
+			if(m_saveCount < m_saveAt) {
+				m_saveCount++;
+				context->next_state = PROCESS_SETTINGS;
+			} else {
+				m_saveCount = 0;
+				context->next_state = PROCESS_SAVE;
 			}
 
-			return &sequences;
-		case DONE: return nullptr;
+		case DONE:
+		default: { }
 	}
 	return nullptr;
 }
