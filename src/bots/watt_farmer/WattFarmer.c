@@ -31,17 +31,17 @@
 // -> You MUST have y-comm glitch active and system time unsynced
 // -> You MUST have set text speed to FAST
 // -> You MUST stand in front of a wishing piece den
-// -> You have to start this program at the Change Grip/Order menu
 // -> There is a very small chance that the game will crash, the program will save every 50 tries
 // -> Note that if today's date is end of month for EU, or December for US, first loop will fail, this is normal
 // -> It takes ~10 seconds per watt collection
 /*------------------------------------------*/
 
+static const Command PROGMEM init_sequence[] = {
+	STEP_NOTHING(100),
+	STEP_B(1, 50),
+}
+
 static const Command PROGMEM settings_sequence[] = {
-	//----------Sync time and roll day(EU)/month(US)/year(JP) forward [9,56]----------
-	// To System Settings
-	STEP_B(1, 20),
-	STEP_B(1, 20),
 	STEP_HOME(1, 30),
 	STEP_DOWN(1, 1),
 	STEP_RIGHT(1, 1),
@@ -104,6 +104,8 @@ Command* wattFarmer(Context* context, USB_JoystickReport_Input_t* const ReportDa
 	// States and moves management
 	switch (context->state) {
 		case PROCESS:
+			RETURN_NEW_SEQ(init_sequence, PROCESS_SETTINGS);
+
 		case PROCESS_SETTINGS:
 			RETURN_NEW_SEQ(settings_sequence, PROCESS_COLLECT);
 
