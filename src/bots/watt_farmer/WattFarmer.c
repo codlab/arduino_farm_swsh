@@ -39,7 +39,7 @@
 static const Command PROGMEM init_sequence[] = {
 	STEP_NOTHING(100),
 	STEP_B(1, 50),
-}
+};
 
 static const Command PROGMEM settings_sequence[] = {
 	STEP_HOME(1, 30),
