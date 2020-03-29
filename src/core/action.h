@@ -33,7 +33,7 @@
 #define SIZE(ARRAY) sizeof(ARRAY) / sizeof(Command)
 #define RETURN_NEW_SEQ(ARRAY, NEXT_STATE) \
     context->next_state = NEXT_STATE; \
-    context->endIndex = sizeof(ARRAY) / sizeof(Command); \
+    context->endIndex = sizeof(ARRAY) / sizeof(Command) - 1; \
     return &ARRAY;
 
 #define STEP_NOTHING(TIME) {NOTHING, TIME}
