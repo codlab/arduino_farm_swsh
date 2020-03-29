@@ -70,7 +70,11 @@ static const Command PROGMEM settings_sequence[] = {
 	
 	// Plus one
 	STEP_UP(1, 1),
-	STEP_RIGHT(28, 1),
+	STEP_RIGHT(1, 1),
+	STEP_RIGHT(1, 1),
+	STEP_RIGHT(1, 1),
+	STEP_RIGHT(1, 1),
+	STEP_RIGHT(1, 1),
 	STEP_A(1, 4),
 	
 	// Back to game
