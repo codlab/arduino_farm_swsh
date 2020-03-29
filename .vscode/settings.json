@@ -6,6 +6,7 @@
         "config.h": "c",
         "config_preprocess.h": "c",
         "autoloto.h": "c",
-        "dayskipper_eu_nolimit.h": "c"
+        "dayskipper_eu_nolimit.h": "c",
+        "default_init.h": "c"
     }
 }
