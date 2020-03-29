@@ -24,9 +24,17 @@
 	For more information, please see the README.md available at https://github.com/codlab/arduino_farm_swsh
 */
 
-#include "default_init.h"
+#include "default_sequences.h"
 
-static const Command PROGMEM default_init_sequences[] = {
+static const Command PROGMEM default_init_sequence[] = {
+	STEP_NOTHING(200),
+	STEP_TRIGGERS(5, 150),
+	STEP_TRIGGERS(5, 150),
+	STEP_B(5, 200),
+	STEP_HOME(1, 30)
+};
+
+static const Command PROGMEM default_goto_date_sequence[] = {
 	STEP_NOTHING(200),
 	STEP_TRIGGERS(5, 150),
 	STEP_TRIGGERS(5, 150),
@@ -36,6 +44,12 @@ static const Command PROGMEM default_init_sequences[] = {
 
 Command* manage_init(Context* context) {
 	context->commandIndex = 0;
-	context->endIndex = SIZE(default_init_sequences) - 1;
-	return &default_init_sequences;
+	context->endIndex = SIZE(default_init_sequence) - 1;
+	return &default_init_sequence;
+}
+
+Command* manage_goto_settings(Context* context) {
+	context->commandIndex = 0;
+	context->endIndex = SIZE(default_goto_date_sequence) - 1;
+	return &default_goto_date_sequence;
 }

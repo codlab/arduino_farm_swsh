@@ -106,8 +106,7 @@ Command* autoLoto(Context* context, USB_JoystickReport_Input_t* const ReportData
 	switch (context->state) {
 		case PROCESS:
 			context->next_state = SETTINGS;
-			context->endIndex = 0;
-			return nullptr;
+			return manage_init(context);
 		case SETTINGS:
 			context->next_state = GAME;
 			context->endIndex = SIZE(sequences_in_settings) - 1;

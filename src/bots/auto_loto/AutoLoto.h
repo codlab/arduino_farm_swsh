@@ -29,6 +29,7 @@
 #include "../../Joystick.h"
 #include "../../core/action.h"
 #include "../../core/usb_device.h"
+#include "../../core/default_sequences.h"
 
 Command* autoLoto(Context* context, USB_JoystickReport_Input_t* const ReportData);
 

@@ -31,6 +31,10 @@
 #include "usb_device.h"
 
 #define SIZE(ARRAY) sizeof(ARRAY) / sizeof(Command)
+#define RETURN_NEW_SEQ(ARRAY, NEXT_STATE) \
+    context->next_state = NEXT_STATE; \
+    context->endIndex = sizeof(ARRAY) / sizeof(Command); \
+    return &ARRAY;
 
 #define STEP_NOTHING(TIME) {NOTHING, TIME}
 #define STEP_TRIGGERS(TIME, WAIT_FOR) {TRIGGERS, TIME}, {NOTHING, WAIT_FOR}
@@ -41,6 +45,10 @@
 #define STEP_A(TIME, WAIT_FOR) {A, TIME}, {NOTHING, WAIT_FOR}
 #define STEP_HOME(TIME, WAIT_FOR) {HOME, TIME}, {NOTHING, WAIT_FOR}
 #define STEP_B(TIME, WAIT_FOR) {B, TIME}, {NOTHING, WAIT_FOR}
+#define STEP_X(TIME, WAIT_FOR) {X, TIME}, {NOTHING, WAIT_FOR}
+#define STEP_R(TIME, WAIT_FOR) {R, TIME}, {NOTHING, WAIT_FOR}
+#define STEP_L(TIME, WAIT_FOR) {L, TIME}, {NOTHING, WAIT_FOR}
+#define STEP_Y(TIME, WAIT_FOR) {Y, TIME}, {NOTHING, WAIT_FOR}
 
 void report_action(USB_JoystickReport_Input_t* const ReportData, Command* command);
 
