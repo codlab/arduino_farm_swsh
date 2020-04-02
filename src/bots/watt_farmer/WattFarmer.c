@@ -24,8 +24,8 @@
 	For more information, please see the README.md available at https://github.com/codlab/arduino_farm_swsh
 */
 
-#include <LUFA/Drivers/Peripheral/Serial.h>
 #include "WattFarmer.h"
+#include "../../core/serial_report.h"
 
 /*------------------------------------------*/
 // INSTRUCTION
@@ -104,49 +104,23 @@ int m_saveAt = 50;
 #define PROCESS_SAVE PROCESS_CUSTOM_2
 #define PROCESS_CHECK_SAVE PROCESS_CUSTOM_3
 
-unsigned long _round = 0;
-char buffer[12];
-
-void prepareBuffer(void) {
-	int i = 0;
-	for(; i < sizeof(buffer); i++) buffer[i] = ' ';
-	buffer[sizeof(buffer) - 2] = '0';
-	buffer[sizeof(buffer) - 1] = 0;
-}
-
-void jumpNext(void) {
-	unsigned long tmp = _round;
-	prepareBuffer();
-
-	int index = sizeof(buffer) - 2;
-	while(tmp > 0 && index >= 0) {
-		int digit = tmp % 10;
-		buffer[index] = '0' + digit;
-		tmp /= 10;
-		index--;
-	}
-	index = 0;
-	while(index < sizeof(buffer)) {
-		if(0 != buffer[index]) Serial_SendByte(buffer[index]);
-		index++;
-	}
-	_round ++;
-}
+static unsigned long watt_farmer_round = 0;
 
 // Prepare the next report for the host.
 Command* wattFarmer(Context* context, USB_JoystickReport_Input_t* const ReportData) {
 	// States and moves management
 	switch (context->state) {
 		case PROCESS:
-		prepareBuffer();
-			Serial_Init(9600, false);
+			reportInit();
 			RETURN_NEW_SEQ(init_sequence, PROCESS_SETTINGS);
 
 		case PROCESS_SETTINGS:
 			RETURN_NEW_SEQ(settings_sequence, PROCESS_COLLECT);
 
 		case PROCESS_COLLECT:
-			jumpNext();
+			reportStep(watt_farmer_round);
+			watt_farmer_round ++;
+
 			RETURN_NEW_SEQ(collect_sequence, PROCESS_CHECK_SAVE);
 
 		case PROCESS_SAVE:
