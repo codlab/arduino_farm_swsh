@@ -9,6 +9,7 @@
         "dayskipper_eu_nolimit.h": "c",
         "default_sequences.h": "c",
         "serial.h": "c",
-        "turboa.h": "c"
+        "turboa.h": "c",
+        "serial_report.h": "c"
     }
 }
