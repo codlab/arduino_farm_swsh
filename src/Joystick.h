@@ -113,6 +113,7 @@ typedef enum {
 	DOWN,
 	LEFT,
 	RIGHT,
+	CIRCLE,
 	X,
 	Y,
 	A,

@@ -7,6 +7,8 @@
         "config_preprocess.h": "c",
         "autoloto.h": "c",
         "dayskipper_eu_nolimit.h": "c",
-        "default_sequences.h": "c"
+        "default_sequences.h": "c",
+        "serial.h": "c",
+        "turboa.h": "c"
     }
 }
