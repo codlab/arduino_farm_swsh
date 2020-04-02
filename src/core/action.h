@@ -34,7 +34,7 @@
 #define RETURN_NEW_SEQ(ARRAY, NEXT_STATE) \
     context->next_state = NEXT_STATE; \
     context->endIndex = sizeof(ARRAY) / sizeof(Command) - 1; \
-    return &ARRAY;
+    return (Command*) &ARRAY;
 
 #define STEP_NOTHING(TIME) {NOTHING, TIME}
 #define STEP_TRIGGERS(TIME, WAIT_FOR) {TRIGGERS, TIME}, {NOTHING, WAIT_FOR}
