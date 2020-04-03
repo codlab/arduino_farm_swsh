@@ -46,11 +46,12 @@ USB_JoystickReport_Input_t last_report;
 int main(void) {
 	// We'll start by performing hardware and peripheral setup.
 	SetupHardware();
+
+	init_millis(F_CPU);
 	// We'll then enable global interrupts for our use.
 	GlobalInterruptEnable();
 	// Once that's done, we'll enter an infinite loop.
 
-	init_millis(F_CPU);
 	reportInit();
 
 	for (;;)
