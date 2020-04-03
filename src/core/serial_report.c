@@ -50,16 +50,14 @@ int equals(const char * str) {
 }
 
 void checkReceived() {
-    if(Serial_IsCharReceived()) {
-        int16_t b = Serial_ReceiveByte();
-        if(-1 != b && recv_buffer_index < RECV_SIZE) {
-            if(recv_buffer_first_at == -1) {
-                recv_buffer_first_at = millis();
-            }
-            recv_buffer[recv_buffer_index] = (b & 0xff);
-            recv_buffer_index ++;
-            recv_buffer[recv_buffer_index] = 0; //nullptr
+    int16_t b = Serial_ReceiveByte();
+    if(-1 != b && recv_buffer_index < RECV_SIZE) {
+        if(recv_buffer_first_at == -1) {
+            recv_buffer_first_at = millis();
         }
+        recv_buffer[recv_buffer_index] = (b & 0xff);
+        recv_buffer_index ++;
+        recv_buffer[recv_buffer_index] = 0; //nullptr
     }
 
     if(recv_buffer_first_at > -1) {
