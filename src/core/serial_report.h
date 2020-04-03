@@ -20,7 +20,16 @@ typedef enum Bot {
 	WattFarmer //p
 } Bot;
 
+typedef enum BotState {
+	ON,
+	PAUSE, //TODO add PAUSE
+	OFF
+} BotState;
+
 void reportBot(Bot bot);
+
+BotState currentBotState();
+Bot currentBot();
 
 /**
  * Initialize the USART communication

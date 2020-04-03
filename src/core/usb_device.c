@@ -27,6 +27,7 @@
 #include <avr/pgmspace.h>
 
 #include "../Joystick.h"
+#include "millis.h"
 #include "action.h"
 #include "usb_device.h"
 #include "serial_report.h"
@@ -49,6 +50,7 @@ int main(void) {
 	GlobalInterruptEnable();
 	// Once that's done, we'll enter an infinite loop.
 
+	init_millis(F_CPU);
 	reportInit();
 
 	for (;;)
@@ -129,6 +131,16 @@ void HID_Task(void) {
 	// If the device isn't connected and properly configured, we can't do anything here.
 	if (USB_DeviceState != DEVICE_STATE_Configured)
 		return;
+
+	checkReceived();
+
+	switch(currentBotState()) {
+		case PAUSE:
+		case OFF:
+			reportTrySendState();
+			return;
+		default: { /*continue*/ }
+	}
 
 	// We'll start with the OUT endpoint.
 	Endpoint_SelectEndpoint(JOYSTICK_OUT_EPADDR);
