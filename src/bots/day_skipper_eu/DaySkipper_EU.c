@@ -25,6 +25,7 @@
 */
 
 #include "DaySkipper_EU.h"
+#include "../../core/serial_report.h"
 #include "config_preprocess.h"
 #include "config.h"
 
@@ -181,11 +182,15 @@ static const Command PROGMEM sequences[] = {
 	{NOTHING, 20}
 };
 
+static unsigned long _day_skip_round_eu = 0;
+
 // Prepare the next report for the host.
 Command* daySkipperEU(Context* context, USB_JoystickReport_Input_t* const ReportData) {
 	// States and moves management
 	switch (context->state) {
 		case PROCESS:
+			reportBot(DaySKipperEU);
+
 			context->commandIndex = 0;
 			context->endIndex = 8;
 			context->next_state = PROCESS_CUSTOM_1;
@@ -248,6 +253,9 @@ Command* daySkipperEU(Context* context, USB_JoystickReport_Input_t* const Report
 			}
 			
 			(calendarEU.dayToSkip)--;
+
+			reportStep(_day_skip_round_eu);
+			_day_skip_round_eu ++;
 
 			return &sequences;
 		case DONE: return nullptr;
