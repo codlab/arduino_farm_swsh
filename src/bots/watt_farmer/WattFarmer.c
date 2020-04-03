@@ -111,7 +111,7 @@ Command* wattFarmer(Context* context, USB_JoystickReport_Input_t* const ReportDa
 	// States and moves management
 	switch (context->state) {
 		case PROCESS:
-			reportInit();
+			reportBot(WattFarmer);
 			RETURN_NEW_SEQ(init_sequence, PROCESS_SETTINGS);
 
 		case PROCESS_SETTINGS:

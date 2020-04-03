@@ -10,6 +10,7 @@
         "default_sequences.h": "c",
         "serial.h": "c",
         "turboa.h": "c",
-        "serial_report.h": "c"
+        "serial_report.h": "c",
+        "wattfarmer.h": "c"
     }
 }

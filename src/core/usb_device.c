@@ -24,10 +24,12 @@
 	For more information, please see the README.md available at https://github.com/codlab/arduino_farm_swsh
 */
 
+#include <avr/pgmspace.h>
+
 #include "../Joystick.h"
 #include "action.h"
 #include "usb_device.h"
-#include <avr/pgmspace.h>
+#include "serial_report.h"
 
 Context context = {
 	.state = PROCESS,
@@ -46,6 +48,8 @@ int main(void) {
 	// We'll then enable global interrupts for our use.
 	GlobalInterruptEnable();
 	// Once that's done, we'll enter an infinite loop.
+
+	reportInit();
 
 	for (;;)
 	{
