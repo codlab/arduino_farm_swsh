@@ -35,6 +35,7 @@
  * - in such case, reset data
  */
 
+#include "../../core/serial_report.h"
 #include "../auto_3day_skipper/Auto3DaySkipper.h"
 #include "../auto_fossil/AutoFossil.h"
 #include "../auto_host/AutoHost.h"
@@ -49,21 +50,27 @@
 #include "../day_skipper_us_nolimit/DaySkipper_US_NoLimit.h"
 #include "../day_skipper_jp/DaySkipper_JP.h"
 #include "../day_skipper_jp_nolimit/DaySkipper_JP_NoLimit.h"
+#include "../crashfreeegg_dup/CrashFreeEgg.h"
 
 // Prepare the next report for the host.
 Command* GetNextReport(Context* context, USB_JoystickReport_Input_t* const ReportData) {
-	autoHost(context, ReportData);
-	autoFossil(context, ReportData);
-	autoLoto(context, ReportData);
-	berryFarmer(context, ReportData);
-	boxRelease(context, ReportData);
-	turboA(context, ReportData);
-	wattFarmer(context, ReportData);
-	daySkipperEU(context, ReportData);
-	daySkipperUS(context, ReportData);
-	daySkipperJP(context, ReportData);
-	daySkipperEUNoLimit(context, ReportData);
-	daySkipperUSNoLimit(context, ReportData);
-	daySkipperJPNoLimit(context, ReportData);
-	return auto3DaySkipper(context, ReportData);
+	switch(currentBot()) {
+		case MissingNo: return nullptr;
+		case Auto3DaysSkipper: return auto3DaySkipper(context, ReportData);
+		case AutoFossil: return autoFossil(context, ReportData);
+		case AutoHost: return autoHost(context, ReportData);
+		case AutoLoto: return autoLoto(context, ReportData);
+		case BerryFarmer: return berryFarmer(context, ReportData);
+		case BoxRelease: return boxRelease(context, ReportData);
+		case CrashFreeEggDup: return crashFreeEgg(context, ReportData);
+		case DaySKipperEU: return daySkipperEU(context, ReportData);
+		case DaySKipperEUNoLimit: return daySkipperEUNoLimit(context, ReportData);
+		case DaySKipperJP: return daySkipperJP(context, ReportData);
+		case DaySKipperJPNoLimit: return daySkipperJPNoLimit(context, ReportData);
+		case DaySKipperUS: return daySkipperUS(context, ReportData);
+		case DaySKipperUSNoLimit: return daySkipperUSNoLimit(context, ReportData);
+		case TurboA: return turboA(context, ReportData);
+		case WattFarmer: return wattFarmer(context, ReportData);
+		default: return nullptr;
+	}
 }

@@ -6,7 +6,8 @@ SRC_FARMERS  = ../berry_farmer/BerryFarmer.c ../box_release/BoxRelease.c ../turb
 SRC_DAY_US   = ../day_skipper_us/DaySkipper_US.c ../day_skipper_us_nolimit/DaySkipper_US_NoLimit.c
 SRC_DAY_EU   = ../day_skipper_eu/DaySkipper_EU.c ../day_skipper_eu_nolimit/DaySkipper_EU_NoLimit.c
 SRC_DAY_JP   = ../day_skipper_jp/DaySkipper_JP.c ../day_skipper_jp_nolimit/DaySkipper_JP_NoLimit.c
-SRC          = main.c $(SRC_AUTO) $(SRC_FARMERS) $(SRC_DAY_EU) $(SRC_DAY_US) $(SRC_DAY_JP) $(SRC_EXPANDED)
+SRC_CRASH_FREE_EGG   = ../crashfreeegg_dup/CrashFreeEgg.c
+SRC          = main.c $(SRC_AUTO) $(SRC_FARMERS) $(SRC_DAY_EU) $(SRC_DAY_US) $(SRC_DAY_JP) $(SRC_CRASH_FREE_EGG) $(SRC_EXPANDED)
 
 # Default target
 all:

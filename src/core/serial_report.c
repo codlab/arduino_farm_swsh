@@ -5,7 +5,7 @@
 //#define DEBUG true
 
 static char buffer[50];
-static Bot current_bot;
+static Bot current_bot = MissingNo;
 static BotState current_bot_state = ON;
 static unsigned long current_bot_round = 0;
 
