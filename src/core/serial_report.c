@@ -1,5 +1,8 @@
 #include <LUFA/Drivers/Peripheral/Serial.h>
 #include "serial_report.h"
+#include "millis.h"
+
+//#define DEBUG true
 
 static char buffer[50];
 static Bot current_bot;
@@ -9,7 +12,14 @@ static unsigned long current_bot_round = 0;
 #define RECV_SIZE 50
 static char recv_buffer[RECV_SIZE + 1];
 static int recv_buffer_index = 0;
-static int recv_buffer_first_at = -1;
+static unsigned long recv_buffer_first_at = 0;
+
+static unsigned long last_send_frame = 0;
+
+static unsigned long current_millis = 0;
+void fechCurrentMillis(void) {
+    current_millis = millis();
+}
 
 void reportInit(void) {
     Serial_Init(9600, false);
@@ -22,7 +32,7 @@ void prepareBuffer(void) {
 	buffer[sizeof(buffer) - 1] = 0;
 }
 
-BotState currentBotState() {
+BotState currentBotState(void) {
     return current_bot_state;
 }
 
@@ -30,13 +40,12 @@ void reportBot(Bot bot) {
     current_bot = bot;
 }
 
-Bot current() {
+Bot current(void) {
     return current_bot;
 }
 
 void reportStep(unsigned long round) {
     current_bot_round = round;
-    reportTrySendState();
 }
 
 
@@ -49,39 +58,18 @@ int equals(const char * str) {
     return true;
 }
 
-void checkReceived() {
-    int16_t b = Serial_ReceiveByte();
-    if(-1 != b && recv_buffer_index < RECV_SIZE) {
-        if(recv_buffer_first_at == -1) {
-            recv_buffer_first_at = millis();
-        }
-        recv_buffer[recv_buffer_index] = (b & 0xff);
-        recv_buffer_index ++;
-        recv_buffer[recv_buffer_index] = 0; //nullptr
-    }
 
-    if(recv_buffer_first_at > -1) {
-        unsigned long diff = millis() - recv_buffer_first_at;
-        if(diff >= 1000) {
-            if(equals("PAUSE")) {
-                current_bot_state = PAUSE;
-            } else if(equals("ON")) {
-                current_bot_state = ON;
-            } else if(equals("OFF")) {
-                current_bot_state = OFF;
-            }
-
-            //reset buffer
-            recv_buffer_first_at = -1;
-            recv_buffer_index = 0;
-        }
-    }
-}
-
-void reportTrySendState() {
+void reportTrySendState(void) {
+    
 	unsigned long tmp = current_bot_round;
 	int index = sizeof(buffer) - 2;
 
+    #ifdef DEBUG
+    for(index = 0; index < recv_buffer_index ; index ++) {
+        Serial_SendByte(recv_buffer[index]);
+    }
+    Serial_SendByte(equals("PAUSE") ? 0x99 : 0x66);
+    #else
 	prepareBuffer();
 
 	while(tmp > 0 && index >= 0) {
@@ -111,5 +99,47 @@ void reportTrySendState() {
 		if(0 != buffer[index]) Serial_SendByte(buffer[index]);
 		index ++;
 	}
+    #endif
 }
 
+void checkSend(void) {
+    if(last_send_frame == 0) {
+        last_send_frame = current_millis;
+    }
+
+    unsigned long diff = current_millis - last_send_frame;
+
+    if(diff >= 1000) {
+        reportTrySendState();
+        last_send_frame = current_millis;
+    }
+}
+
+void checkReceived(void) {
+    int16_t b = Serial_ReceiveByte();
+    if(-1 != b && recv_buffer_index < RECV_SIZE) {
+        if(recv_buffer_first_at == 0) {
+            recv_buffer_first_at = current_millis;
+        }
+        recv_buffer[recv_buffer_index] = (b & 0xff);
+        recv_buffer_index ++;
+        recv_buffer[recv_buffer_index] = 0; //nullptr
+    }
+
+    if(recv_buffer_first_at > 0) {
+        unsigned long diff = current_millis - recv_buffer_first_at;
+        if(diff >= 1000) {
+            if(equals("PAUSE")) {
+                current_bot_state = PAUSE;
+            } else if(equals("ON")) {
+                current_bot_state = ON;
+            } else if(equals("OFF")) {
+                current_bot_state = OFF;
+            }
+
+            //reset buffer
+            recv_buffer_first_at = 0;
+            recv_buffer_index = 0;
+        }
+    }
+}

@@ -133,12 +133,13 @@ void HID_Task(void) {
 	if (USB_DeviceState != DEVICE_STATE_Configured)
 		return;
 
+	fechCurrentMillis();
 	checkReceived();
+	checkSend();
 
 	switch(currentBotState()) {
 		case PAUSE:
 		case OFF:
-			reportTrySendState();
 			return;
 		default: { /*continue*/ }
 	}

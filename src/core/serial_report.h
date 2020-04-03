@@ -28,8 +28,12 @@ typedef enum BotState {
 
 void reportBot(Bot bot);
 
-BotState currentBotState();
-Bot currentBot();
+BotState currentBotState(void);
+Bot currentBot(void);
+
+void fechCurrentMillis(void);
+void checkReceived(void);
+void checkSend(void);
 
 /**
  * Initialize the USART communication
