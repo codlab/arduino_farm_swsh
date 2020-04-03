@@ -108,20 +108,16 @@ Command* autoLoto(Context* context, USB_JoystickReport_Input_t* const ReportData
 			context->next_state = SETTINGS;
 			return manage_init(context);
 		case SETTINGS:
-			context->next_state = GAME;
-			context->endIndex = SIZE(sequences_in_settings) - 1;
-			return &sequences_in_settings;
+			RETURN_NEW_SEQ(sequences_in_settings, GAME);
 		case GAME:
 			// Get the next command sequence (new start and end)
 			if(m_dayToSkip > 0 && m_skip == m_dayToSkip) {
 				context->next_state = DONE;
+				RETURN_NEW_SEQ(sequences_in_game, DONE);
 			} else {
-				context->endIndex = SIZE(sequences_in_game) - 1;
-				context->next_state = SETTINGS;
-				
 				m_skip++;
+				RETURN_NEW_SEQ(sequences_in_game, SETTINGS);
 			}
-			return &sequences_in_game;
 		case DONE: default: return nullptr;
 	}
 	return nullptr;
