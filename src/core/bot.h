@@ -20,4 +20,6 @@ typedef enum Bot {
 	WattFarmer //p
 } Bot;
 
+int validBot(int value);
+
 #endif

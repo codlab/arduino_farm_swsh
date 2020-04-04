@@ -23,7 +23,7 @@ F_USB        = $(F_CPU)
 OPTIMIZATION = s
 
 SRC_CONFIG   = $(ROOT_FOLDER)/Config/Descriptors.c $(LUFA_SRC_USB)
-SRC_CORE     = $(ROOT_FOLDER)/core/serial_report.c $(ROOT_FOLDER)/core/millis.c $(ROOT_FOLDER)/core/action.c $(ROOT_FOLDER)/core/default_sequences.c $(ROOT_FOLDER)/core/usb_device.c
+SRC_CORE     = $(ROOT_FOLDER)/core/serial_report.c $(ROOT_FOLDER)/core/millis.c $(ROOT_FOLDER)/core/action.c $(ROOT_FOLDER)/core/default_sequences.c $(ROOT_FOLDER)/core/usb_device.c $(ROOT_FOLDER)/core/bot.c
 SRC_EXPANDED = $(SRC_CONFIG) $(SRC_CORE)
 LUFA_PATH    = $(ROOT_FOLDER)/LUFA
 CC_FLAGS     = -DUSE_LUFA_CONFIG_HEADER -I$(ROOT_FOLDER)/Config/ $(OPTIONALS)
