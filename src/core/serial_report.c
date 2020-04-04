@@ -4,11 +4,11 @@
 
 //#define DEBUG true
 
-static char buffer[50];
+static char buffer[25];
 static BotState current_bot_state = ON;
 static unsigned long current_bot_round = 0;
 
-#define RECV_SIZE 50
+#define RECV_SIZE 25
 static char recv_buffer[RECV_SIZE + 1];
 static int recv_buffer_index = 0;
 static unsigned long recv_buffer_first_at = 0;
@@ -106,6 +106,15 @@ void checkSend(Context* context) {
     }
 }
 
+void resetContext(Context* context) {
+	context->state = PROCESS;
+	context->next_state = PROCESS;
+	context->state = PROCESS;
+	context->commandIndex = 0;
+	context->endIndex = 0;
+	context->durationCount = 0;
+}
+
 void checkReceived(Context* context) {
     int16_t b = Serial_ReceiveByte();
     if(-1 != b && recv_buffer_index < RECV_SIZE) {
@@ -128,12 +137,12 @@ void checkReceived(Context* context) {
                 current_bot_state = OFF;
             } else if(equals("BOT=") && recv_buffer_index >= 4) {
                 int new_bot = recv_buffer[4] - 'a';
-                if(validBot(new_bot)) {
-                    context->reset();
+                if(new_bot >= 0 && new_bot <= WattFarmer) {
+                    resetContext(context);
                     context->bot = new_bot;
                 }
             } else if(equals("RESET")) {
-                context->reset();
+                resetContext(context);
             }
 
             //reset buffer

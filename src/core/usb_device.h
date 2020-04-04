@@ -28,12 +28,30 @@
 #define USB_DEVICE_INCLUDED
 
 #include "../Joystick.h"
-#include "bot.h"
 
 #ifndef nullptr
 #define nullptr 0
 #endif
 #define ECHOES 2
+
+typedef enum Bot {
+	MissingNo, //a
+	Auto3DaySkipper, //b
+	AutoFossil, //c
+	AutoHost, //d
+	AutoLoto, //e
+	BerryFarmer, //f
+	BoxRelease, //g
+	CrashFreeEggDup, //h
+	DaySkipperEU, //i
+	DaySkipperEUNoLimit, //j
+	DaySkipperJP, //k
+	DaySkipperJPNoLimit, //l
+	DaySkipperUS, //m
+	DaySkipperUSNoLimit, //n
+	TurboA, //o
+	WattFarmer //p
+} Bot;
 
 typedef enum {
 	PROCESS,
@@ -50,6 +68,7 @@ typedef enum {
 	DONE
 } State_t;
 
+
 typedef struct Context {
 	State_t state;
 	State_t next_state;
@@ -57,7 +76,6 @@ typedef struct Context {
 	int endIndex;
 	int durationCount;
 	Bot bot;
-	void (*reset)(void);
 } Context;
 
 
@@ -74,4 +92,5 @@ extern USB_JoystickReport_Input_t last_report;
  * \return           a pointer to the current command sent or nullptr if none
  */
 Command* GetNextReport(Context* context, USB_JoystickReport_Input_t* const ReportData);
+
 #endif
