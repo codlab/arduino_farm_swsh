@@ -1,6 +1,8 @@
 #ifndef SERIAL_REPORT_INCLUDED
 #define SERIAL_REPORT_INCLUDED
 
+#include "usb_device.h"
+
 typedef enum Bot {
 	MissingNo, //a
 	Auto3DaysSkipper, //b
@@ -32,7 +34,7 @@ BotState currentBotState(void);
 Bot currentBot(void);
 
 void fechCurrentMillis(void);
-void checkReceived(void);
+void checkReceived(Context* context);
 void checkSend(void);
 
 /**

@@ -134,7 +134,7 @@ void HID_Task(void) {
 		return;
 
 	fechCurrentMillis();
-	checkReceived();
+	checkReceived(&context);
 	checkSend();
 
 	switch(currentBotState()) {

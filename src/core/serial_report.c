@@ -115,7 +115,7 @@ void checkSend(void) {
     }
 }
 
-void checkReceived(void) {
+void checkReceived(Context* context) {
     int16_t b = Serial_ReceiveByte();
     if(-1 != b && recv_buffer_index < RECV_SIZE) {
         if(recv_buffer_first_at == 0) {
@@ -135,6 +135,12 @@ void checkReceived(void) {
                 current_bot_state = ON;
             } else if(equals("OFF")) {
                 current_bot_state = OFF;
+            } else if(equals("RESET")) {
+                context->state = PROCESS;
+                context->next_state = PROCESS;
+                context->commandIndex = 0;
+                context->endIndex = 0;
+                context->durationCount = 0;
             }
 
             //reset buffer

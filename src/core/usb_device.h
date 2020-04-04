@@ -27,9 +27,10 @@
 #ifndef USB_DEVICE_INCLUDED
 #define USB_DEVICE_INCLUDED
 
+#include "../Joystick.h"
+
 #ifndef nullptr
 #define nullptr 0
-
 #endif
 #define ECHOES 2
 

@@ -24,8 +24,7 @@ ISR(TIMER1_COMPA_vect)
   timer1_millis++;  
 }
 
-void init_millis(unsigned long f_cpu)
-{
+void init_millis(unsigned long f_cpu) {
   unsigned long ctc_match_overflow;
   
   ctc_match_overflow = ((f_cpu / 1000) / 8); //when timer1 is this value, 1ms has passed
@@ -43,8 +42,7 @@ void init_millis(unsigned long f_cpu)
   //REMEMBER TO ENABLE GLOBAL INTERRUPTS AFTER THIS WITH sei(); !!!
 }
 
-unsigned long millis ()
-{
+unsigned long millis(void) {
   unsigned long millis_return;
  
   // Ensure this cannot be disrupted
