@@ -129,19 +129,11 @@ void checkReceived(Context* context) {
             } else if(equals("BOT=") && recv_buffer_index >= 4) {
                 int new_bot = recv_buffer[4] - 'a';
                 if(validBot(new_bot)) {
-                    context->state = PROCESS;
-                    context->next_state = PROCESS;
-                    context->commandIndex = 0;
-                    context->endIndex = 0;
-                    context->durationCount = 0;
+                    context->reset();
                     context->bot = new_bot;
                 }
             } else if(equals("RESET")) {
-                context->state = PROCESS;
-                context->next_state = PROCESS;
-                context->commandIndex = 0;
-                context->endIndex = 0;
-                context->durationCount = 0;
+                context->reset();
             }
 
             //reset buffer

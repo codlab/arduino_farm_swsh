@@ -38,8 +38,18 @@ Context context = {
 	.commandIndex = 0,
 	.endIndex = 0,
 	.durationCount = 0,
-	.bot = MissingNo
+	.bot = MissingNo,
+	.reset = nullptr
 };
+
+void resetContext(void) {
+	context.state = PROCESS;
+	context.next_state = PROCESS;
+	context.state = PROCESS;
+	context.commandIndex = 0;
+	context.endIndex = 0;
+	context.durationCount = 0;
+}
 
 int echoes = 0;
 USB_JoystickReport_Input_t last_report;
@@ -47,6 +57,8 @@ USB_JoystickReport_Input_t last_report;
 int main(void) {
 	// We'll start by performing hardware and peripheral setup.
 	SetupHardware();
+
+	context.reset = resetContext;
 
 	init_millis(F_CPU);
 	// We'll then enable global interrupts for our use.

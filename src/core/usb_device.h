@@ -57,6 +57,7 @@ typedef struct Context {
 	int endIndex;
 	int durationCount;
 	Bot bot;
+	void (*reset)(void);
 } Context;
 
 
