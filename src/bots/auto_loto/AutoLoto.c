@@ -105,6 +105,7 @@ Command* autoLoto(Context* context, USB_JoystickReport_Input_t* const ReportData
 	// States and moves management
 	switch (context->state) {
 		case PROCESS:
+			context->bot = AutoLoto;
 			context->next_state = SETTINGS;
 			return manage_init(context);
 		case SETTINGS:

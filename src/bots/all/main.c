@@ -54,21 +54,21 @@
 
 // Prepare the next report for the host.
 Command* GetNextReport(Context* context, USB_JoystickReport_Input_t* const ReportData) {
-	switch(currentBot()) {
+	switch(context->bot) {
 		case MissingNo: return nullptr;
-		case Auto3DaysSkipper: return auto3DaySkipper(context, ReportData);
+		case Auto3DaySkipper: return auto3DaySkipper(context, ReportData);
 		case AutoFossil: return autoFossil(context, ReportData);
 		case AutoHost: return autoHost(context, ReportData);
 		case AutoLoto: return autoLoto(context, ReportData);
 		case BerryFarmer: return berryFarmer(context, ReportData);
 		case BoxRelease: return boxRelease(context, ReportData);
 		case CrashFreeEggDup: return crashFreeEgg(context, ReportData);
-		case DaySKipperEU: return daySkipperEU(context, ReportData);
-		case DaySKipperEUNoLimit: return daySkipperEUNoLimit(context, ReportData);
-		case DaySKipperJP: return daySkipperJP(context, ReportData);
-		case DaySKipperJPNoLimit: return daySkipperJPNoLimit(context, ReportData);
-		case DaySKipperUS: return daySkipperUS(context, ReportData);
-		case DaySKipperUSNoLimit: return daySkipperUSNoLimit(context, ReportData);
+		case DaySkipperEU: return daySkipperEU(context, ReportData);
+		case DaySkipperEUNoLimit: return daySkipperEUNoLimit(context, ReportData);
+		case DaySkipperJP: return daySkipperJP(context, ReportData);
+		case DaySkipperJPNoLimit: return daySkipperJPNoLimit(context, ReportData);
+		case DaySkipperUS: return daySkipperUS(context, ReportData);
+		case DaySkipperUSNoLimit: return daySkipperUSNoLimit(context, ReportData);
 		case TurboA: return turboA(context, ReportData);
 		case WattFarmer: return wattFarmer(context, ReportData);
 		default: return nullptr;

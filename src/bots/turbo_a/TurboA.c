@@ -47,6 +47,7 @@ Command* turboA(Context* context, USB_JoystickReport_Input_t* const ReportData) 
 	// States and moves management
 	switch (context->state) {
 		case PROCESS:
+			context->bot = TurboA;
 			RETURN_NEW_SEQ(setup, PROCESS_CUSTOM_1);
 		case PROCESS_CUSTOM_1:
 			RETURN_NEW_SEQ(gggoooooo, PROCESS_CUSTOM_1);

@@ -37,7 +37,8 @@ Context context = {
 	.next_state = PROCESS,
 	.commandIndex = 0,
 	.endIndex = 0,
-	.durationCount = 0
+	.durationCount = 0,
+	.bot = MissingNo
 };
 
 int echoes = 0;
@@ -135,7 +136,7 @@ void HID_Task(void) {
 
 	fechCurrentMillis();
 	checkReceived(&context);
-	checkSend();
+	checkSend(&context);
 
 	switch(currentBotState()) {
 		case PAUSE:

@@ -28,6 +28,7 @@
 #define USB_DEVICE_INCLUDED
 
 #include "../Joystick.h"
+#include "bot.h"
 
 #ifndef nullptr
 #define nullptr 0
@@ -55,6 +56,7 @@ typedef struct Context {
 	int commandIndex;
 	int endIndex;
 	int durationCount;
+	Bot bot;
 } Context;
 
 

@@ -3,39 +3,17 @@
 
 #include "usb_device.h"
 
-typedef enum Bot {
-	MissingNo, //a
-	Auto3DaysSkipper, //b
-	AutoFossil, //c
-	AutoHost, //d
-	AutoLoto, //e
-	BerryFarmer, //f
-	BoxRelease, //g
-	CrashFreeEggDup, //h
-	DaySKipperEU, //i
-	DaySKipperEUNoLimit, //j
-	DaySKipperJP, //k
-	DaySKipperJPNoLimit, //l
-	DaySKipperUS, //m
-	DaySKipperUSNoLimit, //n
-	TurboA, //o
-	WattFarmer //p
-} Bot;
-
 typedef enum BotState {
 	ON,
 	PAUSE, //TODO add PAUSE
 	OFF
 } BotState;
 
-void reportBot(Bot bot);
-
 BotState currentBotState(void);
-Bot currentBot(void);
 
 void fechCurrentMillis(void);
 void checkReceived(Context* context);
-void checkSend(void);
+void checkSend(Context* context);
 
 /**
  * Initialize the USART communication

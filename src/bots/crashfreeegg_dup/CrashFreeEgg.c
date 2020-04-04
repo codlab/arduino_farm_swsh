@@ -93,6 +93,7 @@ Command* crashFreeEgg(Context* context, USB_JoystickReport_Input_t* const Report
 	// States and moves management
 	switch (context->state) {
 		case PROCESS:
+			context->bot = CrashFreeEggDup;
 			RETURN_NEW_SEQ(setup, LADY);
 		case LADY:
 			RETURN_NEW_SEQ(go_to_lady, TALK);

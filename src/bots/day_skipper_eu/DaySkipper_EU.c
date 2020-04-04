@@ -189,7 +189,7 @@ Command* daySkipperEU(Context* context, USB_JoystickReport_Input_t* const Report
 	// States and moves management
 	switch (context->state) {
 		case PROCESS:
-			reportBot(DaySKipperEU);
+			context->bot = DaySkipperEU;
 
 			context->commandIndex = 0;
 			context->endIndex = 8;

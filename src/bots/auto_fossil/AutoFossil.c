@@ -99,6 +99,7 @@ Command* autoFossil(Context* context, USB_JoystickReport_Input_t* const ReportDa
 	// States and moves management
 	switch (context->state) {
 		case PROCESS:
+			context->bot = AutoFossil;
 			context->commandIndex = 0;
 			context->endIndex = 8;
 			context->next_state = PROCESS_CUSTOM_1;

@@ -123,6 +123,7 @@ void autoHostInit(Context* context) {
 		_autohost_init_done = true;
 	}
 
+	context->bot = AutoHost;
 	context->commandIndex = 0;
 	context->endIndex = 5;
 

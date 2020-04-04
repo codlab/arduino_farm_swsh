@@ -5,7 +5,6 @@
 //#define DEBUG true
 
 static char buffer[50];
-static Bot current_bot = MissingNo;
 static BotState current_bot_state = ON;
 static unsigned long current_bot_round = 0;
 
@@ -36,14 +35,6 @@ BotState currentBotState(void) {
     return current_bot_state;
 }
 
-void reportBot(Bot bot) {
-    current_bot = bot;
-}
-
-Bot current(void) {
-    return current_bot;
-}
-
 void reportStep(unsigned long round) {
     current_bot_round = round;
 }
@@ -59,7 +50,7 @@ int equals(const char * str) {
 }
 
 
-void reportTrySendState(void) {
+void reportTrySendState(Context* context) {
     
 	unsigned long tmp = current_bot_round;
 	int index = sizeof(buffer) - 2;
@@ -87,7 +78,7 @@ void reportTrySendState(void) {
 
     if(index > 1) {
         index --; //we let one ' '
-        buffer[index] = 'a' + current_bot;
+        buffer[index] = 'a' + context->bot;
         index --;
     }
 
@@ -102,7 +93,7 @@ void reportTrySendState(void) {
     #endif
 }
 
-void checkSend(void) {
+void checkSend(Context* context) {
     if(last_send_frame == 0) {
         last_send_frame = current_millis;
     }
@@ -110,7 +101,7 @@ void checkSend(void) {
     unsigned long diff = current_millis - last_send_frame;
 
     if(diff >= 1000) {
-        reportTrySendState();
+        reportTrySendState(context);
         last_send_frame = current_millis;
     }
 }
