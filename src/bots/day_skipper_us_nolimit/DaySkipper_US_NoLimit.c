@@ -29,108 +29,82 @@
 #include "config.h"
 
 static const Command PROGMEM sequences[] = {
-	//----------Setup [0,8]----------
 	// Press A once to connect
-	{NOTHING, 30},
-	{A, 1},
-	{NOTHING, 1},
-	
+	STEP_NOTHING(30),
+	STEP_B(1, 30),
+	STEP_B(1, 30),
 	// Make sure cursor is on OK
-	{A, 1},
-	{NOTHING, 1},
-	{RIGHT, 40},
-	{NOTHING, 1},
+	STEP_A(1, 1),
+	STEP_RIGHT(40, 1),
 	
 	// Exit
-	{A, 1},
-	{NOTHING, 4},
+	STEP_A(1, 4)
+};
 	
-	//----------Skip day [9,34]----------
+static const Command PROGMEM increment_day[] = {
+	//----------Skip day [9,26]----------
 	// Enter
-	{A, 1},
-	{NOTHING, 5},
+	STEP_A(1, 4),
 	
 	// Move to day
-	{LEFT, 1},
-	{NOTHING, 1},
-	{LEFT, 1},
-	{NOTHING, 1},
-	{LEFT, 1},
-	{NOTHING, 1},
-	{LEFT, 1},
-	{NOTHING, 1},
-	{LEFT, 1},
-	{NOTHING, 1},
+	STEP_LEFT(1, 1),
+	STEP_LEFT(1, 1),
+	STEP_LEFT(1, 1),
+	STEP_LEFT(1, 1),
+	STEP_LEFT(1, 1),
 	
 	// Increment day
-	{UP, 1},
-	{NOTHING, 1},
+	STEP_UP(1, 1),
 	
 	// Move to OK
-	{RIGHT, 1},
-	{NOTHING, 1},
-	{RIGHT, 1},
-	{NOTHING, 1},
-	{RIGHT, 1},
-	{NOTHING, 1},
-	{RIGHT, 1},
-	{NOTHING, 1},
-	{RIGHT, 1},
-	{NOTHING, 1},
+	STEP_RIGHT(1, 1),
+	STEP_RIGHT(1, 1),
+	STEP_RIGHT(1, 1),
+	STEP_RIGHT(1, 1),
+	STEP_RIGHT(1, 1),
 
 	// Exit
-	{A, 1},
-	{NOTHING, 4},
-	
-	//----------Back to game [35,38]----------
-	{HOME, 1},
-	{NOTHING, 30},
-	{HOME, 1},
-	{NOTHING, 20}
+	STEP_A(1, 4)
 };
 
-int us_day = 1; // [1,31]
+static const Command PROGMEM exit[] = {
+	STEP_HOME(1, 30),
+	STEP_HOME(1, 30)
+};
+
+unsigned long day_to_skip_us = 1;
+
+void us_nolimit_set(const char* buffer) {
+	us_dayToSkip = to_ulong(buffer);
+}
 
 void configureDaySkipperUSNoLimit(Context *context) {
-	context->set = nullptr;
+	context->set = us_nolimit_set;
 }
 
 // Prepare the next report for the host.
 Command* daySkipperUSNoLimit(Context* context, USB_JoystickReport_Input_t* const ReportData) {
 	// States and moves management
 	switch (context->state) {
-		case PROCESS:
-			context->bot = DaySkipperUSNoLimit;
-			context->commandIndex = 0;
-			context->endIndex = 8;
-			context->next_state = PROCESS_CUSTOM_1;
-			return nullptr;
-		case PROCESS_CUSTOM_1:
-			// Get the next command sequence (new start and end)
-			if (context->endIndex == 38) {
-				// Finish
-				context->next_state = DONE;
-				return nullptr;
-			} else if (us_dayToSkip > 0) {
-				// Pass day
-				context->commandIndex = 9;
-				context->endIndex = 34;
-				
-				if (us_day == 31) {
-					// Rolling back, no day skipped
-					us_day = 1;
-				} else {
-					// Roll foward by a day
-					us_day++;
-					us_dayToSkip--;
-				}
-			} else {
-				// Go back to game
-				context->commandIndex = 35;
-				context->endIndex = 38;
-			}
+		case PROCESS: {
+			unsigned long months = us_dayToSkip >= 30 ? us_dayToSkip/30 : 0;
+			unsigned long months_t_30 = months * 30;
 
-			return &sequences;
+			int mod = us_dayToSkip - months_t_30;
+			day_to_skip_us = months * 31 + mod;
+
+			context->bot = DaySkipperUSNoLimit;
+			RETURN_NEW_SEQ(sequences, PROCESS_CUSTOM_1);
+		}
+		case PROCESS_CUSTOM_1:
+			if(day_to_skip_us > 0) {
+				day_to_skip_us--;
+				RETURN_NEW_SEQ(increment_day, PROCESS_CUSTOM_1);
+			} else {
+				RETURN_NEW_SEQ(increment_day, PROCESS_CUSTOM_2);
+			}
+		case PROCESS_CUSTOM_2:
+			RETURN_NEW_SEQ(exit, DONE);
 		case DONE: return nullptr;
 	}
 	return nullptr;

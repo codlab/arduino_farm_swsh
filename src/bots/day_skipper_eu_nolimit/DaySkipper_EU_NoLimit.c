@@ -27,6 +27,7 @@
 #include "DaySkipper_EU_NoLimit.h"
 #include "config_preprocess.h"
 #include "config.h"
+#include "../../core/calendar_skip.h"
 
 static const Command PROGMEM sequences[] = {
 	// Press A once to connect
@@ -75,8 +76,12 @@ static const Command PROGMEM exit[] = {
 
 unsigned long day_to_skip_eu = 1;
 
+void eu_nolimit_set(const char* buffer) {
+	eu_dayToSkip = to_ulong(buffer);
+}
+
 void configureDaySkipperEUNoLimit(Context *context) {
-	context->set = nullptr;
+	context->set = eu_nolimit_set;
 }
 
 // Prepare the next report for the host.
