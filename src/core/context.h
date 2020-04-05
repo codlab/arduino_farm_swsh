@@ -1,6 +1,7 @@
 #ifndef CONTEXT_INCLUDED
 #define CONTEXT_INCLUDED
 
+#include "../Joystick.h"
 #include "bot.h"
 
 typedef enum {
@@ -18,6 +19,12 @@ typedef enum {
 	DONE
 } State_t;
 
+struct Context;
+
+
+typedef Command* (*NextStep)(struct Context* context, USB_JoystickReport_Input_t* const ReportData);
+typedef void (*Set)(const char*);
+
 typedef struct Context {
 	State_t state;
 	State_t next_state;
@@ -26,8 +33,12 @@ typedef struct Context {
 	int durationCount;
 	Bot bot;
     BotState botState;
-    void (*set)(const char*);
+
+    NextStep next_step;
+    Set set;
 } Context;
+
+void configure(Context* context);
 
 void set(const char* set);
 

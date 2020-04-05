@@ -26,7 +26,7 @@
 
 #include "DaySkipper_EU_NoLimit.h"
 
-// Prepare the next report for the host.
-Command* GetNextReport(Context* context, USB_JoystickReport_Input_t* const ReportData) {
-	return daySkipperEUNoLimit(context, ReportData);
+void configure(Context* context) {
+    configureDaySkipperEUNoLimit(context);
+    context->next_step = daySkipperEUNoLimit;
 }

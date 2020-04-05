@@ -94,6 +94,10 @@ static const Command PROGMEM sequences[] = {
 int m_talkSequence = 0;
 int m_fossilCount = 0;
 
+void configureAutoFossil(Context *context) {
+	context->set = nullptr;
+}
+
 // Prepare the next report for the host.
 Command* autoFossil(Context* context, USB_JoystickReport_Input_t* const ReportData) {
 	// States and moves management

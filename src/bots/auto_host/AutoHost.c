@@ -117,6 +117,10 @@ uint8_t host_sequence = 0;
 bool _autohost_init_done = false;
 uint8_t _auto_set_linkCode[] = {1,6,4,9};
 
+void configureAutoHost(Context *context) {
+	context->set = nullptr;
+}
+
 void autoHostInit(Context* context) {
 	if(!_autohost_init_done) {
 		srand(autohost_initial_rand_seed);

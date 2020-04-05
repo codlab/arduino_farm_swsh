@@ -184,6 +184,10 @@ static const Command PROGMEM sequences[] = {
 
 static unsigned long _day_skip_round_eu = 0;
 
+void configureDaySkipperEU(Context *context) {
+	context->set = nullptr;
+}
+
 // Prepare the next report for the host.
 Command* daySkipperEU(Context* context, USB_JoystickReport_Input_t* const ReportData) {
 	// States and moves management

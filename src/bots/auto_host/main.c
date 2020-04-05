@@ -26,7 +26,7 @@
 
 #include "AutoHost.h"
 
-// Prepare the next report for the host.
-Command* GetNextReport(Context* context, USB_JoystickReport_Input_t* const ReportData) {
-	return autoHost(context, ReportData);
+void configure(Context* context) {
+    configureAutoHost(context);
+    context->next_step = autoHost;
 }

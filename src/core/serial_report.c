@@ -113,6 +113,8 @@ void resetContext(Context* context) {
 	context->commandIndex = 0;
 	context->endIndex = 0;
 	context->durationCount = 0;
+    context->set = nullptr;
+    context->next_step = nullptr;
 }
 
 void checkReceived(Context* context) {
@@ -140,6 +142,7 @@ void checkReceived(Context* context) {
                 if(new_bot >= 0 && new_bot <= WattFarmer) {
                     resetContext(context);
                     context->bot = new_bot;
+                    configure(context);
                 }
             } else if(equals("SET=") && recv_buffer_index >= 4) {
                 if(nullptr != context->set) {

@@ -30,6 +30,8 @@
 #include "../../core/action.h"
 #include "../../core/usb_device.h"
 
+void configureDaySkipperUSNoLimit(Context *context);
+
 Command* daySkipperUSNoLimit(Context* context, USB_JoystickReport_Input_t* const ReportData);
 
 #endif

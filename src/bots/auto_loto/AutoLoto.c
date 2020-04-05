@@ -100,6 +100,10 @@ unsigned int m_skip = 0;
 #define SETTINGS PROCESS_CUSTOM_1
 #define GAME PROCESS_CUSTOM_2
 
+void configureAutoLoto(Context *context) {
+	context->set = nullptr;
+}
+
 // Prepare the next report for the host.
 Command* autoLoto(Context* context, USB_JoystickReport_Input_t* const ReportData) {
 	// States and moves management

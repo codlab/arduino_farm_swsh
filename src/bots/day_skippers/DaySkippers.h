@@ -30,6 +30,8 @@
 #include "../../core/action.h"
 #include "../../core/usb_device.h"
 
+void configureDaySkippers(Context *context);
+
 Command* daySkippers(Context* context, USB_JoystickReport_Input_t* const ReportData);
 
 #endif

@@ -41,7 +41,8 @@ Context context = {
 	.durationCount = 0,
 	.bot = MissingNo,
 	.botState = ON,
-	.set = nullptr
+	.set = nullptr,
+	.next_step = nullptr
 };
 
 void set(const char* set);
@@ -59,6 +60,7 @@ int main(void) {
 	// Once that's done, we'll enter an infinite loop.
 
 	reportInit();
+	configure(&context);
 
 	for (;;)
 	{
@@ -187,10 +189,10 @@ void HID_Task(void) {
 			Command* command = nullptr;
 
 			//if begin of a session
-			if(nullptr == sequences) {
+			if(nullptr == sequences && nullptr != context.next_step) {
 				context.commandIndex = 0;
 				context.state = context.next_state;
-				sequences = GetNextReport(&context, &JoystickInputData);
+				sequences = context.next_step(&context, &JoystickInputData);
 			}
 
 			//if the session gave a pointer to sequences

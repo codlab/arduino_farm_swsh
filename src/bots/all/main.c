@@ -52,25 +52,65 @@
 #include "../day_skipper_jp_nolimit/DaySkipper_JP_NoLimit.h"
 #include "../crashfreeegg_dup/CrashFreeEgg.h"
 
-// Prepare the next report for the host.
-Command* GetNextReport(Context* context, USB_JoystickReport_Input_t* const ReportData) {
+void configure(Context* context) {
 	switch(context->bot) {
-		case MissingNo: return nullptr;
-		case Auto3DaySkipper: return auto3DaySkipper(context, ReportData);
-		case AutoFossil: return autoFossil(context, ReportData);
-		case AutoHost: return autoHost(context, ReportData);
-		case AutoLoto: return autoLoto(context, ReportData);
-		case BerryFarmer: return berryFarmer(context, ReportData);
-		case BoxRelease: return boxRelease(context, ReportData);
-		case CrashFreeEggDup: return crashFreeEgg(context, ReportData);
-		case DaySkipperEU: return daySkipperEU(context, ReportData);
-		case DaySkipperEUNoLimit: return daySkipperEUNoLimit(context, ReportData);
-		case DaySkipperJP: return daySkipperJP(context, ReportData);
-		case DaySkipperJPNoLimit: return daySkipperJPNoLimit(context, ReportData);
-		case DaySkipperUS: return daySkipperUS(context, ReportData);
-		case DaySkipperUSNoLimit: return daySkipperUSNoLimit(context, ReportData);
-		case TurboA: return turboA(context, ReportData);
-		case WattFarmer: return wattFarmer(context, ReportData);
-		default: return nullptr;
+		case AutoFossil:
+			configureAutoFossil(context);
+			context->next_step = autoFossil;
+			break;
+		case AutoHost:
+			configureAutoHost(context);
+			context->next_step = autoHost;
+			break;
+		case AutoLoto:
+			configureAutoLoto(context);
+			context->next_step = autoLoto;
+			break;
+		case BoxRelease:
+			configureBoxRelease(context);
+			context->next_step = boxRelease;
+			break;
+		case DaySkipperEU:
+			configureDaySkipperEU(context);
+			context->next_step = daySkipperEU;
+			break;
+		case DaySkipperEUNoLimit:
+			configureDaySkipperEUNoLimit(context);
+			context->next_step = daySkipperEUNoLimit;
+			break;
+		case DaySkipperJP:
+			configureDaySkipperJP(context);
+			context->next_step = daySkipperJP;
+			break;
+		case DaySkipperJPNoLimit:
+			configureDaySkipperJPNoLimit(context);
+			context->next_step = daySkipperJPNoLimit;
+			break;
+		case DaySkipperUS:
+			configureDaySkipperUS(context);
+			context->next_step = daySkipperUS;
+			break;
+		case DaySkipperUSNoLimit:
+			configureDaySkipperUSNoLimit(context);
+			context->next_step = daySkipperUSNoLimit;
+			break;
+		case Auto3DaySkipper:
+			context->next_step = auto3DaySkipper;
+			break;
+		case BerryFarmer:
+			context->next_step = berryFarmer;
+			break;
+		case CrashFreeEggDup:
+			context->next_step = crashFreeEgg;
+			break;
+		case TurboA:
+			context->next_step = turboA;
+			break;
+		case WattFarmer:
+			context->next_step = wattFarmer;
+			break;
+		case MissingNo:
+		default:
+			context->next_step = nullptr;
 	}
 }

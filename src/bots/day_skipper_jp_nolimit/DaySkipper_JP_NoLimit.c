@@ -83,6 +83,10 @@ static const Command PROGMEM sequences[] = {
 
 int jp_day = 1; // [1,31]
 
+void configureDaySkipperJPNoLimit(Context *context) {
+	context->set = nullptr;
+}
+
 // Prepare the next report for the host.
 Command* daySkipperJPNoLimit(Context* context, USB_JoystickReport_Input_t* const ReportData) {
 	// States and moves management

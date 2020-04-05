@@ -29,6 +29,9 @@
 #include "config.h"
 #include "DaySkippersSegment.h"
 
+void configureDaySkippers(Context *context) {
+	context->set = nullptr;
+}
 
 // Prepare the next report for the host.
 Command* daySkippers(Context* context, USB_JoystickReport_Input_t* const ReportData) {

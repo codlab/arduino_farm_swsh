@@ -26,7 +26,6 @@
 
 #include "CrashFreeEgg.h"
 
-// Prepare the next report for the host.
-Command* GetNextReport(Context* context, USB_JoystickReport_Input_t* const ReportData) {
-	return crashFreeEgg(context, ReportData);
+void configure(Context* context) {
+    context->next_step = crashFreeEgg;
 }

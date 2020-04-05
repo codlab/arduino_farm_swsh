@@ -31,6 +31,8 @@
 #include "../../core/usb_device.h"
 #include "../../core/default_sequences.h"
 
+void configureAutoLoto(Context *context);
+
 Command* autoLoto(Context* context, USB_JoystickReport_Input_t* const ReportData);
 
 #endif

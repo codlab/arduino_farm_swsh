@@ -30,6 +30,8 @@
 #include "../../core/action.h"
 #include "../../core/usb_device.h"
 
+void configureAutoFossil(Context *context);
+
 // Prepare the next report for the host.
 Command* autoFossil(Context* context, USB_JoystickReport_Input_t* const ReportData);
 

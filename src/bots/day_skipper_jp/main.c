@@ -26,7 +26,7 @@
 
 #include "DaySkipper_JP.h"
 
-// Prepare the next report for the host.
-Command* GetNextReport(Context* context, USB_JoystickReport_Input_t* const ReportData) {
-	return daySkipperJP(context, ReportData);
+void configure(Context* context) {
+    configureDaySkipperJP(context);
+    context->next_step = daySkipperJP;
 }

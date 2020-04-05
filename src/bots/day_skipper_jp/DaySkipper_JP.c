@@ -169,6 +169,10 @@ static const Command PROGMEM sequences[] = {
 	{NOTHING, 20}
 };
 
+void configureDaySkipperJP(Context *context) {
+	context->set = nullptr;
+}
+
 // Prepare the next report for the host.
 Command* daySkipperJP(Context* context, USB_JoystickReport_Input_t* const ReportData) {
 	// States and moves management

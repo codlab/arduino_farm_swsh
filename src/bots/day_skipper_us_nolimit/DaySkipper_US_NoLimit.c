@@ -91,6 +91,10 @@ static const Command PROGMEM sequences[] = {
 
 int us_day = 1; // [1,31]
 
+void configureDaySkipperUSNoLimit(Context *context) {
+	context->set = nullptr;
+}
+
 // Prepare the next report for the host.
 Command* daySkipperUSNoLimit(Context* context, USB_JoystickReport_Input_t* const ReportData) {
 	// States and moves management

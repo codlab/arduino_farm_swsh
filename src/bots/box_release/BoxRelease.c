@@ -104,6 +104,10 @@ int m_row = 1;
 int m_box = 1;
 bool m_released = false;
 
+void configureBoxRelease(Context *context) {
+	context->set = nullptr;
+}
+
 // Prepare the next report for the host.
 Command* boxRelease(Context* context, USB_JoystickReport_Input_t* const ReportData) {
 	// States and moves management
