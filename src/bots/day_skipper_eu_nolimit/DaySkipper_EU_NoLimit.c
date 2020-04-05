@@ -84,8 +84,9 @@ Command* daySkipperEUNoLimit(Context* context, USB_JoystickReport_Input_t* const
 	// States and moves management
 	switch (context->state) {
 		case PROCESS:
-			unsigned int months = eu_dayToSkip >= 30 ? eu_dayToSkip/30 : 0;
+			unsigned long months = eu_dayToSkip >= 30 ? eu_dayToSkip/30 : 0;
 			unsigned long months_t_30 = months * 30;
+
 			int mod = eu_dayToSkip - months_t_30;
 			day_to_skip_eu = months * 31 + mod;
 
