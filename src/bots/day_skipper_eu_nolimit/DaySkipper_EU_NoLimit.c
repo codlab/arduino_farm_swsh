@@ -39,7 +39,7 @@ static const Command PROGMEM sequences[] = {
 	
 	// Exit
 	STEP_A(1, 4)
-}
+};
 
 static const Command PROGMEM increment_day[] = {
 	// Enter
@@ -66,7 +66,7 @@ static const Command PROGMEM increment_day[] = {
 
 	// Exit
 	STEP_A(1, 4)
-}
+};
 
 static const Command PROGMEM exit[] = {
 	STEP_HOME(1, 30),
