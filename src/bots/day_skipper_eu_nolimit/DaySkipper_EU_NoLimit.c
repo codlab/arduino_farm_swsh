@@ -49,11 +49,17 @@ static const Command PROGMEM increment_day[] = {
 	STEP_LEFT(1, 1),
 	STEP_LEFT(1, 1),
 	STEP_LEFT(1, 1),
+	STEP_LEFT(1, 1),
+	STEP_LEFT(1, 1),
+	STEP_LEFT(1, 1),
 	
 	// Increment day
 	STEP_UP(1, 1),
 	
 	// Move to OK
+	STEP_RIGHT(1, 1),
+	STEP_RIGHT(1, 1),
+	STEP_RIGHT(1, 1),
 	STEP_RIGHT(1, 1),
 	STEP_RIGHT(1, 1),
 	STEP_RIGHT(1, 1),
