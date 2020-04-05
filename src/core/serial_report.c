@@ -32,14 +32,9 @@ void prepareBuffer(void) {
 	buffer[sizeof(buffer) - 1] = 0;
 }
 
-BotState currentBotState(void) {
-    return current_bot_state;
-}
-
 void reportStep(unsigned long round) {
     current_bot_round = round;
 }
-
 
 int equals(const char * str) {
     int index = 0;
@@ -135,11 +130,11 @@ void checkReceived(Context* context) {
         unsigned long diff = current_millis - recv_buffer_first_at;
         if(diff >= 1000) {
             if(equals("PAUSE")) {
-                current_bot_state = PAUSE;
+                context->botState = PAUSE;
             } else if(equals("ON")) {
-                current_bot_state = ON;
+                context->botState = ON;
             } else if(equals("OFF")) {
-                current_bot_state = OFF;
+                context->botState = OFF;
             } else if(equals("BOT=") && recv_buffer_index >= 4) {
                 int new_bot = recv_buffer[4] - 'a';
                 if(new_bot >= 0 && new_bot <= WattFarmer) {

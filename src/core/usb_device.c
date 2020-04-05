@@ -40,6 +40,7 @@ Context context = {
 	.endIndex = 0,
 	.durationCount = 0,
 	.bot = MissingNo,
+	.botState = ON,
 	.set = nullptr
 };
 
@@ -142,7 +143,7 @@ void HID_Task(void) {
 	checkReceived(&context);
 	checkSend(&context);
 
-	switch(currentBotState()) {
+	switch(context.botState) {
 		case PAUSE:
 		case OFF:
 			return;

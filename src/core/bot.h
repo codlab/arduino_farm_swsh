@@ -1,6 +1,12 @@
 #ifndef BOT_INCLUDED
 #define BOT_INCLUDED
 
+typedef enum BotState {
+	ON,
+	PAUSE, //TODO add PAUSE
+	OFF
+} BotState;
+
 typedef enum Bot {
 	MissingNo, //a
 	Auto3DaySkipper, //b

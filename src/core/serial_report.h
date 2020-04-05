@@ -3,14 +3,6 @@
 
 #include "usb_device.h"
 
-typedef enum BotState {
-	ON,
-	PAUSE, //TODO add PAUSE
-	OFF
-} BotState;
-
-BotState currentBotState(void);
-
 void fechCurrentMillis(void);
 void checkReceived(Context* context);
 void checkSend(Context* context);
