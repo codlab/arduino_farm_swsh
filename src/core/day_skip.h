@@ -24,21 +24,15 @@
 	For more information, please see the README.md available at https://github.com/codlab/arduino_farm_swsh
 */
 
-#ifndef DAY_SKIPPER_US_NOLIMIT_INCLUDED
-#define DAY_SKIPPER_US_NOLIMIT_INCLUDED
+#ifndef DAY_SKIPPER_NOLIMIT
+#define DAY_SKIPPER_NOLIMIT
+#include "../Joystick.h"
+#include "bot.h"
+#include "calendar_skip.h"
+#include "context.h"
+#include "action.h"
+#include "usb_device.h"
 
-#include "../../core/calendar_skip.h"
-
-/*------------------------------------------*/
-// INSTRUCTION
-// -> You MUST have y-comm glitch active and system time unsynced
-// -> You MUST set your current date to Janurary 1st or any month with 31 days, year doesn't matter
-// -> It takes ~43 seconds per 30 days
-
-// -> Set number of days you want to skip,can't be greater than 4294967295
-DaySkip us_daySkip = {
-    .dayToSkip = 172
-};
-/*------------------------------------------*/
+Command* daySkipperNoLimit(Bot mode, DaySkip* daySkip, Context* context, USB_JoystickReport_Input_t* const ReportData, Command *increments);
 
 #endif

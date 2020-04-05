@@ -28,6 +28,7 @@
 #ifndef DAY_SKIPPER_US_NOLIMIT_INCLUDED
 #define DAY_SKIPPER_US_NOLIMIT_INCLUDED
 
+#include "../../core/calendar_skip.h"
 #warning "OVERRIDE DAY SKIP US CONFIG"
 
 /*------------------------------------------*/
@@ -37,7 +38,9 @@
 // -> It takes ~31 seconds per 30 days
 
 // -> Set number of days you want to skip,can't be greater than 4294967295
-unsigned long us_dayToSkip = DAY_TO_SKIP;
+DaySkip us_daySkip = {
+    .dayToSkip = DAY_TO_SKIP
+};
 /*------------------------------------------*/
 
 #endif

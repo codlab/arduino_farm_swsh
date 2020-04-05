@@ -34,6 +34,9 @@ typedef struct CalendarSkip {
     unsigned long dayToSkip;
 } CalendarSkip;
 
+typedef struct DaySkip {
+    unsigned long dayToSkip;
+} DaySkip;
 
 unsigned int to_uint(const char* str);
 

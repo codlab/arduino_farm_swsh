@@ -27,6 +27,8 @@
 #ifndef DAY_SKIPPER_JP_NOLIMIT_INCLUDED
 #define DAY_SKIPPER_JP_NOLIMIT_INCLUDED
 
+#include "../../core/calendar_skip.h"
+
 /*------------------------------------------*/
 // INSTRUCTION
 // -> You MUST have y-comm glitch active and system time unsynced
@@ -34,7 +36,9 @@
 // -> It takes ~31 seconds per 30 days
 
 // -> Set number of days you want to skip,can't be greater than 4294967295
-unsigned long jp_dayToSkip = 172;
+DaySkip jp_daySkip = {
+    .dayToSkip = 172
+};
 /*------------------------------------------*/
 
 #endif

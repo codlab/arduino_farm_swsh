@@ -11,6 +11,7 @@
         "serial.h": "c",
         "turboa.h": "c",
         "serial_report.h": "c",
-        "wattfarmer.h": "c"
+        "wattfarmer.h": "c",
+        "calendar_skip.h": "c"
     }
 }
