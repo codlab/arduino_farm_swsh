@@ -28,10 +28,12 @@
 #define CALENDAR_SKIP_INCLUDED
 
 typedef struct CalendarSkip {
-    int day;
-    int month;
-    int year;
-    int dayToSkip;
+    unsigned int day;
+    unsigned int month;
+    unsigned int year;
+    unsigned long dayToSkip;
 } CalendarSkip;
+
+CalendarSkip* from(CalendarSkip* input, const char* str, unsigned int length);
 
 #endif
