@@ -27,62 +27,13 @@
 #ifndef USB_DEVICE_INCLUDED
 #define USB_DEVICE_INCLUDED
 
+#include "context.h"
 #include "../Joystick.h"
 
 #ifndef nullptr
 #define nullptr 0
 #endif
 #define ECHOES 2
-
-typedef enum Bot {
-	MissingNo, //a
-	Auto3DaySkipper, //b
-	AutoFossil, //c
-	AutoHost, //d
-	AutoLoto, //e
-	BerryFarmer, //f
-	BoxRelease, //g
-	CrashFreeEggDup, //h
-	DaySkipperEU, //i
-	DaySkipperEUNoLimit, //j
-	DaySkipperJP, //k
-	DaySkipperJPNoLimit, //l
-	DaySkipperUS, //m
-	DaySkipperUSNoLimit, //n
-	TurboA, //o
-	WattFarmer //p
-} Bot;
-
-typedef enum {
-	PROCESS,
-	PROCESS_SETTINGS, //name to facilitate tracking specific settings actions
-	PROCESS_CUSTOM_1,
-	PROCESS_CUSTOM_2,
-	PROCESS_CUSTOM_3,
-	PROCESS_CUSTOM_4,
-	PROCESS_CUSTOM_5,
-	PROCESS_CUSTOM_6,
-	PROCESS_CUSTOM_7,
-	PROCESS_CUSTOM_8,
-	PROCESS_CUSTOM_9,
-	DONE
-} State_t;
-
-
-typedef struct Context {
-	State_t state;
-	State_t next_state;
-	int commandIndex;
-	int endIndex;
-	int durationCount;
-	Bot bot;
-} Context;
-
-
-extern State_t state;
-
-extern int echoes;
-extern USB_JoystickReport_Input_t last_report;
 
 /**
  * Get the next joystick report for the host

@@ -1,4 +1,5 @@
 #include <LUFA/Drivers/Peripheral/Serial.h>
+#include "context.h"
 #include "serial_report.h"
 #include "millis.h"
 
@@ -78,7 +79,11 @@ void reportTrySendState(Context* context) {
 
     if(index > 1) {
         index --; //we let one ' '
-        buffer[index] = 'a' + context->bot;
+        if(context->bot >= 'A' && context->bot <= 'Z') {
+            buffer[index] = 'A' + context->bot;
+        } else {
+            buffer[index] = 'a' + context->bot;
+        }
         index --;
     }
 

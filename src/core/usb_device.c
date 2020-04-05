@@ -26,6 +26,7 @@
 
 #include <avr/pgmspace.h>
 
+#include "context.h"
 #include "../Joystick.h"
 #include "millis.h"
 #include "action.h"
