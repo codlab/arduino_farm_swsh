@@ -146,6 +146,11 @@ void checkReceived(Context* context) {
                     resetContext(context);
                     context->bot = new_bot;
                 }
+            } else if(equals("SET=") && recv_buffer_index >= 4) {
+                if(nullptr != context->set) {
+                    const char* set = (const char*) &(recv_buffer[4]);
+                    context->set(set);
+                }
             } else if(equals("RESET")) {
                 resetContext(context);
             }

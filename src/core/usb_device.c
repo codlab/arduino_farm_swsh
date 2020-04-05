@@ -39,8 +39,11 @@ Context context = {
 	.commandIndex = 0,
 	.endIndex = 0,
 	.durationCount = 0,
-	.bot = MissingNo
+	.bot = MissingNo,
+	.set = nullptr
 };
+
+void set(const char* set);
 
 int echoes = 0;
 USB_JoystickReport_Input_t last_report;

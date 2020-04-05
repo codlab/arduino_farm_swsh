@@ -25,6 +25,9 @@ typedef struct Context {
 	int endIndex;
 	int durationCount;
 	Bot bot;
+    void (*set)(const char*);
 } Context;
+
+void set(const char* set);
 
 #endif
