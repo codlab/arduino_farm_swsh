@@ -73,7 +73,7 @@ static const Command PROGMEM exit[] = {
 	STEP_HOME(1, 30)
 };
 
-unsigned long day_to_skipped_eu = 1;
+unsigned long day_to_skip_eu = 1;
 
 void configureDaySkipperEUNoLimit(Context *context) {
 	context->set = nullptr;
