@@ -24,16 +24,16 @@ typedef enum Bot {
 	DaySkipperUSNoLimit, //n
 	TurboA, //o
 	WattFarmer, //p
-    MissingNo1, //q
-    MissingNo2, //r
-    MissingNo3, //s
-    MissingNo4, //t
-    MissingNo5, //u
-    MissingNo6, //v
-    MissingNo7, //w
-    MissingNo8, //x
-    MissingNo9, //y
-    MissingNo10, //z
+    TwitchPlays, //q
+    MissingNo1, //r
+    MissingNo2, //s
+    MissingNo3, //t
+    MissingNo4, //u
+    MissingNo5, //v
+    MissingNo6, //w
+    MissingNo7, //x
+    MissingNo8, //y
+    MissingNo9, //z
     CustomBot1, //A
     CustomBot2, //B
     CustomBot3, //C

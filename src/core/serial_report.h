@@ -13,9 +13,4 @@ void checkSend(Context* context);
  */
 void reportInit(void);
 
-/**
- * reportStep onto the USART TX
- */
-void reportStep(unsigned long round);
-
 #endif

@@ -102,6 +102,7 @@ Command* crashFreeEgg(Context* context, USB_JoystickReport_Input_t* const Report
 		case POSITION:
 			RETURN_NEW_SEQ(go_to_position, MOVE);
 		case MOVE:
+			(context->botSteps)++;
 			RETURN_NEW_SEQ(move, LADY);
 		case DONE: default: return nullptr;
 	}

@@ -92,7 +92,6 @@ static const Command PROGMEM sequences[] = {
 
 // Cara Liss talk
 int m_talkSequence = 0;
-int m_fossilCount = 0;
 
 void configureAutoFossil(Context *context) {
 	context->set = nullptr;
@@ -110,25 +109,17 @@ Command* autoFossil(Context* context, USB_JoystickReport_Input_t* const ReportDa
 			return nullptr;
 		case PROCESS_CUSTOM_1:
 			// Get the next command sequence (new start and end)
-			if (m_fossilCount == m_timesBeforeSR) {
-				if (m_autoSoftReset) {
-					// Soft reset
+			if (context->botSteps == m_timesBeforeSR) {
+				if (m_talkSequence == 0) {
+					// Goto HOME and tell player it's finished
 					context->commandIndex = 35;
-					context->endIndex = 46;
-					
-					m_fossilCount = 0;
+					context->endIndex = 36;
+
+					m_talkSequence++;
 				} else {
-					if (m_talkSequence == 0) {
-						// Goto HOME and tell player it's finished
-						context->commandIndex = 35;
-						context->endIndex = 36;
-						
-						m_talkSequence++;
-					} else {
-						// Finish
-						context->next_state = DONE;
-						return nullptr;
-					}
+					// Finish
+					context->next_state = DONE;
+					return nullptr;
 				}
 			} else {
 				m_talkSequence++;
@@ -143,7 +134,7 @@ Command* autoFossil(Context* context, USB_JoystickReport_Input_t* const ReportDa
 					context->endIndex = 34;
 					
 					m_talkSequence = 0;
-					m_fossilCount++;
+					(context->botSteps)++;
 				} else {
 					bool topSlot = (m_talkSequence == 2) ? m_firstFossilTopSlot : m_secondFossilTopSlot;
 					context->commandIndex = topSlot ? 15 : 13;

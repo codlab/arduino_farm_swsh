@@ -33,6 +33,7 @@ typedef struct Context {
 	int durationCount;
 	Bot bot;
     BotState botState;
+	unsigned long botSteps;
 
     NextStep next_step;
     Set set;

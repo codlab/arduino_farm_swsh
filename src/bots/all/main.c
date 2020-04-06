@@ -51,6 +51,7 @@
 #include "../day_skipper_jp/DaySkipper_JP.h"
 #include "../day_skipper_jp_nolimit/DaySkipper_JP_NoLimit.h"
 #include "../crashfreeegg_dup/CrashFreeEgg.h"
+#include "../twitch_plays/TwitchPlays.h"
 
 void configure(Context* context) {
 	switch(context->bot) {
@@ -108,6 +109,9 @@ void configure(Context* context) {
 			break;
 		case WattFarmer:
 			context->next_step = wattFarmer;
+			break;
+		case TwitchPlays:
+			context->next_step = twitchPlays;
 			break;
 		case MissingNo:
 		default:

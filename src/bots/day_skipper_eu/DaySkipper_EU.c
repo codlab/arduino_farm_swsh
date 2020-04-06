@@ -182,8 +182,6 @@ static const Command PROGMEM sequences[] = {
 	{NOTHING, 20}
 };
 
-static unsigned long _day_skip_round_eu = 0;
-
 void configureDaySkipperEU(Context *context) {
 	context->set = nullptr;
 }
@@ -257,9 +255,7 @@ Command* daySkipperEU(Context* context, USB_JoystickReport_Input_t* const Report
 			}
 			
 			(calendarEU.dayToSkip)--;
-
-			reportStep(_day_skip_round_eu);
-			_day_skip_round_eu ++;
+			(context->botSteps)++;
 
 			return &sequences;
 		case DONE: return nullptr;

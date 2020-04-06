@@ -104,8 +104,6 @@ int m_saveAt = 50;
 #define PROCESS_SAVE PROCESS_CUSTOM_2
 #define PROCESS_CHECK_SAVE PROCESS_CUSTOM_3
 
-static unsigned long watt_farmer_round = 0;
-
 // Prepare the next report for the host.
 Command* wattFarmer(Context* context, USB_JoystickReport_Input_t* const ReportData) {
 	// States and moves management
@@ -118,8 +116,7 @@ Command* wattFarmer(Context* context, USB_JoystickReport_Input_t* const ReportDa
 			RETURN_NEW_SEQ(settings_sequence, PROCESS_COLLECT);
 
 		case PROCESS_COLLECT:
-			reportStep(watt_farmer_round);
-			watt_farmer_round ++;
+			(context->botSteps)++;
 
 			RETURN_NEW_SEQ(collect_sequence, PROCESS_CHECK_SAVE);
 

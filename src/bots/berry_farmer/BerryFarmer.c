@@ -151,12 +151,14 @@ Command* berryFarmer(Context* context, USB_JoystickReport_Input_t* const ReportD
 	// States and moves management
 	switch (context->state) {
 		case PROCESS:
+			context->botSteps = 0;
 			context->bot = BerryFarmer;
 			context->commandIndex = 0;
 			context->endIndex = 8;
 			context->next_state = PROCESS_CUSTOM_1;
 			return nullptr;
 		case PROCESS_CUSTOM_1:
+			(context->botSteps)++;
 			// Get the next command sequence (new start and end)
 			if (berry_saveCount == berry_saveAt) {
 				context->commandIndex = 75;

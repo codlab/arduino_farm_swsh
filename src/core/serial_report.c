@@ -7,7 +7,6 @@
 
 static char buffer[25];
 static BotState current_bot_state = ON;
-static unsigned long current_bot_round = 0;
 
 #define RECV_SIZE 25
 static char recv_buffer[RECV_SIZE + 1];
@@ -32,10 +31,6 @@ void prepareBuffer(void) {
 	buffer[sizeof(buffer) - 1] = 0;
 }
 
-void reportStep(unsigned long round) {
-    current_bot_round = round;
-}
-
 int equals(const char * str) {
     int index = 0;
     while(index < RECV_SIZE && index < strlen(str)) {
@@ -48,7 +43,7 @@ int equals(const char * str) {
 
 void reportTrySendState(Context* context) {
     
-	unsigned long tmp = current_bot_round;
+	unsigned long tmp = context->botSteps;
 	int index = sizeof(buffer) - 2;
 
     #ifdef DEBUG
@@ -115,6 +110,7 @@ void resetContext(Context* context) {
 	context->durationCount = 0;
     context->set = nullptr;
     context->next_step = nullptr;
+    context->botSteps = 0;
 }
 
 void checkReceived(Context* context) {

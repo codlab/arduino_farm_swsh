@@ -113,6 +113,7 @@ Command* boxRelease(Context* context, USB_JoystickReport_Input_t* const ReportDa
 	// States and moves management
 	switch (context->state) {
 		case PROCESS:
+			context->botSteps = 0;
 			context->bot = BoxRelease;
 			context->commandIndex = 0;
 			context->endIndex = 8;
@@ -155,6 +156,7 @@ Command* boxRelease(Context* context, USB_JoystickReport_Input_t* const ReportDa
 					context->endIndex = 22;
 					
 					m_column++;
+					(context->botSteps)++;
 					m_released = true;
 				} else {
 					// Next pokemon

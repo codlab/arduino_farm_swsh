@@ -42,7 +42,8 @@ Context context = {
 	.bot = MissingNo,
 	.botState = ON,
 	.set = nullptr,
-	.next_step = nullptr
+	.next_step = nullptr,
+	.botSteps = 0
 };
 
 void set(const char* set);
