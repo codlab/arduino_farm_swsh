@@ -40,10 +40,16 @@ int equals(const char * str) {
     return true;
 }
 
+#define SET_NUMBER_IN_BUFFER(NUMBER, BUFFER, INDEX) \
+	while(NUMBER > 0 && INDEX >= 0) { \
+		BUFFER[INDEX] = '0' + (NUMBER % 10); \
+		NUMBER /= 10; \
+		INDEX --; \
+	}
 
 void reportTrySendState(Context* context) {
     
-	unsigned long tmp = context->botSteps;
+	unsigned long tmp = 0;
 	int index = sizeof(buffer) - 2;
 
     #ifdef DEBUG
@@ -54,12 +60,15 @@ void reportTrySendState(Context* context) {
     #else
 	prepareBuffer();
 
-	while(tmp > 0 && index >= 0) {
-		int digit = tmp % 10;
-		buffer[index] = '0' + digit;
-		tmp /= 10;
-		index --;
-	}
+    tmp = current_millis/1000; //get the number of seconds
+    SET_NUMBER_IN_BUFFER(tmp, buffer, index);
+
+    if(index > 1) {
+        index --; //we let one ' '
+
+        tmp = context->botSteps;
+        SET_NUMBER_IN_BUFFER(tmp, buffer, index);
+    }
 
     if(index > 1) {
         index --; //we let one ' '
@@ -126,7 +135,7 @@ void checkReceived(Context* context) {
 
     if(recv_buffer_first_at > 0) {
         unsigned long diff = current_millis - recv_buffer_first_at;
-        if(diff >= 1000) {
+        if(diff >= 60) {
             if(equals("PAUSE")) {
                 context->botState = PAUSE;
             } else if(equals("ON")) {
