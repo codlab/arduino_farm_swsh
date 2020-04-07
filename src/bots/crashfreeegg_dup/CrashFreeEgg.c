@@ -32,10 +32,10 @@
 /*------------------------------------------*/
 
 static const Command PROGMEM setup[] = {
-	// Connect controller in Change Grip/Order
-	STEP_NOTHING(30),
-	STEP_B(1, 40),
-	STEP_B(1, 40)
+	STEP_NOTHING(200),
+	STEP_TRIGGERS(5, 150),
+	STEP_TRIGGERS(5, 150),
+	STEP_B(5, 200),
 };
 
 static const Command PROGMEM wake_up_hang[] = {
@@ -45,19 +45,23 @@ static const Command PROGMEM wake_up_hang[] = {
 static const Command PROGMEM move[] = {
 	STEP_CIRCLE(200, 1), //in the original script the NOTHIN step did not exist
 	STEP_B(1, 1),
-	STEP_CIRCLE(250, 1), //in the original script the NOTHIN step did not exist
+	STEP_CIRCLE(200, 1), //in the original script the NOTHIN step did not exist
+	STEP_B(1, 1),
+	STEP_CIRCLE(200, 1), //in the original script the NOTHIN step did not exist
 };
 
 
 static const Command PROGMEM go_to_lady[] = {
 	STEP_X(2, 50),
+	STEP_LEFT(100, 1),
+	STEP_DOWN(100, 1),
 	STEP_A(2, 90),
 	STEP_A(2, 42),
 	STEP_A(2, 90),
 	STEP_L(2, 20),
 	STEP_PLUS(2, 1),
 	STEP_LEFT(40, 1),
-	STEP_DOWN(25, 20)
+	STEP_DOWN(35, 20)
 };
 
 static const Command PROGMEM talk_to_lady[] = {
@@ -87,6 +91,9 @@ static const Command PROGMEM go_to_position[] = {
 #define TALK PROCESS_CUSTOM_2
 #define POSITION PROCESS_CUSTOM_3
 #define MOVE PROCESS_CUSTOM_4
+#define INCR PROCESS_CUSTOM_5
+
+bool has_finish_one_round = false;
 
 // Prepare the next report for the duplication to occur
 Command* crashFreeEgg(Context* context, USB_JoystickReport_Input_t* const ReportData) {
@@ -96,14 +103,17 @@ Command* crashFreeEgg(Context* context, USB_JoystickReport_Input_t* const Report
 			context->bot = CrashFreeEggDup;
 			RETURN_NEW_SEQ(setup, LADY);
 		case LADY:
+			if(has_finish_one_round) (context->botSteps)++;
 			RETURN_NEW_SEQ(go_to_lady, TALK);
 		case TALK:
 			RETURN_NEW_SEQ(talk_to_lady, POSITION);
 		case POSITION:
 			RETURN_NEW_SEQ(go_to_position, MOVE);
 		case MOVE:
-			(context->botSteps)++;
-			RETURN_NEW_SEQ(move, LADY);
+			RETURN_NEW_SEQ(move, INCR);
+		case INCR:
+			has_finish_one_round = true;
+			RETURN_NULL_SEQ(LADY);
 		case DONE: default: return nullptr;
 	}
 	return nullptr;
