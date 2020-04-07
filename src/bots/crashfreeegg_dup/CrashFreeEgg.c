@@ -94,17 +94,24 @@ static const Command PROGMEM go_to_position[] = {
 #define INCR PROCESS_CUSTOM_5
 
 bool has_finish_one_round = false;
+bool has_init = false;
 
 // Prepare the next report for the duplication to occur
 Command* crashFreeEgg(Context* context, USB_JoystickReport_Input_t* const ReportData) {
 	// States and moves management
 	switch (context->state) {
 		case PROCESS:
+			has_init = false;
 			context->bot = CrashFreeEggDup;
 			RETURN_NEW_SEQ(setup, LADY);
 		case LADY:
-			if(has_finish_one_round) (context->botSteps)++;
-			RETURN_NEW_SEQ(go_to_lady, TALK);
+			if(has_init) {
+				if(has_finish_one_round) (context->botSteps)++;
+				RETURN_NEW_SEQ(go_to_lady, TALK);
+			} else {
+				has_init = true;
+				RETURN_NEW_SEQ(go_to_lady, POSITION);
+			}
 		case TALK:
 			RETURN_NEW_SEQ(talk_to_lady, POSITION);
 		case POSITION:
