@@ -44,9 +44,8 @@ static const Command PROGMEM wake_up_hang[] = {
 
 static const Command PROGMEM move[] = {
 	STEP_CIRCLE(200, 1), //in the original script the NOTHIN step did not exist
-	STEP_B(1, 1),
 	STEP_CIRCLE(200, 1), //in the original script the NOTHIN step did not exist
-	STEP_B(1, 1),
+	STEP_CIRCLE(200, 1), //in the original script the NOTHIN step did not exist
 	STEP_CIRCLE(200, 1), //in the original script the NOTHIN step did not exist
 };
 
@@ -84,7 +83,6 @@ static const Command PROGMEM go_to_position[] = {
 	STEP_RIGHT(50, 20),
 	STEP_UP(50, 1), //in the original script the nothing step did not exist
 	STEP_UP(50, 1), //in the original script the nothing step did not exist
-	STEP_UP(50, 25)
 };
 
 #define LADY PROCESS_CUSTOM_1
