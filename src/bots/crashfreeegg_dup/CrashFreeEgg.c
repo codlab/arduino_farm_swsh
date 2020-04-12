@@ -38,10 +38,6 @@ static const Command PROGMEM setup[] = {
 	STEP_B(5, 200),
 };
 
-static const Command PROGMEM wake_up_hang[] = {
-	STEP_TRIGGERS(5, 250)
-};
-
 static const Command PROGMEM move[] = {
 	STEP_CIRCLE(200, 1), //in the original script the NOTHIN step did not exist
 	STEP_CIRCLE(200, 1), //in the original script the NOTHIN step did not exist
