@@ -42,6 +42,17 @@ This project implements a modified version of HORI's Pokken Tournament Pro Pad U
 
 Given the chosen bot, notice the `config.h` file, in those files are the specific settings to edit before compilation. Some other information are also stated there.
 
+## Clone
+
+When cloning directly, use the following commands :
+
+```bash
+git clone https://github.com/codlab/arduino_farm_swsh
+cd arduno_farm_swsh
+git submodule init
+git submodule update
+```
+
 ## Compiling
 
 - compile every bots
