@@ -25,8 +25,8 @@
 */
 
 #ifdef BOX_COUNT
-#ifndef BOX_RELEASE_INCLUDED
-#define BOX_RELEASE_INCLUDED
+#ifndef BOX_MANAGER_INCLUDED
+#define BOX_MANAGER_INCLUDED
 
 #warning "OVERRIDE BOX RELEASE"
 
@@ -43,6 +43,8 @@
 
 // Set how many boxes you want to release with m_boxCount
 int m_boxCount = BOX_COUNT;
+bool box_will_get_item = BOX_WILL_GET_ITEM;
+bool box_will_release = BOX_WILL_RELEASE;
 /*------------------------------------------*/
 
 #endif

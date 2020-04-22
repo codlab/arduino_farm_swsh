@@ -12,6 +12,7 @@
         "turboa.h": "c",
         "serial_report.h": "c",
         "wattfarmer.h": "c",
-        "calendar_skip.h": "c"
+        "calendar_skip.h": "c",
+        "boxmanager.h": "c"
     }
 }

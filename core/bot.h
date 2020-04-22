@@ -14,7 +14,7 @@ typedef enum Bot {
 	AutoHost, //d
 	AutoLoto, //e
 	BerryFarmer, //f
-	BoxRelease, //g
+	BoxManager, //g
 	CrashFreeEggDup, //h
 	DaySkipperEU, //i
 	DaySkipperEUNoLimit, //j

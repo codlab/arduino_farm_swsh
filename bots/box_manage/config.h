@@ -24,8 +24,8 @@
 	For more information, please see the README.md available at https://github.com/codlab/arduino_farm_swsh
 */
 
-#ifndef BOX_RELEASE_INCLUDED
-#define BOX_RELEASE_INCLUDED
+#ifndef BOX_MANAGER_INCLUDED
+#define BOX_MANAGER_INCLUDED
 
 /*------------------------------------------*/
 // INSTRUCTION
@@ -39,7 +39,9 @@
 // -> It takes ~1 minute 26 seconds to release 30 pokemon in a box
 
 // Set how many boxes you want to release with m_boxCount
-int m_boxCount = 2;
+int box_count = 26;
+int box_will_get_item = 1;
+int box_will_release = 1;
 /*------------------------------------------*/
 
 #endif

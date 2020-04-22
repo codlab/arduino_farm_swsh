@@ -41,7 +41,7 @@
 #include "../auto_host/AutoHost.h"
 #include "../auto_loto/AutoLoto.h"
 #include "../berry_farmer/BerryFarmer.h"
-#include "../box_release/BoxRelease.h"
+#include "../box_manage/BoxManager.h"
 #include "../turbo_a/TurboA.h"
 #include "../watt_farmer/WattFarmer.h"
 #include "../day_skipper_eu/DaySkipper_EU.h"
@@ -67,9 +67,9 @@ void configure(Context* context) {
 			configureAutoLoto(context);
 			context->next_step = autoLoto;
 			break;
-		case BoxRelease:
-			configureBoxRelease(context);
-			context->next_step = boxRelease;
+		case BoxManager:
+			configureBoxManager(context);
+			context->next_step = boxManager;
 			break;
 		case DaySkipperEU:
 			configureDaySkipperEU(context);

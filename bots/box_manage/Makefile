@@ -1,6 +1,6 @@
 include ../_env/env.mk
 
-TARGET       = BoxRelease
+TARGET       = BoxManager
 SRC          = $(TARGET).c main.c $(SRC_EXPANDED)
 
 # Default target

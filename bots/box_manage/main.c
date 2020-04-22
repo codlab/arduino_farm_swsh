@@ -24,14 +24,9 @@
 	For more information, please see the README.md available at https://github.com/codlab/arduino_farm_swsh
 */
 
-#ifndef BOX_RELEASE
-#define BOX_RELEASE
-#include "../../Joystick.h"
-#include "../../core/action.h"
-#include "../../core/usb_device.h"
+#include "BoxManager.h"
 
-void configureBoxRelease(Context *context);
-
-Command* boxRelease(Context* context, USB_JoystickReport_Input_t* const ReportData);
-
-#endif
+void configure(Context* context) {
+    configureBoxManager(context);
+    context->next_step = boxManager;
+}

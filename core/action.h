@@ -32,13 +32,17 @@
 
 #define SIZE(ARRAY) sizeof(ARRAY) / sizeof(Command)
 #define RETURN_NEW_SEQ(ARRAY, NEXT_STATE) \
+    {context->state = NEXT_STATE; \
     context->next_state = NEXT_STATE; \
+    context->commandIndex = 0; \
     context->endIndex = sizeof(ARRAY) / sizeof(Command) - 1; \
-    return (Command*) &ARRAY;
+    return (Command*) &ARRAY;}
 #define RETURN_NULL_SEQ(NEXT_STATE) \
+    {context->state = NEXT_STATE; \
     context->next_state = NEXT_STATE; \
+    context->commandIndex = 0; \
     context->endIndex = 0; \
-    return (Command*) NULL;
+    return (Command*) NULL;}
 
 #define STEP_NOTHING(TIME) {NOTHING, TIME}
 #define STEP_TRIGGERS(TIME, WAIT_FOR) {TRIGGERS, TIME}, {NOTHING, WAIT_FOR}
