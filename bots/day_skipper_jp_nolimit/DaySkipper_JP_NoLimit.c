@@ -27,31 +27,10 @@
 #include "DaySkipper_JP_NoLimit.h"
 #include "config_preprocess.h"
 #include "config.h"
-
-static const Command PROGMEM increment_day[] = {
-	//----------Skip day [9,26]----------
-	// Enter
-	STEP_A(1, 4),
-	
-	// Move to day
-	STEP_LEFT(1, 1),
-	STEP_LEFT(1, 1),
-	STEP_LEFT(1, 1),
-	
-	// Increment day
-	STEP_UP(1, 1),
-	
-	// Move to OK
-	STEP_RIGHT(1, 1),
-	STEP_RIGHT(1, 1),
-	STEP_RIGHT(1, 1),
-
-	// Exit
-	STEP_A(1, 4)
-};
+#include "../../core/lang.h"
 
 void jp_nolimit_set(const char* buffer) {
-	jp_daySkip.dayToSkip = to_ulong(buffer);
+	jp_no_limit = to_ulong(buffer);
 }
 
 void configureDaySkipperJPNoLimit(Context *context) {
@@ -60,5 +39,5 @@ void configureDaySkipperJPNoLimit(Context *context) {
 
 // Prepare the next report for the host.
 Command* daySkipperJPNoLimit(Context* context, USB_JoystickReport_Input_t* const ReportData) {
-	return daySkipperNoLimit(DaySkipperJPNoLimit, &jp_daySkip, context, ReportData, increment_day);
+	return daySkipperNoLimit(DaySkipperJPNoLimit, jp_no_limit, context, ReportData, JP);
 }

@@ -36,9 +36,7 @@
 // -> It takes ~43 seconds per 30 days
 
 // -> Set number of days you want to skip,can't be greater than 4294967295
-DaySkip eu_daySkip = {
-    .dayToSkip = 172
-};
+unsigned long eu_no_limit = 200000;
 /*------------------------------------------*/
 
 #endif

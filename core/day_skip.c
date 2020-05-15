@@ -25,47 +25,137 @@
 */
 
 #include "day_skip.h"
+#include "lang.h"
 
 static const Command PROGMEM sequences[] = {
 	// Press A once to connect
-	STEP_NOTHING(30),
-	STEP_B(1, 30),
-	STEP_B(1, 30),
+	STEP_NOTHING(90),
+	STEP_X(3, 90),
+	STEP_X(3, 90),
 	// Make sure cursor is on OK
-	STEP_A(1, 1),
-	STEP_RIGHT(40, 1),
+	STEP_X(3, 1),
+	STEP_RIGHT(120, 3),
 	
 	// Exit
-	STEP_A(1, 4)
+	STEP_RIGHT(120, 3),
 };
 
 static const Command PROGMEM exit[] = {
-	STEP_HOME(1, 30),
-	STEP_HOME(1, 30)
+	STEP_HOME(3, 90),
+	STEP_HOME(3, 90)
 };
 
-unsigned long day_to_skip = 1;
+static const Command PROGMEM increment_day_us[] = {
+	// Enter
+	STEP_A(5, 14),
+	
+	// Move to day
+	STEP_LEFT(4, 2),
+	STEP_LEFT(4, 2),
+	STEP_LEFT(4, 2),
+	STEP_LEFT(4, 2),
+	STEP_LEFT(4, 2),
+	
+	// Increment day
+	STEP_UP(4, 2),
+	
+	// Move to OK
+	STEP_RIGHT(4, 2),
+	STEP_RIGHT(4, 2),
+	STEP_RIGHT(4, 2),
+	STEP_RIGHT(4, 2),
+	STEP_RIGHT(4, 2),
+
+	// Exit
+	STEP_A(5, 14)
+};
+
+static const Command PROGMEM increment_day_jp[] = {
+	// Enter
+	STEP_A(5, 14),
+
+	// Move to day
+	STEP_LEFT(4, 2),
+	STEP_LEFT(4, 2),
+	STEP_LEFT(4, 2),
+
+	// Increment day
+	STEP_UP(4, 2),
+
+	// Move to OK
+	STEP_RIGHT(4, 2),
+	STEP_RIGHT(4, 2),
+	STEP_RIGHT(4, 2),
+
+	// Exit
+	STEP_A(5, 14)
+};
+
+static const Command PROGMEM increment_day_eu[] = {
+	// Enter
+	STEP_A(5, 14),
+	
+	// Move to day
+	STEP_LEFT(4, 2),
+	STEP_LEFT(4, 2),
+	STEP_LEFT(4, 2),
+	STEP_LEFT(4, 2),
+	STEP_LEFT(4, 2),
+	STEP_LEFT(4, 2),
+	
+	// Increment day
+	STEP_UP(4, 2),
+	
+	// Move to OK
+	STEP_RIGHT(4, 2),
+	STEP_RIGHT(4, 2),
+	STEP_RIGHT(4, 2),
+	STEP_RIGHT(4, 2),
+	STEP_RIGHT(4, 2),
+	STEP_RIGHT(4, 2),
+
+	// Exit
+	STEP_A(5, 14)
+};
+
+
+//local value to hold the calculated number of skips to do
+static unsigned long day_to_skip = 0;
 
 // Prepare the next report for the host.
-Command* daySkipperNoLimit(Bot mode, DaySkip* daySkip, Context* context, USB_JoystickReport_Input_t* const ReportData, Command *increments) {
+Command* daySkipperNoLimit(Bot mode, unsigned long total_skips, Context* context, USB_JoystickReport_Input_t* const ReportData, Region region) {
 	// States and moves management
 	switch (context->state) {
 		case PROCESS: {
-			unsigned long months = daySkip->dayToSkip >= 30 ? daySkip->dayToSkip/30 : 0;
+
+			unsigned long months = total_skips / 30;
 			unsigned long months_t_30 = months * 30;
 
-			int mod = daySkip->dayToSkip - months_t_30;
+			int mod = total_skips - months_t_30;
 			day_to_skip = months * 31 + mod;
 
 			context->bot = mode;
+
+			//override the number of ECHOES
+			context->ECHOES = 0;
+
 			RETURN_NEW_SEQ(sequences, PROCESS_CUSTOM_1);
 		}
 		case PROCESS_CUSTOM_1:
 			if(day_to_skip > 0) {
+				(context->botSteps) ++;
 				day_to_skip--;
-				RETURN_NEW_SEQ(increments, PROCESS_CUSTOM_1);
+				switch(region) {
+					case EU: { RETURN_NEW_SEQ(increment_day_eu, PROCESS_CUSTOM_1); }
+					case US: { RETURN_NEW_SEQ(increment_day_us, PROCESS_CUSTOM_1); }
+					default: { RETURN_NEW_SEQ(increment_day_jp, PROCESS_CUSTOM_1); }
+				}
 			} else {
-				RETURN_NEW_SEQ(increments, PROCESS_CUSTOM_2);
+				switch(region) {
+					case EU: { RETURN_NEW_SEQ(increment_day_eu, PROCESS_CUSTOM_2); }
+					case US: { RETURN_NEW_SEQ(increment_day_us, PROCESS_CUSTOM_2); }
+					default: { RETURN_NEW_SEQ(increment_day_jp, PROCESS_CUSTOM_2); }
+				}
 			}
 		case PROCESS_CUSTOM_2:
 			RETURN_NEW_SEQ(exit, DONE);

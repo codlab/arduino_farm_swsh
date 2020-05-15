@@ -38,9 +38,7 @@
 // -> It takes ~31 seconds per 30 days
 
 // -> Set number of days you want to skip,can't be greater than 4294967295
-DaySkip us_daySkip = {
-    .dayToSkip = DAY_TO_SKIP
-};
+unsigned long us_no_limit = DAY_TO_SKIP;
 /*------------------------------------------*/
 
 #endif

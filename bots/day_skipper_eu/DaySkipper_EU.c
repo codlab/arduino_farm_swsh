@@ -26,6 +26,7 @@
 
 #include "DaySkipper_EU.h"
 #include "../../core/serial_report.h"
+#include "../../core/day_skip.h"
 #include "config_preprocess.h"
 #include "config.h"
 

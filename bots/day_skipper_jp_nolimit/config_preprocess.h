@@ -39,9 +39,7 @@
 // -> It takes ~31 seconds per 30 days
 
 // -> Set number of days you want to skip,can't be greater than 4294967295
-DaySkip jp_daySkip = {
-    .dayToSkip = DAY_TO_SKIP
-};
+unsigned long jp_no_limit = DAY_TO_SKIP;
 /*------------------------------------------*/
 
 #endif

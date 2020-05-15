@@ -32,7 +32,8 @@
 #include "context.h"
 #include "action.h"
 #include "usb_device.h"
+#include "lang.h"
 
-Command* daySkipperNoLimit(Bot mode, DaySkip* daySkip, Context* context, USB_JoystickReport_Input_t* const ReportData, Command *increments);
+Command* daySkipperNoLimit(Bot mode, unsigned long daySkip, Context* context, USB_JoystickReport_Input_t* const ReportData, Region region);
 
 #endif

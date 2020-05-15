@@ -28,36 +28,11 @@
 #include "config_preprocess.h"
 #include "config.h"
 #include "../../core/calendar_skip.h"
-
-static const Command PROGMEM increment_day[] = {
-	// Enter
-	STEP_A(1, 4),
-	
-	// Move to day
-	STEP_LEFT(1, 1),
-	STEP_LEFT(1, 1),
-	STEP_LEFT(1, 1),
-	STEP_LEFT(1, 1),
-	STEP_LEFT(1, 1),
-	STEP_LEFT(1, 1),
-	
-	// Increment day
-	STEP_UP(1, 1),
-	
-	// Move to OK
-	STEP_RIGHT(1, 1),
-	STEP_RIGHT(1, 1),
-	STEP_RIGHT(1, 1),
-	STEP_RIGHT(1, 1),
-	STEP_RIGHT(1, 1),
-	STEP_RIGHT(1, 1),
-
-	// Exit
-	STEP_A(1, 4)
-};
+#include "../../core/day_skip.h"
+#include "../../core/lang.h"
 
 void eu_nolimit_set(const char* buffer) {
-	eu_daySkip.dayToSkip = to_ulong(buffer);
+	eu_no_limit = to_ulong(buffer);
 }
 
 void configureDaySkipperEUNoLimit(Context *context) {
@@ -66,5 +41,5 @@ void configureDaySkipperEUNoLimit(Context *context) {
 
 // Prepare the next report for the host.
 Command* daySkipperEUNoLimit(Context* context, USB_JoystickReport_Input_t* const ReportData) {
-	return daySkipperNoLimit(DaySkipperEUNoLimit, &eu_daySkip, context, ReportData, increment_day);
+	return daySkipperNoLimit(DaySkipperEUNoLimit, eu_no_limit, context, ReportData, EU);
 }
