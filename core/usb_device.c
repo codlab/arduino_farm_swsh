@@ -43,12 +43,13 @@ Context context = {
 	.botState = ON,
 	.set = nullptr,
 	.next_step = nullptr,
-	.botSteps = 0
+	.botSteps = 0,
+	.echo = 0,
+	.ECHOES = 2
 };
 
 void set(const char* set);
 
-int echoes = 0;
 USB_JoystickReport_Input_t last_report;
 
 int main(void) {
@@ -180,9 +181,9 @@ void HID_Task(void) {
 		PrepareReport(&JoystickInputData);
 
 		// Repeat ECHOES times the last report
-		if (echoes > 0) {
+		if (context.echo > 0) {
 			memcpy(&JoystickInputData, &last_report, sizeof(USB_JoystickReport_Input_t));
-			echoes--;
+			(context.echo)--;
 		} else {
 			// or get the new report
 			// We'll then populate this report with what we want to send to the host.
@@ -212,7 +213,7 @@ void HID_Task(void) {
 					//we have a command to execute, we execute it
 					// Prepare to echo this report
 					memcpy(&last_report, &JoystickInputData, sizeof(USB_JoystickReport_Input_t));
-					echoes = ECHOES;
+					context.echo = context.ECHOES;
 				}
 			}
 

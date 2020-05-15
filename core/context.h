@@ -37,6 +37,9 @@ typedef struct Context {
 
     NextStep next_step;
     Set set;
+
+	int echo;
+	int ECHOES;
 } Context;
 
 void configure(Context* context);

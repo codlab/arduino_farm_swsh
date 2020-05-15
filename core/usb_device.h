@@ -33,7 +33,6 @@
 #ifndef nullptr
 #define nullptr 0
 #endif
-#define ECHOES 2
 
 /**
  * Get the next joystick report for the host
