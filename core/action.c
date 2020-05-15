@@ -120,7 +120,7 @@ void report_action(USB_JoystickReport_Input_t* const ReportData, Command* comman
 
 void goto_next(Context* context, Command* const command) {
     context->durationCount++;
-    if (context->durationCount > command->duration) {
+    while (context->commandIndex != -1 && context->durationCount > command->duration) {
         context->commandIndex++;
         context->durationCount = 0;
 
