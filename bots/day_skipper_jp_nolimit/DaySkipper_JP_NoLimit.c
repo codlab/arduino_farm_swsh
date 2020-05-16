@@ -27,6 +27,8 @@
 #include "DaySkipper_JP_NoLimit.h"
 #include "config_preprocess.h"
 #include "config.h"
+#include "../../core/calendar_skip.h"
+#include "../../core/day_skip.h"
 #include "../../core/lang.h"
 
 void jp_nolimit_set(const char* buffer) {
