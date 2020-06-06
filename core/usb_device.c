@@ -189,36 +189,45 @@ void HID_Task(void) {
 			// We'll then populate this report with what we want to send to the host.
 
 			Command* command = nullptr;
+			int attempt = 0;
+			int done = 0;
 
-			//if begin of a session
-			if(nullptr == sequences && nullptr != context.next_step) {
-				context.commandIndex = 0;
-				context.state = context.next_state;
-				sequences = context.next_step(&context, &JoystickInputData);
-			}
-
-			//if the session gave a pointer to sequences
-			//the sequences is a variables which is retained, loop after loop it will be valid until "finished"
-			if(nullptr != sequences) {
-				command = get_command(&context, sequences);
-
-				//if we have a command to do (the sequences is not finished)
-				if (nullptr != command) {
-					Command temp;
-					memcpy_P(&temp, command, sizeof(Command));
-
-					report_action(&JoystickInputData, &temp);
-					goto_next(&context, &temp); //after, go to the next command to execute
-
-					//we have a command to execute, we execute it
-					// Prepare to echo this report
-					memcpy(&last_report, &JoystickInputData, sizeof(USB_JoystickReport_Input_t));
-					context.echo = context.ECHOES;
+			while(attempt <= 1 && done != 1) {
+				//if begin of a session
+				if(nullptr == sequences && nullptr != context.next_step) {
+					context.commandIndex = 0;
+					context.state = context.next_state;
+					sequences = context.next_step(&context, &JoystickInputData);
 				}
-			}
 
-			if(nullptr == command || context.commandIndex == -1) {
-				sequences = nullptr;
+				//if the session gave a pointer to sequences
+				//the sequences is a variables which is retained, loop after loop it will be valid until "finished"
+				if(nullptr != sequences) {
+					command = get_command(&context, sequences);
+
+					//if we have a command to do (the sequences is not finished)
+					if (nullptr != command) {
+						Command temp;
+						memcpy_P(&temp, command, sizeof(Command));
+
+						report_action(&JoystickInputData, &temp);
+						goto_next(&context, &temp); //after, go to the next command to execute
+
+						//we have a command to execute, we execute it
+						// Prepare to echo this report
+						memcpy(&last_report, &JoystickInputData, sizeof(USB_JoystickReport_Input_t));
+						context.echo = context.ECHOES;
+						done = 1;
+					}
+				}
+
+				if(nullptr == command || context.commandIndex == -1) {
+					sequences = nullptr;
+				}
+
+				if(nullptr == sequences) {
+					attempt++;
+				}
 			}
 		}
 

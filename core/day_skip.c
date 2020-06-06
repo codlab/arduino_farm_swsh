@@ -72,52 +72,41 @@ static const Command PROGMEM increment_day_us[] = {
 
 static const Command PROGMEM increment_day_jp[] = {
 	// Enter
-	STEP_A(5, 14),
+	STEP_A(4, 14),
 
 	// Move to day
 	STEP_LEFT(4, 2),
 	STEP_LEFT(4, 2),
-	STEP_LEFT(4, 2),
+	STEP_LEFT(4, 0),
 
 	// Increment day
-	STEP_UP(4, 2),
+	STEP_UP_A(4, 2),
 
-	// Move to OK
-	STEP_RIGHT(4, 2),
-	STEP_RIGHT(4, 2),
-	STEP_RIGHT(4, 2),
+	STEP_DOUBLE_RIGHT(4, 2),
 
 	// Exit
-	STEP_A(5, 14)
+	STEP_A(4, 14)
 };
 
 static const Command PROGMEM increment_day_eu[] = {
 	// Enter
-	STEP_A(5, 14),
+	STEP_A(4, 14),
 	
 	// Move to day
 	STEP_LEFT(4, 2),
 	STEP_LEFT(4, 2),
 	STEP_LEFT(4, 2),
 	STEP_LEFT(4, 2),
-	STEP_LEFT(4, 2),
-	STEP_LEFT(4, 2),
+	STEP_LEFT(4, 0),
 	
 	// Increment day
-	STEP_UP(4, 2),
-	
-	// Move to OK
-	STEP_RIGHT(4, 2),
-	STEP_RIGHT(4, 2),
-	STEP_RIGHT(4, 2),
-	STEP_RIGHT(4, 2),
-	STEP_RIGHT(4, 2),
-	STEP_RIGHT(4, 2),
+	STEP_UP_A(4, 2),
 
-	// Exit
-	STEP_A(5, 14)
+	//STEP_DOUBLE_RIGHT(4, 2),
+	STEP_DOUBLE_RIGHT(4, 2),
+	STEP_DOUBLE_RIGHT(4, 2),
+	STEP_DOUBLE_RIGHT(4, 14), //it has an A to validate
 };
-
 
 //local value to hold the calculated number of skips to do
 static unsigned long day_to_skip = 0;

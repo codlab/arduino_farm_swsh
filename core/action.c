@@ -33,6 +33,10 @@ void report_action(USB_JoystickReport_Input_t* const ReportData, Command* comman
                 ReportData->LY = STICK_MIN;
                 break;
 
+            case DOUBLE_LEFT:
+                ReportData->RX = STICK_MIN;
+                ReportData->LX = STICK_MIN;
+                break;
             case LEFT:
                 ReportData->LX = STICK_MIN;
                 break;
@@ -41,6 +45,17 @@ void report_action(USB_JoystickReport_Input_t* const ReportData, Command* comman
                 ReportData->LY = STICK_MAX;
                 break;
 
+            case UP_A:
+                ReportData->LY = STICK_MIN;
+                ReportData->Button |= SWITCH_A;
+                break;
+
+            case DOUBLE_RIGHT:
+                ReportData->Button |= SWITCH_A;
+                ReportData->RX = STICK_MAX;
+                ReportData->LX = STICK_MAX;
+                ReportData->HAT = HAT_RIGHT;
+                break;
             case RIGHT:
                 ReportData->LX = STICK_MAX;
                 break;

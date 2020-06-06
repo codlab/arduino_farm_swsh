@@ -68,7 +68,7 @@ typedef enum {
 	SWITCH_LCLICK  = 0x400,
 	SWITCH_RCLICK  = 0x800,
 	SWITCH_HOME    = 0x1000,
-	SWITCH_CAPTURE = 0x2000,
+	SWITCH_CAPTURE = 0x2000
 } JoystickButtons_t;
 
 #define HAT_TOP          0x00
@@ -114,6 +114,9 @@ typedef enum {
 	LEFT,
 	RIGHT,
 	CIRCLE,
+	DOUBLE_LEFT,
+	DOUBLE_RIGHT,
+	UP_A,
 	X,
 	Y,
 	A,
