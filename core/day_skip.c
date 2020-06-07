@@ -85,12 +85,12 @@ static const Command PROGMEM increment_day_jp[] = {
 	STEP_DOUBLE_RIGHT(4, 2),
 
 	// Exit
-	STEP_A(4, 14)
+	STEP_A(5, 14)
 };
 
 static const Command PROGMEM increment_day_eu[] = {
 	// Enter
-	STEP_A(4, 14),
+	STEP_A(5, 14),
 	
 	// Move to day
 	STEP_LEFT(4, 2),
@@ -105,7 +105,7 @@ static const Command PROGMEM increment_day_eu[] = {
 	//STEP_DOUBLE_RIGHT(4, 2),
 	STEP_DOUBLE_RIGHT(4, 2),
 	STEP_DOUBLE_RIGHT(4, 2),
-	STEP_DOUBLE_RIGHT(4, 14), //it has an A to validate
+	STEP_DOUBLE_RIGHT(5, 14), //it has an A to validate
 };
 
 //local value to hold the calculated number of skips to do
