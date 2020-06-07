@@ -119,6 +119,27 @@ sudo dfu-programmer atmega16u2 reset
 Replace atmega16u2 with the proper Atmel type you have. Arduino UNO is for instance atmega16u2
 
 
+## Debian like
+
+### Install
+
+AVR for MacOS and DFU Programmer
+
+```
+sudo apt-get install gcc-avr dfu-programmer
+```
+
+### Flash
+
+```
+sudo dfu-programmer atmega16u2 erase
+sudo dfu-programmer atmega16u2 flash path/to/the/file.hex
+sudo dfu-programmer atmega16u2 reset
+```
+
+Replace atmega16u2 with the proper Atmel type you have. Arduino UNO is for instance atmega16u2
+
+
 # Videos
 
 Basic Tutorial (MUST WATCH): https://youtu.be/y2xFf7e_KSU
