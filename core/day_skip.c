@@ -58,10 +58,8 @@ static const Command PROGMEM increment_day_us[] = {
 	// Increment day
 	STEP_UP_A(4, 2),
 
+	STEP(JOYSTICK_1_RIGHT, 4),
 	STEP(JOYSTICK_2_RIGHT, 4),
-	STEP(JOYSTICK_1_RIGHT, 4),
-	STEP(JOYSTICK_2_LEFT, 4),
-	STEP(JOYSTICK_1_RIGHT, 4),
 
 	STEP_DOUBLE_RIGHT(5, 14), //it has an A to validate
 };
