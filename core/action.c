@@ -29,20 +29,45 @@
 void report_action(USB_JoystickReport_Input_t* const ReportData, Command* command) {
     if(nullptr != command && nullptr != ReportData) {
         switch (command->button) {
+            case JOYSTICK_1_UP:
             case UP:
                 ReportData->LY = STICK_MIN;
+                break;
+
+            case JOYSTICK_1_LEFT:
+            case LEFT:
+                ReportData->LX = STICK_MIN;
+                break;
+
+            case JOYSTICK_1_DOWN:
+            case DOWN:
+                ReportData->LY = STICK_MAX;
+                break;
+
+            case JOYSTICK_1_RIGHT:
+            case RIGHT:
+                ReportData->LX = STICK_MAX;
+                break;
+					
+            case JOYSTICK_2_LEFT:
+                ReportData->RX = STICK_MIN;				
+                break;
+
+            case JOYSTICK_2_RIGHT:
+                ReportData->RX = STICK_MAX;				
+                break;
+
+            case JOYSTICK_2_UP:
+                ReportData->RY = STICK_MIN;				
+                break;
+
+            case JOYSTICK_2_DOWN:
+                ReportData->RY = STICK_MAX;				
                 break;
 
             case DOUBLE_LEFT:
                 ReportData->RX = STICK_MIN;
                 ReportData->LX = STICK_MIN;
-                break;
-            case LEFT:
-                ReportData->LX = STICK_MIN;
-                break;
-
-            case DOWN:
-                ReportData->LY = STICK_MAX;
                 break;
 
             case UP_A:
@@ -55,9 +80,6 @@ void report_action(USB_JoystickReport_Input_t* const ReportData, Command* comman
                 ReportData->RX = STICK_MAX;
                 ReportData->LX = STICK_MAX;
                 ReportData->HAT = HAT_RIGHT;
-                break;
-            case RIGHT:
-                ReportData->LX = STICK_MAX;
                 break;
 
             case CIRCLE:

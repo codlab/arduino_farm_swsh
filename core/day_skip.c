@@ -50,24 +50,20 @@ static const Command PROGMEM increment_day_us[] = {
 	STEP_A(5, 14),
 	
 	// Move to day
-	STEP_LEFT(4, 2),
-	STEP_LEFT(4, 2),
-	STEP_LEFT(4, 2),
-	STEP_LEFT(4, 2),
-	STEP_LEFT(4, 2),
-	
-	// Increment day
-	STEP_UP(4, 2),
-	
-	// Move to OK
-	STEP_RIGHT(4, 2),
-	STEP_RIGHT(4, 2),
-	STEP_RIGHT(4, 2),
-	STEP_RIGHT(4, 2),
-	STEP_RIGHT(4, 2),
+	STEP(JOYSTICK_1_LEFT, 4),
+	STEP(JOYSTICK_2_LEFT, 4),
+	STEP(JOYSTICK_1_LEFT, 4),
+	STEP(JOYSTICK_2_LEFT, 4),
 
-	// Exit
-	STEP_A(5, 14)
+	// Increment day
+	STEP_UP_A(4, 2),
+
+	STEP(JOYSTICK_2_RIGHT, 4),
+	STEP(JOYSTICK_1_RIGHT, 4),
+	STEP(JOYSTICK_2_LEFT, 4),
+	STEP(JOYSTICK_1_RIGHT, 4),
+
+	STEP_DOUBLE_RIGHT(5, 14), //it has an A to validate
 };
 
 static const Command PROGMEM increment_day_jp[] = {
@@ -75,17 +71,17 @@ static const Command PROGMEM increment_day_jp[] = {
 	STEP_A(4, 14),
 
 	// Move to day
-	STEP_LEFT(4, 2),
-	STEP_LEFT(4, 2),
-	STEP_LEFT(4, 0),
+	STEP(JOYSTICK_1_LEFT, 4),
+	STEP(JOYSTICK_2_LEFT, 4),
+	STEP(JOYSTICK_1_LEFT, 4),
 
 	// Increment day
 	STEP_UP_A(4, 2),
 
-	STEP_DOUBLE_RIGHT(4, 2),
+	STEP(JOYSTICK_2_RIGHT, 4),
 
 	// Exit
-	STEP_A(5, 14)
+	STEP_DOUBLE_RIGHT(5, 14)
 };
 
 static const Command PROGMEM increment_day_eu[] = {
@@ -93,18 +89,19 @@ static const Command PROGMEM increment_day_eu[] = {
 	STEP_A(5, 14),
 	
 	// Move to day
-	STEP_LEFT(4, 2),
-	STEP_LEFT(4, 2),
-	STEP_LEFT(4, 2),
-	STEP_LEFT(4, 2),
-	STEP_LEFT(4, 0),
+	STEP(JOYSTICK_1_LEFT, 4),
+	STEP(JOYSTICK_2_LEFT, 4),
+	STEP(JOYSTICK_1_LEFT, 4),
+	STEP(JOYSTICK_2_LEFT, 4),
+	STEP(JOYSTICK_1_LEFT, 4),
 	
 	// Increment day
 	STEP_UP_A(4, 2),
 
-	//STEP_DOUBLE_RIGHT(4, 2),
-	STEP_DOUBLE_RIGHT(4, 2),
-	STEP_DOUBLE_RIGHT(4, 2),
+	STEP(JOYSTICK_2_RIGHT, 4),
+	STEP(JOYSTICK_1_RIGHT, 4),
+	STEP(JOYSTICK_2_LEFT, 4),
+
 	STEP_DOUBLE_RIGHT(5, 14), //it has an A to validate
 };
 
